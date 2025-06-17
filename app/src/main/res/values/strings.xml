@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">فرمول</string>
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+
+    <string name="label_add_material">افزودن مواد اولیه</string>
+    <string name="label_edit_material">ویرایش مواد اولیه</string>
+    <string name="label_add_new_product">افزودن محصول جدید</string>
+    <string name="label_edit_product">ویرایش محصول</string>
+    <string name="label_price">قیمت</string>
+    <string name="label_price_unit">قیمت محصول به کیلو گرم\n(ریال)</string>
+    <string name="label_price_total_unit">قیمت کل\n(ریال)</string>
+    <string name="label_price_star">قیمت به کیلو گرم * :</string>
+    <string name="label_price_item">قیمت  :</string>
+    <string name="label_current_price">قیمت فعلی\n(ریال)</string>
+    <string name="label_day_price">قیمت روز</string>
+    <string name="label_desc">توضیح</string>
+    <string name="label_old_price">قیمت قبلی\n(ریال)</string>
+    <string name="label_new_price">قیمت جدید\n(ریال)</string>
+    <string name="label_date">تاریخ</string>
+    <string name="label_date_item">تاریخ :</string>
+    <string name="label_final_product">محصول نهایی</string>
+    <string name="label_intermediate_product">محصول میانی</string>
+
+
+    <string name="label_material_name_star">نام مواد اولیه * :</string>
+    <string name="label_name">نام</string>
+    <string name="label_material_name">نام مواد اولیه</string>
+    <string name="label_material_name_item">نام مواد اولیه:</string>
+    <string name="label_quantity_unit">مقدار\n(گرم)</string>
+    <string name="label_sum_total">جمع</string>
+    <string name="label_product_name">نام محصول :</string>
+    <string name="label_product_name_item">نام محصول</string>
+    <string name="label_product_name_star">نام محصول * :</string>
+
+    <string name="label_select_material">انتخاب مواد اولیه:</string>
+    <string name="label_search">جستجو کنید...</string>
+    <string name="label_close">بستن</string>
+    <string name="label_delete">حذف</string>
+    <string name="label_save">ذخیره</string>
+    <string name="label_create_date">تاریخ ایجاد:</string>
+    <string name="label_last_update_date">آخرین تاریخ آپدیت قیمت</string>
+    <string name="label_update_date">تاریخ آپدیت:</string>
+    <string name="label_product_description">توضیحات محصول:</string>
+    <string name="label_dialog_delete">آیا از حذف آیتم اطمینان دارید؟</string>
+    <string name="label_pink_color">رنگ صورتی:</string>
+    <string name="label_green_color">رنگ سبز:</string>
+    <string name="label_product">محصول</string>
+    <string name="label_material">مواد اولیه</string>
+    <string name="label_material_list">لیست مواد اولیه</string>
+    <string name="label_product_list">لیست محصولات</string>
+
+    <string name="label_report_product">گزارش جزییات محصول</string>
+
+    <string name="error_request_fields">لطفا تمام فیلدهارا پر کنید</string>
+    <string name="error_no_item">آیتمی یافت نشد</string>
+    <string name="error_no_material">مواد اولیه ای یافت نشد</string>
+    <string name="error_no_product">محصولی یافت نشد</string>
+    <string name="error_enter_product_name">لطفا نام محصول را وارد کنید</string>
+    <string name="error_no_material_selected">لطفاً حداقل یک ماده اولیه انتخاب کنید</string>
+    <string name="error_first_enter_material">ابتدا مواد اولیه را اضافه کنید</string>
+
+    <string-array name="product_filter_options">
+        <item>همه محصولات</item>
+        <item>محصولات نهایی</item>
+        <item>محصولات میانی</item>
+    </string-array>
+
+</resources>

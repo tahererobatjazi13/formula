@@ -1,0 +1,15 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/padding_medium"/>
+            <solid android:color="@color/color_primary"/> <!-- رنگ پس‌زمینه آیتم انتخاب شده -->
+        </shape>
+    </item>
+    <item android:state_checked="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/padding_medium"/>
+
+            <solid android:color="@android:color/transparent"/> <!-- بدون رنگ برای آیتم‌های غیرفعال -->
+        </shape>
+    </item>
+</selector>

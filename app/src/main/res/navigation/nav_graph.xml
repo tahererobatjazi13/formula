@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/ProductsFragment">
+
+    <fragment
+        android:id="@+id/MaterialsFragment"
+        android:name="ir.kitgroup.formula.MaterialsFragment"
+        android:label="@string/label_material"
+        tools:layout="@layout/fragment_materials">
+        <action
+            android:id="@+id/action_MaterialsFragment_to_changeLogFragment"
+            app:destination="@id/changeLogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ProductsFragment"
+        android:name="ir.kitgroup.formula.ProductsFragment"
+        android:label="@string/label_product"
+        tools:layout="@layout/fragment_products">
+
+        <action
+            android:id="@+id/actionProductsFragmentToProductDetailsFragment"
+            app:destination="@id/productDetailsFragment" />
+        <action
+            android:id="@+id/action_ProductsFragment_to_changeLogFragment"
+            app:destination="@id/changeLogFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/productDetailsFragment"
+        android:name="ir.kitgroup.formula.ProductDetailsFragment"
+        android:label="@layout/fragment_product_details">
+
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+        <argument
+            android:name="productName"
+            app:argType="string" />
+        <argument
+            android:name="productDate"
+            app:argType="long" />
+        <argument
+            android:name="productDescription"
+            app:argType="string" />
+        <action
+            android:id="@+id/actionProductDetailsFragmentSelf"
+            app:destination="@id/productDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeLogFragment"
+        android:name="ir.kitgroup.formula.ChangeLogFragment"
+        android:label="ChangeLogFragment">
+        <argument
+            android:name="materialId"
+            app:argType="integer" />
+
+        <argument
+            android:name="changeType"
+            app:argType="integer" />
+    </fragment>
+</navigation>
