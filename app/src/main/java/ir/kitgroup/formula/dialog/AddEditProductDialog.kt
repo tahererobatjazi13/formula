@@ -1,6 +1,5 @@
 package ir.kitgroup.formula.dialog
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import ir.kitgroup.formula.ProductsFragment
 import ir.kitgroup.formula.R
 import ir.kitgroup.formula.adapter.MaterialSelectionAdapter
 import ir.kitgroup.formula.adapter.ProductSelectionAdapter

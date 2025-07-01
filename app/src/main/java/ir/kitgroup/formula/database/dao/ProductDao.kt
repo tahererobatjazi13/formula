@@ -5,7 +5,7 @@ import androidx.room.*
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.database.entity.Product
-
+import ir.kitgroup.formula.database.entity.ProductHistory
 
 @Dao
 interface ProductDao {
@@ -97,6 +97,15 @@ interface ProductDao {
 
     @Query("SELECT * FROM product_details WHERE productId = :productId")
     suspend fun getDetailsForProduct(productId: Int): List<ProductDetail>
+
+    @Insert
+    suspend fun insertHistory(history: ProductHistory): Long
+
+    @Query("SELECT * FROM product_history WHERE productId = :productId ORDER BY date DESC")
+    suspend fun getHistoryForProduct(productId: Int): List<ProductHistory>
+
+    @Query("SELECT * FROM product_history WHERE id = :id")
+    suspend fun getProductHistoryById(id: Long): ProductHistory?
 
 
 }

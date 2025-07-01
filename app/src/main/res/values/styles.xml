@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources >
     <!-- text style (font-size-color) -->
     <style name="LargeBoldTextStyle">
         <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
@@ -44,9 +44,10 @@
         <item name="android:insetTop">0dp</item>
     </style>
 
+
     <style name="BottomNavTextStyle" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/iran_yekan_bakh_bold</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_small</item>
     </style>
     <style name="NoPaddingBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemHorizontalTranslationEnabled">false</item>

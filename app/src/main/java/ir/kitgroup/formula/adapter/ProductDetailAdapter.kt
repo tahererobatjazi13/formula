@@ -16,7 +16,7 @@ import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.text.DecimalFormat
 
 class ProductDetailAdapter(
-    private val onClick: (Int) -> Unit = {}, private val viewModel: ProductViewModel,
+    private val onClick: (Int) -> Unit = {}, private val productViewModel: ProductViewModel,
 ) : ListAdapter<ProductDetail, ProductDetailAdapter.ProductDetailViewHolder>(
     ProductDetailDiffCallback()
 ) {
@@ -43,17 +43,18 @@ class ProductDetailAdapter(
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(itemView.context, R.color.color_light_pink)
                 )
-                viewModel.getProductDetails(material.materialId).observeForever { productDetails ->
-                    totalPrice = getTotalPriceForProduct(productDetails)
-                    totalPriceKg = calculatePricePerKg(
-                        getTotalQuantityForProduct(productDetails),
-                        getTotalPriceForProduct(productDetails)
-                    )
-                    binding.tvPrice.text = formatter.format(totalPriceKg)
-                    binding.tvTotalPrice.text = formatter.format(
-                        calculatePrice(material.quantity, totalPriceKg)
-                    )
-                }
+                productViewModel.getProductDetails(material.materialId)
+                    .observeForever { productDetails ->
+                        totalPrice = getTotalPriceForProduct(productDetails)
+                        totalPriceKg = calculatePricePerKg(
+                            getTotalQuantityForProduct(productDetails),
+                            getTotalPriceForProduct(productDetails)
+                        )
+                        binding.tvPrice.text = formatter.format(totalPriceKg)
+                        binding.tvTotalPrice.text = formatter.format(
+                            calculatePrice(material.quantity, totalPriceKg)
+                        )
+                    }
             } else {
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(itemView.context, R.color.color_light_green)

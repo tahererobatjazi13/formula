@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePrice
 import ir.kitgroup.formula.Util.calculatePricePerKg
+import ir.kitgroup.formula.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
@@ -27,6 +28,7 @@ class ProductSelectionAdapter(
     private val formatter = DecimalFormat("#,###,###,###")
     private var totalPrice: Double = 0.0
     private var totalPriceKg: Double = 0.0
+    private var formatQuantity: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
         val binding =
@@ -48,17 +50,11 @@ class ProductSelectionAdapter(
             binding.tvName.text = product.productName
 
             val quantity = if (type == 0) 0.0 else product.quantity
-            val formattedQuantity = if (quantity % 1 == 0.0) {
-                quantity.toInt().toString()
-            } else {
-                val decimalPart = quantity.toString().split(".").getOrNull(1) ?: ""
-                val decimalPlaces = decimalPart.length.coerceAtMost(4)
-                String.format("%.${decimalPlaces}f", quantity)
-            }
-            binding.etQuantity.setText(formattedQuantity)
+
+            formatQuantity = formatQuantity(quantity)
+            binding.etQuantity.setText(formatQuantity)
 
             var currentTextWatcher: TextWatcher? = null
-
 
             viewModel.getProductDetails(product.productId).observeForever { productDetails ->
                 val pricePerKg = calculatePricePerKg(
@@ -77,7 +73,6 @@ class ProductSelectionAdapter(
                     updateTotalPrice(product.price, quantity)
                 }
             }
-
 
             binding.etQuantity.apply {
                 currentTextWatcher?.let { removeTextChangedListener(it) }

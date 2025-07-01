@@ -1,26 +1,27 @@
-package ir.kitgroup.formula
+package ir.kitgroup.formula.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.textview.MaterialTextView
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -34,6 +35,7 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
+import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatDateShamsi
 import ir.kitgroup.formula.adapter.ProductAdapter
@@ -44,9 +46,10 @@ import ir.kitgroup.formula.databinding.FragmentProductsBinding
 import ir.kitgroup.formula.dialog.AddEditProductDialog
 import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
 import ir.kitgroup.formula.viewmodel.ProductViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.text.DecimalFormat
@@ -57,16 +60,12 @@ import java.util.Locale
 class ProductsFragment : Fragment() {
 
     private var _binding: FragmentProductsBinding? = null
-
-    private lateinit var productAdapter: ProductAdapter
-
-    private lateinit var allProducts: List<Product>
-    private lateinit var filteredProductsList: List<Product>
-    private var displayDateTime: String = ""
-    private val formatter = DecimalFormat("#,###,###,###")
-
-    private val binding get() = _binding!!
     private val productViewModel: ProductViewModel by viewModels()
+    private lateinit var productAdapter: ProductAdapter
+    private val formatter = DecimalFormat("#,###,###,###")
+    private var displayDateTime: String = ""
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -78,138 +77,50 @@ class ProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
-        rxBinding()
-        initSpinner()
-        allProducts = listOf()
-        filteredProductsList = allProducts
+        setupUI()
+        observeProducts()
+        setupListeners()
+    }
 
+    private fun setupUI() {
+        initDateTime()
+        setupRecyclerView()
+        setupToolbarAndNav()
+        setupSpinner()
+        setupSearchView()
+    }
 
-        binding.svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+    @SuppressLint("DefaultLocale")
+    private fun initDateTime() {
+        val jalaliDate = JalaliCalendar()
+        val dateFormatted =
+            String.format("%02d-%02d-%04d", jalaliDate.day, jalaliDate.month, jalaliDate.year)
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val time = timeFormat.format(Date())
+        displayDateTime = "$dateFormatted ، $time"
+    }
 
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                binding.spinnerFilter.setSelection(0)
-                filterProducts(binding.svProduct.query?.toString() ?: "")
-                filteredProductsList = allProducts.filter {
-                    it.productName.contains(newText ?: "", ignoreCase = true)
-                }
-                productAdapter.submitList(filteredProductsList)
-                return true
-            }
-        })
-
+    private fun setupRecyclerView() {
         productAdapter = ProductAdapter(
-
-            onChangeLog = { product ->
-                val action =
-                    ProductsFragmentDirections.actionProductsFragmentToChangeLogFragment(
-                        product.productId, 3
-                    )
-                findNavController().navigate(action)
-            },
-            onDelete = { product ->
-                val dialog = ConfirmDeleteDialog {
-                    productViewModel.delete(product)
-                }
-                dialog.show(childFragmentManager, "ConfirmDeleteDialog")
-            },
-            onEdit = { product ->
-                val dialog = AddEditProductDialog(productViewModel, product)
-                dialog.show(childFragmentManager, "EditProductDialog")
-
-                childFragmentManager.registerFragmentLifecycleCallbacks(object :
-                    FragmentManager.FragmentLifecycleCallbacks() {
-                    override fun onFragmentViewDestroyed(fm: FragmentManager, fragment: Fragment) {
-                        if (fragment === dialog) {
-                            // وقتی دیالوگ بسته شد
-                            binding.spinnerFilter.setSelection(0)
-                            filterProducts(binding.svProduct.query?.toString() ?: "")
-                            fm.unregisterFragmentLifecycleCallbacks(this)
-                        }
-                    }
-                }, false)
-            },
-            onClick = { product ->
-                val action =
-                    ProductsFragmentDirections.actionProductsFragmentToProductDetailsFragment(
-                        product.productId,
-                        product.productName,
-                        product.updatedDate,
-                        product.description,
-                    )
-                findNavController().navigate(action)
-            }, productViewModel
+            onUsage = { navigateToUsage(it) },
+            onChangeLog = { navigateToChangeLog(it) },
+            onDelete = { showConfirmDeleteDialog(it) },
+            onEdit = { showAddEditDialog(it) },
+            onClick = { navigateToDetails(it) },
+            viewModel = productViewModel
         )
 
-        binding.rvProducts.adapter = productAdapter
-        binding.rvProducts.layoutManager = LinearLayoutManager(requireContext())
-        productViewModel.allProducts.observe(viewLifecycleOwner) { products ->
-            productAdapter.submitList(products)
-        }
-
-        productViewModel.allProducts.observe(viewLifecycleOwner) { products ->
-            allProducts = products
-            productAdapter.submitList(allProducts)
-
-            val isEmpty = allProducts.isEmpty()
-            binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
-            binding.ivPdf.visibility = if (isEmpty) View.GONE else View.VISIBLE
-            binding.spinnerFilter.visibility = if (isEmpty) View.GONE else View.VISIBLE
-        }
-
-        binding.spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                filterProducts(binding.svProduct.query?.toString() ?: "")
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
-
-
-        binding.fabAddProduct.setOnClickListener {
-            productViewModel.getAllRawMaterials().observe(viewLifecycleOwner) { rawMaterials ->
-                if (rawMaterials.isEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.error_first_enter_material,
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    AddEditProductDialog(productViewModel).show(
-                        parentFragmentManager,
-                        "AddProductDialog"
-                    )
-                }
-            }
+        binding.rvProducts.apply {
+            adapter = productAdapter
+            layoutManager = LinearLayoutManager(requireContext())
         }
 
     }
 
-    private fun initSpinner() {
+    private fun setupSpinner() {
         val spinnerItems = resources.getStringArray(R.array.product_filter_options)
         val adapter = createSpinnerAdapter(spinnerItems)
         binding.spinnerFilter.adapter = adapter
-        binding.spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>, view: View?, position: Int, id: Long
-            ) {
-                val selectedItem = parent.getItemAtPosition(position).toString()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // optional
-            }
-        }
     }
 
     private fun createSpinnerAdapter(data: Array<String>): ArrayAdapter<String> {
@@ -227,46 +138,141 @@ class ProductsFragment : Fragment() {
             ): View {
                 val view = LayoutInflater.from(context)
                     .inflate(R.layout.item_spinner_dropdown, parent, false)
-                val textView = view.findViewById<TextView>(R.id.tvName)
+                val textView = view.findViewById<MaterialTextView>(R.id.tvName)
                 textView.text = getItem(position)
                 return view
             }
         }
     }
 
-    private fun filterProducts(query: String) {
-        val filteredByType = when (binding.spinnerFilter.selectedItemPosition) {
-            1 -> allProducts.filter { it.isFinalProduct } // فقط محصولات نهایی
-            2 -> allProducts.filter { !it.isFinalProduct } // فقط محصولات میانی
-            else -> allProducts // همه
-        }
+    private fun setupSearchView() {
+        binding.svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
 
-        filteredProductsList = filteredByType.filter {
-            it.productName.contains(query, ignoreCase = true)
-        }
-        val isEmpty = filteredProductsList.isEmpty()
-        binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
-
-        productAdapter.submitList(filteredProductsList)
-    }
-
-
-    @SuppressLint("DefaultLocale")
-    private fun init() {
-        val jalaliDate = JalaliCalendar()
-        val dateFormatted =
-            String.format("%02d-%02d-%04d", jalaliDate.day, jalaliDate.month, jalaliDate.year)
-
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val time = timeFormat.format(Date())
-        displayDateTime = "$dateFormatted ، $time"
-    }
-
-    private fun rxBinding() {
-        binding.ivPdf.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
-                generateListPDF(requireContext(), allProducts)
+            override fun onQueryTextChange(newText: String?): Boolean {
+                binding.spinnerFilter.setSelection(0)
+                filterProducts(newText ?: "")
+                return true
             }
+        })
+    }
+
+    private fun setupListeners() {
+        binding.fabAddProduct.setOnClickListener {
+            productViewModel.getAllRawMaterials().observe(viewLifecycleOwner) { rawMaterials ->
+                if (rawMaterials.isEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.error_first_enter_material,
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    AddEditProductDialog(productViewModel).show(
+                        parentFragmentManager,
+                        "AddProductDialog"
+                    )
+                }
+            }
+        }
+
+        binding.ivPdf.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                generateListPDF(requireContext(), productAdapter.currentList)
+            }
+        }
+
+        binding.spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>, view: View?, position: Int, id: Long
+            ) {
+                filterProducts(binding.svProduct.query?.toString() ?: "")
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+
+    private fun observeProducts() {
+        productViewModel.allProducts.observe(viewLifecycleOwner) { products ->
+            updateUIWithProducts(products)
+        }
+    }
+
+    private fun updateUIWithProducts(products: List<Product>) {
+        productAdapter.submitList(products)
+
+        val isEmpty = products.isEmpty()
+        binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.ivPdf.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.spinnerFilter.visibility = if (isEmpty) View.GONE else View.VISIBLE
+    }
+
+    private fun filterProducts(query: String) {
+        productViewModel.allProducts.value?.let { allProducts ->
+            val filteredByType = when (binding.spinnerFilter.selectedItemPosition) {
+                1 -> allProducts.filter { it.isFinalProduct }
+                2 -> allProducts.filter { !it.isFinalProduct }
+                else -> allProducts
+            }
+
+            val filteredByName = filteredByType.filter {
+                it.productName.contains(query, ignoreCase = true)
+            }
+
+            productAdapter.submitList(filteredByName)
+            binding.tvNoItem.visibility = if (filteredByName.isEmpty()) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun navigateToUsage(product: Product) {
+        findNavController().navigate(
+            ProductsFragmentDirections.actionProductsFragmentToProductUsageFragment(
+                product.productId,
+                product.productName,
+                product.updatedDate,
+                product.description
+            )
+        )
+    }
+
+    private fun navigateToChangeLog(product: Product) {
+        findNavController().navigate(
+            ProductsFragmentDirections.actionProductsFragmentToChangeLogFragment(
+                product.productId, 3
+            )
+        )
+    }
+
+    private fun navigateToDetails(product: Product) {
+        findNavController().navigate(
+            ProductsFragmentDirections.actionProductsFragmentToProductDetailsFragment(
+                product.productId,
+                product.productName,
+                product.updatedDate,
+                product.description
+            )
+        )
+    }
+
+    private fun showConfirmDeleteDialog(product: Product) {
+        ConfirmDeleteDialog {
+            productViewModel.delete(product)
+        }.show(childFragmentManager, "ConfirmDeleteDialog")
+    }
+
+    private fun showAddEditDialog(product: Product) {
+        AddEditProductDialog(productViewModel, product).also { dialog ->
+            dialog.show(childFragmentManager, "EditProductDialog")
+            childFragmentManager.registerFragmentLifecycleCallbacks(object :
+                FragmentManager.FragmentLifecycleCallbacks() {
+                override fun onFragmentViewDestroyed(fm: FragmentManager, fragment: Fragment) {
+                    if (fragment === dialog) {
+                        binding.spinnerFilter.setSelection(0)
+                        filterProducts(binding.svProduct.query?.toString() ?: "")
+                        fm.unregisterFragmentLifecycleCallbacks(this)
+                    }
+                }
+            }, false)
         }
     }
 
@@ -279,7 +285,9 @@ class ProductsFragment : Fragment() {
 
             val fileName = context.getString(R.string.label_product_list)
             val pdfFile = File(context.getExternalFilesDir(null), "${fileName}.pdf")
-            val fos = FileOutputStream(pdfFile)
+            val fos = withContext(Dispatchers.IO) {
+                FileOutputStream(pdfFile)
+            }
             val document = Document(PageSize.A4, 15f, 15f, 15f, 15f)
             PdfWriter.getInstance(document, fos)
             document.open()
@@ -396,7 +404,6 @@ class ProductsFragment : Fragment() {
         }
     }
 
-
     private suspend fun getProductsWithPrices(
         products: List<Product>
     ): List<Pair<Product, Double>> {
@@ -427,6 +434,15 @@ class ProductsFragment : Fragment() {
         intent.setDataAndType(uri, "application/pdf")
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         context.startActivity(intent)
+    }
+
+    private fun setupToolbarAndNav() {
+        (requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)).apply {
+            visibility = View.VISIBLE
+        }
+        (requireActivity().findViewById<Toolbar>(R.id.toolbar)).apply {
+            visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {

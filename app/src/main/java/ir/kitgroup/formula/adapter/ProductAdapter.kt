@@ -9,21 +9,28 @@ import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatDateShamsi
+import ir.kitgroup.formula.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.databinding.ItemProductBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.text.DecimalFormat
 
 class ProductAdapter(
+    private val onUsage: (Product) -> Unit = {},
     private val onChangeLog: (Product) -> Unit = {},
     private val onDelete: (Product) -> Unit = {},
     private val onEdit: (Product) -> Unit = {},
-    private val onClick: (Product) -> Unit = {}, private val viewModel: ProductViewModel,
+    private val onClick: (Product) -> Unit = {},
+    private val viewModel: ProductViewModel,
 
     ) : ListAdapter<Product, ProductAdapter.ProductViewHolder>(ProductDiffCallback()) {
     private val formatter = DecimalFormat("#,###,###,###")
     private var totalPrice: Double = 0.0
     private var totalPriceKg: Double = 0.0
+    private var pricePerKg: Double = 0.0
+
+    private var totalQuantity: Double = 0.0
+    private var formatTotalQuantity: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding =
@@ -59,17 +66,23 @@ class ProductAdapter(
             binding.ivDeleteProduct.setOnClickListener { onDelete(product) }
             binding.ivEditProduct.setOnClickListener { onEdit(product) }
             binding.cvMain.setOnClickListener { onClick(product) }
-            binding.ivChangeLog.setOnClickListener { onChangeLog(product) }
+            binding.btnChangeLog.setOnClickListener { onChangeLog(product) }
+            binding.btnUsageProduct.setOnClickListener { onUsage(product) }
 
             viewModel.getProductDetails(product.productId).observeForever { productDetails ->
-                val pricePerKg = calculatePricePerKg(
+                pricePerKg = calculatePricePerKg(
                     getTotalQuantityForProduct(productDetails),
                     getTotalPriceForProduct(productDetails)
                 )
                 totalPriceKg = pricePerKg
                 totalPrice = getTotalPriceForProduct(productDetails)
 
-                binding.tvProductPrice.text = formatter.format(pricePerKg) + " ریال "
+                totalQuantity = productDetails.sumOf { it.quantity }
+                formatTotalQuantity = formatQuantity(totalQuantity)
+                binding.tvProductAmount.text = "$formatTotalQuantity گرم"
+
+                binding.tvProductPrice.text = formatter.format(totalPrice) + " ریال "
+                binding.tvProductPriceKg.text = formatter.format(pricePerKg) + " ریال "
             }
         }
     }

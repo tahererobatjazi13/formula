@@ -1,6 +1,10 @@
 package ir.kitgroup.formula
 
+import android.annotation.SuppressLint
 import saman.zamani.persiandate.PersianDate
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 object Util {
     fun calculatePrice(weightInGram: Double, pricePerKg: Double): Double {
@@ -14,14 +18,21 @@ object Util {
 
 
     fun formatQuantity(quantity: Double): String {
+        val symbols = DecimalFormatSymbols(Locale.US).apply {
+            groupingSeparator = ','
+        }
+
         return if (quantity % 1 == 0.0) {
-            quantity.toInt().toString()
+            val df = DecimalFormat("#,###", symbols)
+            df.format(quantity)
         } else {
-            // فرمت با ۴ رقم اعشار و حذف صفرهای انتهایی
-            String.format("%.4f", quantity).replace(Regex("0+$"), "").replace(Regex("\\.$"), "")
+            val df = DecimalFormat("#,###.####", symbols)
+            df.format(quantity)
         }
     }
 
+
+    @SuppressLint("DefaultLocale")
     fun formatDateShamsi(timeInMillis: Long): String {
         val persianDate = PersianDate(timeInMillis)
         return "${persianDate.shYear}/${persianDate.shMonth}/${persianDate.shDay} - ${persianDate.hour}:${

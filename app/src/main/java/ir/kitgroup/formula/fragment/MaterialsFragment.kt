@@ -1,4 +1,4 @@
-package ir.kitgroup.formula
+package ir.kitgroup.formula.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -28,6 +28,7 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
+import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.formatDateShamsi
 import ir.kitgroup.formula.adapter.MaterialAdapter
 import ir.kitgroup.formula.database.entity.Material
@@ -45,21 +46,18 @@ import java.util.Locale
 class MaterialsFragment : Fragment() {
 
     private var _binding: FragmentMaterialsBinding? = null
+    private val materialViewModel: MaterialViewModel by viewModels()
     private lateinit var materialAdapter: MaterialAdapter
-
     private lateinit var allMaterials: List<Material>
     private lateinit var filteredMaterialsList: List<Material>
     private val formatter = DecimalFormat("#,###,###,###")
-
-    private val binding get() = _binding!!
-    private val materialViewModel: MaterialViewModel by viewModels()
     private var displayDateTime: String = ""
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentMaterialsBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -69,6 +67,36 @@ class MaterialsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         rxBinding()
+        initAdapter()
+        setupObservers()
+    }
+
+    @SuppressLint("DefaultLocale")
+    private fun init() {
+        val jalaliDate = JalaliCalendar()
+        val dateFormatted =
+            String.format("%02d-%02d-%04d", jalaliDate.day, jalaliDate.month, jalaliDate.year)
+
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val time = timeFormat.format(Date())
+        displayDateTime = "$dateFormatted ، $time"
+    }
+
+
+    private fun rxBinding() {
+        binding.ivPdf.setOnClickListener {
+            generateListPDF(requireContext(), allMaterials)
+        }
+
+        binding.fabAddMaterial.setOnClickListener {
+            val dialog = AddEditMaterialDialog { rawMaterial ->
+                materialViewModel.insert(rawMaterial)
+            }
+            dialog.show(childFragmentManager, "AddRawMaterialDialog")
+        }
+    }
+
+    private fun initAdapter() {
         allMaterials = listOf()
         filteredMaterialsList = allMaterials
 
@@ -91,7 +119,8 @@ class MaterialsFragment : Fragment() {
             onChangeLog = { rawMaterial ->
                 val action =
                     MaterialsFragmentDirections.actionMaterialsFragmentToChangeLogFragment(
-                        rawMaterial.materialId,1)
+                        rawMaterial.materialId, 1
+                    )
                 findNavController().navigate(action)
             },
             onDelete = { rawMaterial ->
@@ -110,7 +139,9 @@ class MaterialsFragment : Fragment() {
 
         binding.rvMaterials.adapter = materialAdapter
         binding.rvMaterials.layoutManager = LinearLayoutManager(requireContext())
+    }
 
+    private fun setupObservers() {
         materialViewModel.allMaterials.observe(viewLifecycleOwner) { materials ->
             allMaterials = materials
             materialAdapter.submitList(materials)
@@ -119,30 +150,6 @@ class MaterialsFragment : Fragment() {
             binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
             binding.ivPdf.visibility = if (isEmpty) View.GONE else View.VISIBLE
         }
-
-        binding.fabAddMaterial.setOnClickListener {
-            val dialog = AddEditMaterialDialog { rawMaterial ->
-                materialViewModel.insert(rawMaterial)
-            }
-            dialog.show(childFragmentManager, "AddRawMaterialDialog")
-        }
-    }
-
-    private fun rxBinding() {
-        binding.ivPdf.setOnClickListener {
-            generateListPDF(requireContext(), allMaterials)
-        }
-    }
-
-    @SuppressLint("DefaultLocale")
-    private fun init() {
-        val jalaliDate = JalaliCalendar()
-        val dateFormatted =
-            String.format("%02d-%02d-%04d", jalaliDate.day, jalaliDate.month, jalaliDate.year)
-
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val time = timeFormat.format(Date())
-        displayDateTime = "$dateFormatted ، $time"
     }
 
     private fun generateListPDF(
@@ -254,7 +261,7 @@ class MaterialsFragment : Fragment() {
 
             table.addCell(
                 createCell(
-                    context.getString(R.string.label_day_price), farsiFont, headerColorBase
+                    context.getString(R.string.label_day_price_item), farsiFont, headerColorBase
                 )
             )
             table.addCell(

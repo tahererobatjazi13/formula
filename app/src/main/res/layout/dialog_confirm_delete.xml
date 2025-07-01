@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         style="@style/MediumTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -7,6 +7,46 @@
     android:background="@color/gray_ddd"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="@dimen/padding_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_medium">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvTitle"
+                style="@style/LargeBoldTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:gravity="end"
+                android:text="@string/label_historys"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/svMain"
         android:layout_width="match_parent"
@@ -27,7 +67,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
 
                 <LinearLayout
                     android:id="@+id/llList"
@@ -53,7 +92,7 @@
                         android:orientation="horizontal"
                         android:weightSum="4">
 
-                        <TextView
+                        <com.google.android.material.textview.MaterialTextView
                             style="@style/SmallBoldTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -68,7 +107,7 @@
                             android:layout_height="match_parent"
                             android:background="@color/gray_ccc" />
 
-                        <TextView
+                        <com.google.android.material.textview.MaterialTextView
                             style="@style/SmallBoldTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -83,7 +122,7 @@
                             android:layout_height="match_parent"
                             android:background="@color/gray_ccc" />
 
-                        <TextView
+                        <com.google.android.material.textview.MaterialTextView
                             style="@style/SmallBoldTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -98,7 +137,7 @@
                             android:layout_height="match_parent"
                             android:background="@color/gray_ccc" />
 
-                        <TextView
+                        <com.google.android.material.textview.MaterialTextView
                             style="@style/SmallBoldTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
@@ -129,7 +168,7 @@
                             android:background="@color/white"
                             android:nestedScrollingEnabled="false" />
 
-                        <TextView
+                        <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/tvNoItem"
                             style="@style/MediumTextStyle"
                             android:layout_width="wrap_content"

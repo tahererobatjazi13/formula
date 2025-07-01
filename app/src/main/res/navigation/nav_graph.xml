@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/MaterialsFragment"
-        android:name="ir.kitgroup.formula.MaterialsFragment"
+        android:name="ir.kitgroup.formula.fragment.MaterialsFragment"
         android:label="@string/label_material"
         tools:layout="@layout/fragment_materials">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/ProductsFragment"
-        android:name="ir.kitgroup.formula.ProductsFragment"
+        android:name="ir.kitgroup.formula.fragment.ProductsFragment"
         android:label="@string/label_product"
         tools:layout="@layout/fragment_products">
 
@@ -27,12 +27,15 @@
         <action
             android:id="@+id/action_ProductsFragment_to_changeLogFragment"
             app:destination="@id/changeLogFragment" />
+        <action
+            android:id="@+id/action_ProductsFragment_to_productUsageFragment"
+            app:destination="@id/productUsageFragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="ir.kitgroup.formula.ProductDetailsFragment"
+        android:name="ir.kitgroup.formula.fragment.ProductDetailsFragment"
         android:label="@layout/fragment_product_details">
 
         <argument
@@ -53,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/changeLogFragment"
-        android:name="ir.kitgroup.formula.ChangeLogFragment"
+        android:name="ir.kitgroup.formula.fragment.ChangeLogFragment"
         android:label="ChangeLogFragment">
         <argument
             android:name="materialId"
@@ -63,4 +66,57 @@
             android:name="changeType"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/productUsageFragment"
+        android:name="ir.kitgroup.formula.fragment.ProductUsageFragment"
+        android:label="ProductUsageFragment">
+
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+        <argument
+            android:name="productName"
+            app:argType="string" />
+        <argument
+            android:name="productDate"
+            app:argType="long" />
+        <argument
+            android:name="productDescription"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_productUsageFragment_to_productUsageDetailsFragment"
+            app:destination="@id/productUsageDetailsFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/productUsageDetailsFragment"
+        android:name="ir.kitgroup.formula.fragment.ProductUsageDetailsFragment"
+        android:label="ProductUsageDetailsFragment">
+        <argument
+            android:name="type"
+            app:argType="integer" />
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+        <argument
+            android:name="productName"
+            app:argType="string" />
+        <argument
+            android:name="productDate"
+            app:argType="long" />
+        <argument
+            android:name="formattedQty"
+            app:argType="string" />
+        <argument
+            android:name="totalPrice"
+            app:argType="string" />
+
+        <action
+            android:id="@+id/actionProductUsageDetailsFragmentSelf"
+            app:destination="@id/productUsageDetailsFragment" />
+    </fragment>
+
 </navigation>

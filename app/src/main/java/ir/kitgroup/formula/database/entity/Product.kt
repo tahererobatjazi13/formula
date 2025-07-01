@@ -1,6 +1,5 @@
 package ir.kitgroup.formula.database.entity
 
-
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -16,7 +15,5 @@ data class Product(
     val createdDate: Long = System.currentTimeMillis(), // زمان ایجاد
     var updatedDate: Long = System.currentTimeMillis(),// آخرین آپدیت
     val isFinalProduct: Boolean = true // true: نهایی، false: میانی
-   // val isFinalProduct: Int = 1 // 1: نهایی،    0: میانی
-
 )
 

@@ -8,12 +8,19 @@
     <string name="label_add_new_product">افزودن محصول جدید</string>
     <string name="label_edit_product">ویرایش محصول</string>
     <string name="label_price">قیمت</string>
-    <string name="label_price_unit">قیمت محصول به کیلو گرم\n(ریال)</string>
+    <string name="label_product_price">قیمت محصول :</string>
+    <string name="label_price_unit">قیمت محصول (یک کیلوگرم)\n(ریال)</string>
+    <string name="label_price_unit_item">قیمت محصول (یک کیلوگرم) :</string>
+    <string name="label_price_kg">قیمت (ریال)</string>
     <string name="label_price_total_unit">قیمت کل\n(ریال)</string>
-    <string name="label_price_star">قیمت به کیلو گرم * :</string>
+    <string name="label_price_star">قیمت به کیلوگرم * :</string>
+    <string name="label_quantity_kg">مقدار (کیلوگرم)</string>
     <string name="label_price_item">قیمت  :</string>
+    <string name="label_amount_item">مقدار تولید :</string>
+    <string name="label_kg">کیلوگرم</string>
     <string name="label_current_price">قیمت فعلی\n(ریال)</string>
-    <string name="label_day_price">قیمت روز</string>
+    <string name="label_day_price_item">قیمت روز</string>
+    <string name="label_day_price">قیمت روز\n(یک کیلوگرم)</string>
     <string name="label_desc">توضیح</string>
     <string name="label_old_price">قیمت قبلی\n(ریال)</string>
     <string name="label_new_price">قیمت جدید\n(ریال)</string>
@@ -21,7 +28,11 @@
     <string name="label_date_item">تاریخ :</string>
     <string name="label_final_product">محصول نهایی</string>
     <string name="label_intermediate_product">محصول میانی</string>
+    <string name="label_history">تاریخچه قیمت</string>
+    <string name="label_historys">تاریخچه قیمت ها</string>
 
+    <string name="label_amounts_materials_production">مقادیر مواد برای تولید</string>
+    <string name="label_from_product">از محصول </string>
 
     <string name="label_material_name_star">نام مواد اولیه * :</string>
     <string name="label_name">نام</string>
@@ -30,6 +41,8 @@
     <string name="label_quantity_unit">مقدار\n(گرم)</string>
     <string name="label_sum_total">جمع</string>
     <string name="label_product_name">نام محصول :</string>
+    <string name="label_product_amount">مقدار محصول (گرم) :</string>
+    <string name="label_product_amount_item">مقدار محصول :</string>
     <string name="label_product_name_item">نام محصول</string>
     <string name="label_product_name_star">نام محصول * :</string>
 
@@ -49,8 +62,13 @@
     <string name="label_material">مواد اولیه</string>
     <string name="label_material_list">لیست مواد اولیه</string>
     <string name="label_product_list">لیست محصولات</string>
+    <string name="label_calculate_price_reserve">محاسبه قیمت و ذخیره</string>
+    <string name="label_production_schedule">برنامه تولید</string>
 
     <string name="label_report_product">گزارش جزییات محصول</string>
+    <string name="label_product_detail">جزییات محصول</string>
+    <string name="label_production_schedule_product">برنامه تولید محصول</string>
+    <string name="label_schedule_product_detail">جزییات تولید محصول</string>
 
     <string name="error_request_fields">لطفا تمام فیلدهارا پر کنید</string>
     <string name="error_no_item">آیتمی یافت نشد</string>
@@ -59,6 +77,7 @@
     <string name="error_enter_product_name">لطفا نام محصول را وارد کنید</string>
     <string name="error_no_material_selected">لطفاً حداقل یک ماده اولیه انتخاب کنید</string>
     <string name="error_first_enter_material">ابتدا مواد اولیه را اضافه کنید</string>
+    <string name="error_enter_valid_number">عدد معتبر وارد کنید</string>
 
     <string-array name="product_filter_options">
         <item>همه محصولات</item>

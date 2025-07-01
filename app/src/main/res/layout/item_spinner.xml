@@ -5,7 +5,8 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+
         android:id="@+id/tvName"
         style="@style/MediumBoldTextStyle"
         android:layout_width="0dp"

@@ -1,4 +1,4 @@
-package ir.kitgroup.formula
+package ir.kitgroup.formula.fragment
 
 
 import android.annotation.SuppressLint
@@ -11,6 +11,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -33,6 +34,7 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
+import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePrice
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatDateShamsi
@@ -56,27 +58,33 @@ import java.util.concurrent.TimeUnit
 class ProductDetailsFragment : Fragment() {
 
     private var _binding: FragmentProductDetailsBinding? = null
-    private val args: ProductDetailsFragmentArgs by navArgs()
-
+    private val productViewModel: ProductViewModel by viewModels()
     private lateinit var productDetailAdapter: ProductDetailAdapter
+    private var productDetail: List<ProductDetail>? = null
+    private val args: ProductDetailsFragmentArgs by navArgs()
     private val formatter = DecimalFormat("#,###,###,###")
     private var productNamePdf: String = ""
     private var displayDateTime: String = ""
-    private var productName: String = ""
+    private var productDescription: String = ""
     private var productDate: Long = 0
-    private var formattedTotal: String = ""
+    private var productId: Int = 0
+    private var productName: String = ""
     private var priceKilograms: Double = 0.0
     private var totalPrice: Double = 0.0
-
+    private var totalQuantity: Double = 0.0
+    private var formatTotalQuantity: String = ""
     private val binding get() = _binding!!
-    private val productViewModel: ProductViewModel by viewModels()
-    private var productDetail: List<ProductDetail>? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)).apply {
+            visibility = View.GONE
+        }
+        (requireActivity().findViewById<Toolbar>(R.id.toolbar)).apply {
+            visibility = View.GONE
+        }
         _binding = FragmentProductDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -85,14 +93,16 @@ class ProductDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         rxBinding()
+        initAdapter()
+        setupObservers()
     }
 
     @SuppressLint("DefaultLocale")
     private fun init() {
-        val productId = args.productId
+        productId = args.productId
         productName = args.productName
         productDate = args.productDate
-        val productDescription = args.productDescription
+        productDescription = args.productDescription
 
         val jalaliDate = JalaliCalendar()
         val dateFormatted =
@@ -102,10 +112,6 @@ class ProductDetailsFragment : Fragment() {
         val time = timeFormat.format(Date())
         displayDateTime = "$dateFormatted ، $time"
         productNamePdf = "${productName}_$displayDateTime"
-
-        (requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)).apply {
-            visibility = View.GONE
-        }
 
         binding.tvProductName.text = productName
         binding.tvProductDate.text = formatDateShamsi(productDate)
@@ -118,7 +124,9 @@ class ProductDetailsFragment : Fragment() {
             binding.tvTitleProductDescription.visibility = View.VISIBLE
             binding.tvProductDescription.visibility = View.VISIBLE
         }
+    }
 
+    private fun initAdapter() {
         productDetailAdapter = ProductDetailAdapter(
             onClick = { product ->
                 val action =
@@ -129,13 +137,24 @@ class ProductDetailsFragment : Fragment() {
                         productDescription,
                     )
                 findNavController().navigate(action)
-            }, viewModel = productViewModel
+            }, productViewModel = productViewModel
         )
 
         binding.rvMaterials.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMaterials.adapter = productDetailAdapter
+    }
 
-        productViewModel.getProductDetails(productId).observe(viewLifecycleOwner) { details ->
+    private fun rxBinding() {
+        binding.ivPdf.setOnClickListener {
+            generateListPDF(requireContext(), productDetail!!)
+        }
+        binding.ivBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+    }
+
+    private fun setupObservers() {
+        productViewModel.getProductDetails(args.productId).observe(viewLifecycleOwner) { details ->
             productDetail = details
             productDetailAdapter.submitList(details)
 
@@ -188,12 +207,7 @@ class ProductDetailsFragment : Fragment() {
                     }
             }
         }
-    }
 
-    private fun rxBinding() {
-        binding.ivPdf.setOnClickListener {
-            generateListPDF(requireContext(), productDetail!!)
-        }
     }
 
     private fun generateListPDF(context: Context, items: List<ProductDetail>) {
@@ -233,16 +247,18 @@ class ProductDetailsFragment : Fragment() {
         totalQuantityProduct: Double
     ) {
         totalPrice = totalPriceMaterial + totalPriceProduct
-        val totalQuantity = totalQuantityMaterial + totalQuantityProduct
+        totalQuantity = totalQuantityMaterial + totalQuantityProduct
 
-        formattedTotal = if (totalQuantity % 1 == 0.0) {
-            totalQuantity.toInt().toString()
-        } else {
-            val decimalPart = totalQuantity.toString().split(".").getOrNull(1) ?: ""
-            val decimalPlaces = decimalPart.length.coerceAtMost(4)
-            String.format("%.${decimalPlaces}f", totalQuantity)
-        }
-        binding.tvTotalQuantity.text = formattedTotal
+        /*  formattedTotal = if (totalQuantity % 1 == 0.0) {
+              totalQuantity.toInt().toString()
+          } else {
+              val decimalPart = totalQuantity.toString().split(".").getOrNull(1) ?: ""
+              val decimalPlaces = decimalPart.length.coerceAtMost(4)
+              String.format("%.${decimalPlaces}f", totalQuantity)
+          }*/
+
+        formatTotalQuantity = formatQuantity(totalQuantity)
+        binding.tvTotalQuantity.text = formatTotalQuantity
 
         binding.tvTotalPrice.text = formatter.format(totalPrice)
 
@@ -250,13 +266,6 @@ class ProductDetailsFragment : Fragment() {
         binding.tvPriceKilograms.text = formatter.format(priceKilograms)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        (requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)).apply {
-            visibility = View.VISIBLE
-        }
-    }
 
     private fun generatePdfWithData(
         context: Context,
@@ -456,7 +465,7 @@ class ProductDetailsFragment : Fragment() {
 
             table.addCell(
                 createCell(
-                    formattedTotal, farsiFontBold14, footerColorBase
+                    formatTotalQuantity, farsiFontBold14, footerColorBase
                 )
             )
             table.addCell(
@@ -501,5 +510,10 @@ class ProductDetailsFragment : Fragment() {
         intent.setDataAndType(uri, "application/pdf")
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         context.startActivity(intent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

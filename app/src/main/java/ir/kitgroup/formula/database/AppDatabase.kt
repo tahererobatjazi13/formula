@@ -12,10 +12,11 @@ import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.MaterialChangeLog
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.database.entity.ProductDetail
+import ir.kitgroup.formula.database.entity.ProductHistory
 
 @Database(
-    entities = [Material::class, Product::class, ProductDetail::class, MaterialChangeLog::class],
-    version = 3,
+    entities = [Material::class, Product::class, ProductDetail::class, MaterialChangeLog::class, ProductHistory::class],
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -35,21 +36,22 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .addMigrations(MIGRATION_1_2)
                     .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_3_4)
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
 
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 val now = System.currentTimeMillis()
-                database.execSQL("ALTER TABLE materials ADD COLUMN createdDate INTEGER NOT NULL DEFAULT $now")
-                database.execSQL("ALTER TABLE materials ADD COLUMN updatedDate INTEGER NOT NULL DEFAULT $now")
-                database.execSQL("ALTER TABLE product ADD COLUMN createdDate INTEGER NOT NULL DEFAULT $now")
-                database.execSQL("ALTER TABLE product ADD COLUMN updatedDate INTEGER NOT NULL DEFAULT $now")
+                db.execSQL("ALTER TABLE materials ADD COLUMN createdDate INTEGER NOT NULL DEFAULT $now")
+                db.execSQL("ALTER TABLE materials ADD COLUMN updatedDate INTEGER NOT NULL DEFAULT $now")
+                db.execSQL("ALTER TABLE product ADD COLUMN createdDate INTEGER NOT NULL DEFAULT $now")
+                db.execSQL("ALTER TABLE product ADD COLUMN updatedDate INTEGER NOT NULL DEFAULT $now")
                 // دستورات برای ایجاد جدول جدید
-                database.execSQL(
+                db.execSQL(
                     """
             CREATE TABLE IF NOT EXISTS `material_change_logs` (
                 `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -65,12 +67,32 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        val MIGRATION_2_3 = object : Migration(2, 3) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 //  isFinalProduct اضافه کردن ستون جدید با مقدار پیش‌فرض
-                database.execSQL("ALTER TABLE product ADD COLUMN isFinalProduct INTEGER NOT NULL DEFAULT 1")
+                db.execSQL("ALTER TABLE product ADD COLUMN isFinalProduct INTEGER NOT NULL DEFAULT 1")
             }
         }
+
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS product_history (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                productId INTEGER NOT NULL,
+                quantity REAL NOT NULL,
+                unitPrice REAL NOT NULL,
+                totalPrice REAL NOT NULL,
+                date INTEGER NOT NULL,
+                FOREIGN KEY(productId) REFERENCES product(productId) ON DELETE CASCADE
+            )
+            """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_product_history_productId ON product_history(productId)")
+            }
+        }
+
         fun destroyInstance() {
             INSTANCE = null
         }

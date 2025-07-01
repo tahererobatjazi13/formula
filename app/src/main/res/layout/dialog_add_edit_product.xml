@@ -17,7 +17,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvTitleDialog"
             style="@style/MediumBoldTextStyle"
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvTitleProductName"
                 style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
@@ -102,46 +102,46 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginHorizontal="1dp"
             android:background="@color/color_light_yellow"
-            android:gravity="right"
+            android:gravity="end"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_small"
             android:paddingVertical="@dimen/padding_bit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/padding_bit"
                 android:text="@string/label_material" />
 
-            <TextView
-                style="@style/MediumBoldTextStyle"
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/MediumTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/padding_large"
-                android:gravity="right"
+                android:gravity="end"
                 android:text="@string/label_green_color"
                 android:textColor="@color/black" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/padding_bit"
                 android:text="@string/label_product" />
 
-            <TextView
-                style="@style/MediumBoldTextStyle"
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/MediumTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right"
+                android:layout_gravity="end"
+                android:gravity="end"
                 android:text="@string/label_pink_color"
                 android:textColor="@color/black" />
 
@@ -162,7 +162,7 @@
             android:orientation="horizontal"
             android:weightSum="4">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/SmallBoldTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -177,7 +177,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray_ccc" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/SmallBoldTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray_ccc" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/SmallBoldTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray_ccc" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 style="@style/SmallBoldTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -261,7 +261,7 @@
 
         <EditText
             android:id="@+id/etProductDescription"
-            style="@style/MediumBoldTextStyle"
+            style="@style/MediumTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_medium"
@@ -283,14 +283,14 @@
 
             <RadioButton
                 android:id="@+id/rbIntermediateProduct"
-                style="@style/SmallBoldTextStyle"
+                style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_intermediate_product" />
 
             <RadioButton
                 android:id="@+id/rbFinalProduct"
-                style="@style/SmallBoldTextStyle"
+                style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"

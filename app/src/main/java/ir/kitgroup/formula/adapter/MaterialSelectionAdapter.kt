@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePrice
+import ir.kitgroup.formula.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
 import java.text.DecimalFormat
@@ -19,6 +20,7 @@ class MaterialSelectionAdapter(
 ) : ListAdapter<Material, MaterialSelectionAdapter.MaterialViewHolder>(MaterialSelectionDiffCallback()) {
 
     private val formatter = DecimalFormat("#,###,###,###")
+    private var formatQuantity: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
         val binding =
@@ -52,17 +54,10 @@ class MaterialSelectionAdapter(
 
             // فقط در صورتی مقدار را تنظیم کن که قبلاً تنظیم نشده باشد
             if (binding.etQuantity.tag != quantity) {
-                val formattedQuantity = if (quantity % 1 == 0.0) {
-                    quantity.toInt().toString()
-                } else {
-                    val decimalPart = quantity.toString().split(".").getOrNull(1) ?: ""
-                    val decimalPlaces = decimalPart.length.coerceAtMost(4)
-                    String.format("%.${decimalPlaces}f", quantity)
-                }
-
-                binding.etQuantity.setText(formattedQuantity)
+                formatQuantity = formatQuantity(quantity)
+                binding.etQuantity.setText(formatQuantity)
                 binding.etQuantity.tag =
-                    quantity  // ذخیره مقدار فعلی برای جلوگیری از تغییر مجدد ناخواسته
+                    quantity
             }
 
             // لیسنر برای ذخیره مقدار جدید موقع از دست رفتن فوکوس

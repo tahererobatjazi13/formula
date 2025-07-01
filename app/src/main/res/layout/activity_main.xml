@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/padding_medium">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBackup"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -25,36 +25,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBackupRestore"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="@dimen/padding_medium"
+                android:layout_marginStart="@dimen/padding_medium"
                 android:src="@drawable/databasee"
                 app:layout_constraintStart_toEndOf="@+id/ivBackup"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivShare"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="@dimen/padding_medium"
+                android:layout_marginStart="@dimen/padding_medium"
                 android:src="@drawable/ic_share"
                 app:layout_constraintStart_toEndOf="@+id/ivBackupRestore"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDate"
                 style="@style/LargeBoldTextStyle"
                 android:layout_width="0dp"
-                android:drawablePadding="@dimen/padding_bit"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_calendar"
+                android:drawablePadding="@dimen/padding_bit"
                 android:gravity="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivShare"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,7 +76,6 @@
         app:itemTextAppearanceActive="@style/BottomNavTextStyle"
         app:itemTextAppearanceInactive="@style/BottomNavTextStyle"
         app:menu="@menu/navigation_menu" />
-
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

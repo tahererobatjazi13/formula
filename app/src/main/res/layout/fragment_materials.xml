@@ -44,6 +44,7 @@
                 android:textAppearance="?android:attr/textAppearanceSearchResultTitle" />
 
         </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RelativeLayout
@@ -58,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvNoItem"
             style="@style/MediumTextStyle"
             android:layout_width="wrap_content"
