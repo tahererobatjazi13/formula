@@ -25,128 +25,147 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clProductName"
-                android:layout_width="0dp"
+                android:id="@+id/clProductNameDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.5">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleProductName"
-                    style="@style/SmallTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_product_name"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvProductName"
-                    style="@style/MediumBoldTextStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_bit"
-                    android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleProductName"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clProductDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.5">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleProductDate"
-                    style="@style/SmallTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_create_date"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvProductDate"
-                    style="@style/MediumBoldTextStyle"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clProductName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_bit"
-                    android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleProductDate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvTitleProductName"
+                        style="@style/SmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_product_name"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvProductName"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:textDirection="rtl"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductName"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clProductDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvTitleProductDate"
+                        style="@style/SmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_create_date"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvProductDate"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:textDirection="rtl"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductDate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clProductAmount"
-                android:layout_width="0dp"
+                android:id="@+id/clProductAmountPrice"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clProductName"
-                app:layout_constraintWidth_percent="0.5">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleProductAmount"
-                    style="@style/SmallTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_product_amount_item"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvProductAmount"
-                    style="@style/MediumBoldTextStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_bit"
-                    android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleProductAmount"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clProductPrice"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clProductDate"
-                app:layout_constraintWidth_percent="0.5">
+                app:layout_constraintTop_toBottomOf="@+id/clProductNameDate">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleProductPrice"
-                    style="@style/SmallTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_product_price"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvProductPrice"
-                    style="@style/MediumBoldTextStyle"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clProductAmount"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/padding_bit"
-                    android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleProductPrice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvTitleProductAmount"
+                        style="@style/SmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_product_amount_item"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvProductAmount"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:textDirection="rtl"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductAmount"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clProductPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvTitleProductPrice"
+                        style="@style/SmallTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_product_price"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvProductPrice"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:textDirection="rtl"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductPrice"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -157,7 +176,7 @@
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clProductAmount">
+                app:layout_constraintTop_toBottomOf="@+id/clProductAmountPrice">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tvTitleProductPriceKg"
@@ -200,8 +219,10 @@
                     android:layout_height="25dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5"
                     app:tint="@android:color/holo_red_dark" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -211,6 +232,8 @@
                     android:layout_marginHorizontal="@dimen/padding_medium"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_edit"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btnChangeLog"
                     app:layout_constraintStart_toEndOf="@+id/ivDeleteProduct"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/color_primary" />
@@ -218,25 +241,27 @@
                 <Button
                     android:id="@+id/btnChangeLog"
                     style="@style/ButtonDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="@dimen/padding_medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/padding_small"
                     android:backgroundTint="@color/purple_A27DE2"
                     android:text="@string/label_history"
                     android:textColor="@android:color/white"
                     app:layout_constraintEnd_toStartOf="@+id/btnUsageProduct"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.4" />
 
                 <Button
                     android:id="@+id/btnUsageProduct"
                     style="@style/ButtonDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:backgroundTint="@color/green_21BF73"
                     android:text="@string/label_production_schedule"
                     android:textColor="@android:color/white"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.4" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

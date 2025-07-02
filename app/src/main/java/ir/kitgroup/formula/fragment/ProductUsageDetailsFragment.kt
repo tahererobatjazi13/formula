@@ -103,12 +103,12 @@ class ProductUsageDetailsFragment : Fragment() {
 
         totalPriceKilograms = args.totalPrice.toDoubleOrNull() ?: 0.0
         qty = args.formattedQty.toDoubleOrNull() ?: 0.0
-        if (args.type == 1) {
-            multipliedQuantity = qty * 1000
+        multipliedQuantity = if (args.type == 1) {
+            qty * 1000
         } else {
-            multipliedQuantity = qty
+            qty
         }
-        binding.tvMaterialAmount.text = "${formatterQuantity.format(multipliedQuantity)} گرم"
+        binding.tvAmount.text = "${formatterQuantity.format(multipliedQuantity)} گرم"
 
         binding.tvTotalQuantity.text = formatterQuantity.format(multipliedQuantity) + ""
         binding.tvPriceKilograms.text = formatter.format(totalPriceKilograms)

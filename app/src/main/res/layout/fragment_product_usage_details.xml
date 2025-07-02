@@ -140,11 +140,15 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clMaterialAmount"
-                    android:layout_width="0dp"
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/flexMaterialAmount"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_medium"
+                    app:alignItems="center"
+                    app:flexDirection="row"
+                    app:flexWrap="wrap"
+                    app:justifyContent="flex_end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivPdf"
                     app:layout_constraintTop_toBottomOf="@+id/clProductDate">
@@ -154,34 +158,29 @@
                         style="@style/MediumTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_amounts_materials_production"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginStart="4dp"
+                        android:text="@string/label_from_product"
+                        android:textDirection="rtl" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvMaterialAmount"
+                        android:id="@+id/tvAmount"
                         style="@style/MediumBoldTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:layout_marginHorizontal="4dp"
                         android:textColor="@color/color_primary"
-                        android:textDirection="rtl"
-                        app:layout_constraintEnd_toStartOf="@+id/tvTitleMaterialAmount"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textDirection="rtl" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvTitleMaterialAmount2"
                         style="@style/MediumTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_bit"
-                        android:text="@string/label_from_product"
-                        android:textDirection="rtl"
-                        app:layout_constraintEnd_toStartOf="@+id/tvMaterialAmount"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_marginStart="2dp"
+                        android:text="@string/label_amounts_materials_production"
+                        android:textDirection="rtl" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.flexbox.FlexboxLayout>
 
                 <LinearLayout
                     android:id="@+id/llList"
@@ -192,7 +191,7 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clMaterialAmount">
+                    app:layout_constraintTop_toBottomOf="@+id/flexMaterialAmount">
 
                     <View
                         android:layout_width="match_parent"

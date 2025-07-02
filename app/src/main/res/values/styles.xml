@@ -38,6 +38,7 @@
     <style name="ButtonDefault" >
         <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
         <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:minHeight">35dp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="android:elevation">0dp</item>
         <item name="android:insetBottom">0dp</item>

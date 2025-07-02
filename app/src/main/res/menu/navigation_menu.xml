@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/MaterialsFragment"
-        android:icon="@drawable/ic_material"
-        android:title="مواد اولیه" />
-    <item
         android:id="@+id/ProductsFragment"
         android:icon="@drawable/ic_product"
         android:title="محصولات" />
+    <item
+        android:id="@+id/MaterialsFragment"
+        android:icon="@drawable/ic_material"
+        android:title="مواد اولیه" />
 </menu>
