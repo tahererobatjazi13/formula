@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cvMain"
     android:layout_width="match_parent"
+    android:id="@+id/cvMain"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/padding_medium"
     android:layout_marginBottom="@dimen/padding_medium"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clMaterialName"
+                android:id="@+id/clPackagingName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,39 +33,39 @@
                 app:layout_constraintTop_toBottomOf="@+id/clProductName">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleMaterialName"
+                    android:id="@+id/tvTitlePackagingName"
                     style="@style/SmallTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_material_name_item"
+                    android:text="@string/label_packaging_name_item"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvMaterialName"
+                    android:id="@+id/tvPackagingName"
                     style="@style/MediumBoldTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/padding_bit"
                     android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleMaterialName"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTitlePackagingName"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clMaterialDate"
+                android:id="@+id/clPackagingDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clMaterialName">
+                app:layout_constraintTop_toBottomOf="@+id/clPackagingName">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleMaterialDate"
+                    android:id="@+id/tvTitlePackagingDate"
                     style="@style/SmallTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,29 +74,29 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvMaterialDate"
+                    android:id="@+id/tvPackagingDate"
                     style="@style/MediumBoldTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/padding_bit"
                     android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleMaterialDate"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTitlePackagingDate"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clMaterialPrice"
+                android:id="@+id/clPackagingPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clMaterialDate">
+                app:layout_constraintTop_toBottomOf="@+id/clPackagingDate">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTitleMaterialPrice"
+                    android:id="@+id/tvTitlePackagingPrice"
                     style="@style/SmallTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -106,14 +106,47 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvMaterialPrice"
+                    android:id="@+id/tvPackagingPrice"
                     style="@style/MediumBoldTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/padding_bit"
                     android:textColor="@color/color_primary"
                     android:textDirection="rtl"
-                    app:layout_constraintEnd_toStartOf="@+id/tvTitleMaterialPrice"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTitlePackagingPrice"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clPackagingWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clPackagingPrice">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTitlePackagingWeight"
+                    style="@style/SmallTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_packaging_weight"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvPackagingWeight"
+                    style="@style/MediumBoldTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/padding_bit"
+                    android:textColor="@color/color_primary"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTitlePackagingWeight"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,52 +159,25 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center_vertical"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvNature"
-                android:layout_gravity="end"
-                android:gravity="end"
-                style="@style/MediumBoldTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/padding_bit"
-                android:textColor="@color/green_21BF73"
-                android:textDirection="rtl" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivDeletePackaging"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_delete" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_small"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivDeleteMaterial"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_delete" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivChangeLog"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginHorizontal="@dimen/padding_medium"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_history" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivEditMaterial"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_edit" />
-
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivEditPackaging"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginHorizontal="@dimen/padding_medium"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_edit" />
 
         </LinearLayout>
 

@@ -3,13 +3,23 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
 
+    <string name="label_physical">فیزیکی</string>
+    <string name="label_virtual">مجازی</string>
+    <string name="label_packaging_goods_services">کالا یا خدمات بسته‌بندی</string>
+    <string name="label_add_packaging">افزودن کالا یا خدمات بسته‌بندی</string>
+    <string name="label_packaging">بسته‌بندی</string>
     <string name="label_add_material">افزودن مواد اولیه</string>
     <string name="label_edit_material">ویرایش مواد اولیه</string>
+    <string name="label_edit_packaging">ویرایش کالا یا خدمات بسته‌بندی</string>
     <string name="label_add_new_product">افزودن محصول جدید</string>
+    <string name="label_add_new_packaging">افزودن بسته‌بندی جدید</string>
+    <string name="label_edit_new_packaging">ویرایش بسته‌بندی</string>
     <string name="label_edit_product">ویرایش محصول</string>
+    <string name="label_edit">ویرایش</string>
     <string name="label_price">قیمت</string>
     <string name="label_product_price">قیمت محصول :</string>
     <string name="label_price_unit">قیمت محصول (یک کیلوگرم)\n(ریال)</string>
+    <string name="label_price_packaging_unit">قیمت کالا\n(ریال)</string>
     <string name="label_price_unit_item">قیمت محصول (یک کیلوگرم) :</string>
     <string name="label_price_kg">قیمت (ریال)</string>
     <string name="label_price_total_unit">قیمت کل\n(ریال)</string>
@@ -31,14 +41,26 @@
     <string name="label_history">تاریخچه قیمت</string>
     <string name="label_historys">تاریخچه قیمت ها</string>
 
+    <string name="label_product_production_packaging_cost">مبلغ تولید محصول و بسته بندی :</string>
+    <string name="label_packaging_remaining">باقی مانده مقدار بسته بندی :</string>
+    <string name="label_price_for_production">قیمت برای تولید محصول :</string>
+    <string name="label_packaging_amounts_production">بسته بندی برای تولید</string>
     <string name="label_amounts_materials_production">مقادیر مواد برای تولید</string>
     <string name="label_from_product">از محصول </string>
 
+    <string name="label_packaging_name_star">نام بسته بندی * :</string>
+    <string name="label_packaging_weight_star">وزن بسته بندی(گرم) * :</string>
+    <string name="label_packaging_weight">وزن بسته بندی :</string>
+    <string name="label_packaging_services_star">نام کالا یا خدمات * :</string>
     <string name="label_material_name_star">نام مواد اولیه * :</string>
     <string name="label_name">نام</string>
     <string name="label_material_name">نام مواد اولیه</string>
     <string name="label_material_name_item">نام مواد اولیه:</string>
+    <string name="label_packaging_name_item">نام کالا یا خدمات:</string>
+    <string name="label_packaging_services">نام کالا یا خدمات</string>
     <string name="label_quantity_unit">مقدار\n(گرم)</string>
+    <string name="label_quantity_number_unit">مقدار\n(عدد)</string>
+    <string name="label_quantity_weight_unit">وزن\n(گرم)</string>
     <string name="label_sum_total">جمع</string>
     <string name="label_product_name">نام محصول :</string>
     <string name="label_product_amount">مقدار محصول (گرم) :</string>
@@ -55,29 +77,41 @@
     <string name="label_last_update_date">آخرین تاریخ آپدیت قیمت</string>
     <string name="label_update_date">تاریخ آپدیت:</string>
     <string name="label_product_description">توضیحات محصول:</string>
+    <string name="label_packaging_description">توضیحات بسته بندی :</string>
     <string name="label_dialog_delete">آیا از حذف آیتم اطمینان دارید؟</string>
     <string name="label_pink_color">رنگ صورتی:</string>
     <string name="label_green_color">رنگ سبز:</string>
     <string name="label_product">محصول</string>
+    <string name="label_products">محصولات</string>
     <string name="label_material">مواد اولیه</string>
     <string name="label_material_list">لیست مواد اولیه</string>
     <string name="label_product_list">لیست محصولات</string>
+    <string name="label_packaging_list">لیست بسته بندی</string>
     <string name="label_calculate_price_reserve">محاسبه قیمت و ذخیره</string>
     <string name="label_production_schedule">برنامه تولید</string>
 
     <string name="label_report_product">گزارش جزییات محصول</string>
     <string name="label_product_detail">جزییات محصول</string>
+    <string name="label_packaging_detail">جزییات بسته بندی</string>
+    <string name="label_report_packaging_detail">گزارش جزییات بسته بندی</string>
     <string name="label_production_schedule_product">برنامه تولید محصول</string>
     <string name="label_schedule_product_detail">جزییات تولید محصول</string>
 
+    <string name="msg_packaging_consumption_saved">مصرف بسته‌بندی‌ها ذخیره شد</string>
+    <string name="msg_packaging_consumption_edit">مصرف بسته‌بندی‌ها ویرایش شد</string>
     <string name="error_request_fields">لطفا تمام فیلدهارا پر کنید</string>
     <string name="error_no_item">آیتمی یافت نشد</string>
     <string name="error_no_material">مواد اولیه ای یافت نشد</string>
     <string name="error_no_product">محصولی یافت نشد</string>
     <string name="error_enter_product_name">لطفا نام محصول را وارد کنید</string>
+    <string name="error_enter_packaging_name">لطفا نام بسته بندی را وارد کنید</string>
+    <string name="error_enter_packaging_weight">لطفا وزن بسته بندی را وارد کنید</string>
     <string name="error_no_material_selected">لطفاً حداقل یک ماده اولیه انتخاب کنید</string>
+    <string name="error_no_packaging_selected">لطفاً حداقل یک مقدار برای بسته بندی انتخاب کنید</string>
     <string name="error_first_enter_material">ابتدا مواد اولیه را اضافه کنید</string>
+    <string name="error_first_enter_packaging">ابتدا بسته بندی را اضافه کنید</string>
     <string name="error_enter_valid_number">عدد معتبر وارد کنید</string>
+    <string name="error_entered_quantity_greater_total_weight">مقدار وارد شده از وزن کل بیشتر است</string>
 
     <string-array name="product_filter_options">
         <item>همه محصولات</item>

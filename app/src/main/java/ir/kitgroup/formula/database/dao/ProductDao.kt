@@ -16,15 +16,8 @@ interface ProductDao {
     @Insert
     suspend fun insertProductDetails(productDetails: List<ProductDetail>)
 
-    @Update
-    suspend fun updateProductDetails(productDetails: List<ProductDetail>)
-
-    @Insert
-    suspend fun insertRawMaterial(material: Material)
-
-    @Query("SELECT * FROM materials")
-    suspend fun getAllRawMaterials(): List<Material>
-
+    @Query("SELECT * FROM materials WHERE type = :type")
+    fun getMaterialsByType(type: String): LiveData<List<Material>>
 
     @Query("SELECT * FROM product")
     fun getAllProducts(): LiveData<List<Product>>
@@ -49,11 +42,20 @@ interface ProductDao {
     @Query("DELETE FROM product_details WHERE productId = :productId")
     suspend fun deleteProductDetailsByProductId(productId: Int)
 
-    @Query("SELECT * FROM PRODUCT WHERE productId = :productId LIMIT 1")
-    fun getProductById(productId: Int): LiveData<Product>
-
-    @Query("UPDATE product_details SET materialPrice = :newPrice, price = quantity * :newPrice WHERE materialId = :materialId")
-    suspend fun updatePriceByMaterialId(materialId: Int, newPrice: Double)
+    @Query(
+        """
+    UPDATE packaging_details 
+    SET materialName = :newName, 
+        materialPrice = :newPrice, 
+        price = quantity * :newPrice 
+    WHERE materialId = :materialId 
+"""
+    )
+    suspend fun updatePriceNamePackagingByMaterialId(
+        materialId: Int,
+        newName: String,
+        newPrice: Double
+    )
 
     @Query(
         """
@@ -85,7 +87,6 @@ interface ProductDao {
     @Query("SELECT * FROM product_details WHERE productId = :productId")
     suspend fun getProductDetailsSuspend(productId: Int): List<ProductDetail>
 
-    // متدی برای دریافت محصولات مرتبط با یک ماده اولیه خاص
     @Transaction
     @Query(
         """
@@ -107,6 +108,11 @@ interface ProductDao {
     @Query("SELECT * FROM product_history WHERE id = :id")
     suspend fun getProductHistoryById(id: Long): ProductHistory?
 
+    @Delete
+    suspend fun deleteProductHistory(productHistory: ProductHistory)
+
+    @Query("DELETE FROM packaging_usage WHERE productUsageId = :productUsageId")
+    suspend fun deleteUsagesForProduct(productUsageId: Int)
 
 }
 

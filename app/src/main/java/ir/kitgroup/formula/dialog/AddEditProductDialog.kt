@@ -14,6 +14,7 @@ import ir.kitgroup.formula.adapter.ProductSelectionAdapter
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.databinding.DialogAddEditProductBinding
+import ir.kitgroup.formula.model.MaterialType
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 
 class AddEditProductDialog(
@@ -145,7 +146,7 @@ class AddEditProductDialog(
             }
         })
 
-        viewModel.getAllRawMaterials().observe(viewLifecycleOwner) { rawMaterials ->
+        viewModel.getAllRawMaterialsByType(MaterialType.MATERIAL.value).observe(viewLifecycleOwner) { rawMaterials ->
             allMaterialsList = rawMaterials // ذخیره لیست اصلی
 
             if (product != null) {

@@ -12,10 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:elevation="@dimen/padding_small"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:elevation="@dimen/padding_small">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/padding_small"
                 android:gravity="end"
-                android:text="@string/label_schedule_product_detail"
+                android:text="@string/label_packaging_detail"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ivBack"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -78,10 +75,10 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvTitleProductName"
-                        style="@style/MediumTextStyle"
+                        style="@style/SmallTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_product_name"
+                        android:text="@string/label_packaging_name_item"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -119,7 +116,7 @@
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvTitleProductDate"
-                        style="@style/MediumTextStyle"
+                        style="@style/SmallTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_date_item"
@@ -140,47 +137,69 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.flexbox.FlexboxLayout
-                    android:id="@+id/flexMaterialAmount"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clPackagingWeight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_medium"
-                    app:alignItems="center"
-                    app:flexDirection="row"
-                    app:flexWrap="wrap"
-                    app:justifyContent="flex_end"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivPdf"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/clProductDate">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleMaterialAmount"
-                        style="@style/MediumTextStyle"
+                        android:id="@+id/tvTitlePackagingWeight"
+                        style="@style/SmallTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/label_from_product"
-                        android:textDirection="rtl" />
+                        android:text="@string/label_packaging_weight"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvAmount"
+                        android:id="@+id/tvPackagingWeight"
                         style="@style/MediumBoldTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:textColor="@color/color_primary"
-                        android:textDirection="rtl" />
+                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:textDirection="rtl"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitlePackagingWeight"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clProductDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clPackagingWeight">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleMaterialAmount2"
-                        style="@style/MediumTextStyle"
+                        android:id="@+id/tvTitleProductDescription"
+                        style="@style/SmallTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@string/label_amounts_materials_production"
-                        android:textDirection="rtl" />
+                        android:text="@string/label_packaging_description"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </com.google.android.flexbox.FlexboxLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvProductDescription"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/padding_bit"
+                        android:textDirection="rtl"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductDescription"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:id="@+id/llList"
@@ -191,7 +210,7 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/flexMaterialAmount">
+                    app:layout_constraintTop_toBottomOf="@+id/clProductDescription">
 
                     <View
                         android:layout_width="match_parent"
@@ -205,17 +224,17 @@
                         android:layout_marginHorizontal="1dp"
                         android:background="@color/colorAccent"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="4">
 
                         <com.google.android.material.textview.MaterialTextView
                             style="@style/SmallBoldTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
+                            android:layout_weight="0.9"
                             android:gravity="center"
                             android:padding="@dimen/padding_small"
-                            android:text="@string/label_price_kg" />
+                            android:text="@string/label_price_total_unit" />
 
                         <View
                             android:layout_width="1dp"
@@ -227,10 +246,25 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
+                            android:layout_weight="0.9"
                             android:gravity="center"
                             android:padding="@dimen/padding_small"
-                            android:text="@string/label_quantity_unit" />
+                            android:text="@string/label_price_packaging_unit" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/gray_ccc" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            style="@style/SmallBoldTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.9"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_small"
+                            android:text="@string/label_quantity_number_unit" />
 
                         <View
                             android:layout_width="1dp"
@@ -242,7 +276,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
+                            android:layout_weight="1.3"
                             android:gravity="center_vertical"
                             android:padding="@dimen/padding_small"
                             android:text="@string/label_name" />
@@ -267,16 +301,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3">
+                        android:weightSum="4">
 
                         <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvPriceKilograms"
+                            android:id="@+id/tvTotalPrice"
                             style="@style/MediumBoldTextStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center" />
+                            android:layout_weight="0.9"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_medium" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/gray_ccc" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tvPrice"
+                            style="@style/MediumBoldTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.9"
+                            android:gravity="center"
+                            android:padding="@dimen/padding_medium" />
 
                         <View
                             android:layout_width="1dp"
@@ -289,7 +339,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_weight="1"
+                            android:layout_weight="0.9"
                             android:gravity="center"
                             android:padding="@dimen/padding_medium" />
 
@@ -303,7 +353,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
+                            android:layout_weight="1.3"
                             android:gravity="center_vertical"
                             android:padding="@dimen/padding_medium"
                             android:text="@string/label_sum_total" />
@@ -311,18 +361,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/btnPackage"
-                    style="@style/ButtonDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_medium"
-                    android:paddingHorizontal="@dimen/padding_xLarge"
-                    android:text="@string/label_packaging"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llList" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

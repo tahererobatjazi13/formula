@@ -12,10 +12,13 @@ import androidx.fragment.app.DialogFragment
 import ir.kitgroup.formula.R
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.DialogAddEditMaterialBinding
+import ir.kitgroup.formula.model.MaterialNature
+import ir.kitgroup.formula.model.MaterialType
 import java.text.DecimalFormat
 
 class AddEditMaterialDialog(
     private val material: Material? = null,
+    private val defaultType: String = MaterialType.MATERIAL.value,
     private val onSave: (Material) -> Unit
 ) : DialogFragment() {
     private val formatter = DecimalFormat("#,###,###,###")
@@ -30,11 +33,60 @@ class AddEditMaterialDialog(
         binding = DialogAddEditMaterialBinding.inflate(inflater, container, false)
         dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
 
-        binding.tvTitleDialog.text = if (material == null) {
-            getString(R.string.label_add_material)
+        if (material != null) {
+            when (material.type) {
+                MaterialType.MATERIAL.value -> {
+
+                    binding.tvTitleMaterialName.text =
+                        getString(R.string.label_material_name_star)
+                    binding.tvTitleMaterialPrice.text =
+                        getString(R.string.label_price_star)
+                    binding.tvTitleDialog.text =
+                        getString(R.string.label_edit_material)
+                    binding.rgNature.visibility = View.GONE
+                }
+
+                MaterialType.PACKAGING.value -> {
+                    binding.tvTitleMaterialName.text =
+                        getString(R.string.label_packaging_services_star)
+                    binding.tvTitleMaterialPrice.text =
+                        getString(R.string.label_price_item)
+                    binding.tvTitleDialog.text =
+                        getString(R.string.label_edit_packaging)
+                    binding.rgNature.visibility = View.VISIBLE
+                }
+            }
+            when (material.nature) {
+                MaterialNature.PHYSICAL.value -> {
+                    binding.rbPhysical.isChecked =true
+                }
+
+                MaterialNature.VIRTUAL.value -> {
+                    binding.rbVirtual.isChecked =true
+                }
+            }
         } else {
-            getString(R.string.label_edit_material)
+            when (defaultType) {
+                MaterialType.MATERIAL.value -> {
+                    binding.tvTitleMaterialName.text =
+                        getString(R.string.label_material_name_star)
+                    binding.tvTitleMaterialPrice.text =
+                        getString(R.string.label_price_star)
+                    binding.tvTitleDialog.text = getString(R.string.label_add_material)
+                    binding.rgNature.visibility = View.GONE
+                }
+
+                MaterialType.PACKAGING.value -> {
+                    binding.tvTitleMaterialName.text =
+                        getString(R.string.label_packaging_services_star)
+                    binding.tvTitleMaterialPrice.text =
+                        getString(R.string.label_price_item)
+                    binding.tvTitleDialog.text = getString(R.string.label_add_packaging)
+                    binding.rgNature.visibility = View.VISIBLE
+                }
+            }
         }
+
         material?.let {
             binding.etMaterialName.setText(it.materialName)
             binding.etMaterialPrice.setText(formatter.format(it.price) + "")
@@ -69,17 +121,28 @@ class AddEditMaterialDialog(
                 isEditing = false
             }
         })
-
         binding.btnSave.setOnClickListener {
             val name = binding.etMaterialName.text.toString()
             val price = binding.etMaterialPrice.text.toString().replace(",", "")
             val priceValue = price.toDoubleOrNull() ?: -1.0
 
             if (name.isNotBlank() && price.isNotBlank()) {
-                val resultMaterial = if (material != null)
-                    Material(material.materialId, name, priceValue)
-                else
-                    Material(materialName = name, price = priceValue)
+                val nature =
+                    if (binding.rbPhysical.isChecked) MaterialNature.PHYSICAL.value else MaterialNature.VIRTUAL.value
+
+                val resultMaterial =
+                    material?.copy(
+                        materialName = name,
+                        price = priceValue,
+                        type = material.type,
+                        nature = nature
+                    )
+                        ?: Material(
+                            materialName = name,
+                            price = priceValue,
+                            type = defaultType,
+                            nature = nature
+                        )
 
                 onSave(resultMaterial)
                 dismiss()

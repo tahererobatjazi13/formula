@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -35,6 +37,7 @@ import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.FragmentMaterialsBinding
 import ir.kitgroup.formula.dialog.AddEditMaterialDialog
 import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
+import ir.kitgroup.formula.model.MaterialType.*
 import ir.kitgroup.formula.viewmodel.MaterialViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -71,7 +74,7 @@ class MaterialsFragment : Fragment() {
         setupObservers()
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint("DefaultLocale", "InflateParams")
     private fun init() {
         val jalaliDate = JalaliCalendar()
         val dateFormatted =
@@ -80,6 +83,29 @@ class MaterialsFragment : Fragment() {
         val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         val time = timeFormat.format(Date())
         displayDateTime = "$dateFormatted ، $time"
+
+        val inflater = LayoutInflater.from(context)
+
+        // ساخت تب 1 (بسته‌بندی)
+        val tab1 = binding.tabLayout.newTab()
+        val tabView1 = inflater.inflate(R.layout.custom_tab, null) as TextView
+        tabView1.text = getString(R.string.label_packaging)
+        tab1.customView = tabView1
+        binding.tabLayout.addTab(tab1)
+
+        // ساخت تب 2 (مواد اولیه)
+        val tab2 = binding.tabLayout.newTab()
+        val tabView2 = inflater.inflate(R.layout.custom_tab, null) as TextView
+        tabView2.text = getString(R.string.label_material)
+        tab2.customView = tabView2
+        binding.tabLayout.addTab(tab2)
+
+        // انتخاب تب دوم (index = 1)
+        binding.tabLayout.getTabAt(1)?.select()
+
+        tabView1.isSelected = false
+        tabView2.isSelected = true
+
     }
 
 
@@ -87,13 +113,25 @@ class MaterialsFragment : Fragment() {
         binding.ivPdf.setOnClickListener {
             generateListPDF(requireContext(), allMaterials)
         }
-
         binding.fabAddMaterial.setOnClickListener {
-            val dialog = AddEditMaterialDialog { rawMaterial ->
-                materialViewModel.insert(rawMaterial)
+            val selectedType = when (binding.tabLayout.selectedTabPosition) {
+                0 -> PACKAGING.value
+                else -> MATERIAL.value
             }
+
+            val dialog = AddEditMaterialDialog(defaultType = selectedType) { rawMaterial ->
+                materialViewModel.insert(rawMaterial)
+
+                if (rawMaterial.type == PACKAGING.value) {
+                    binding.tabLayout.getTabAt(0)?.select()
+                } else {
+                    binding.tabLayout.getTabAt(1)?.select()
+                }
+            }
+
             dialog.show(childFragmentManager, "AddRawMaterialDialog")
         }
+
     }
 
     private fun initAdapter() {
@@ -106,9 +144,16 @@ class MaterialsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                filteredMaterialsList = allMaterials.filter {
-                    it.materialName.contains(newText ?: "", ignoreCase = true)
+                val selectedType = when (binding.tabLayout.selectedTabPosition) {
+                    0 -> PACKAGING.value
+                    1 -> MATERIAL.value
+                    else -> MATERIAL.value
                 }
+
+                filteredMaterialsList = allMaterials
+                    .filter { it.type == selectedType }
+                    .filter { it.materialName.contains(newText ?: "", ignoreCase = true) }
+
                 materialAdapter.submitList(filteredMaterialsList)
                 return true
             }
@@ -144,13 +189,39 @@ class MaterialsFragment : Fragment() {
     private fun setupObservers() {
         materialViewModel.allMaterials.observe(viewLifecycleOwner) { materials ->
             allMaterials = materials
-            materialAdapter.submitList(materials)
-
-            val isEmpty = materials.isEmpty()
-            binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
-            binding.ivPdf.visibility = if (isEmpty) View.GONE else View.VISIBLE
+            updateListForSelectedTab()
         }
+
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                (tab?.customView as? TextView)?.isSelected = true
+                updateListForSelectedTab()
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                (tab?.customView as? TextView)?.isSelected = false
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
     }
+
+    private fun updateListForSelectedTab() {
+        val selectedType = when (binding.tabLayout.selectedTabPosition) {
+            0 -> PACKAGING.value
+            1 -> MATERIAL.value
+            else -> MATERIAL.value
+        }
+
+        filteredMaterialsList = allMaterials.filter { it.type == selectedType }
+        materialAdapter.submitList(filteredMaterialsList)
+
+        val isEmpty = filteredMaterialsList.isEmpty()
+        binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.ivPdf.visibility = if (isEmpty) View.GONE else View.VISIBLE
+    }
+
 
     private fun generateListPDF(
         context: Context,

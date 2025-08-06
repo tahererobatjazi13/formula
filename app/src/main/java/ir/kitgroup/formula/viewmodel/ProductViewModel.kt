@@ -7,16 +7,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import ir.kitgroup.formula.Util.calculatePricePerKg
-import ir.kitgroup.formula.adapter.getTotalPriceForProduct
-import ir.kitgroup.formula.adapter.getTotalQuantityForProduct
+import ir.kitgroup.formula.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.AppDatabase
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.database.entity.ProductHistory
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ProductViewModel(application: Application) : AndroidViewModel(application) {
     private val productDao = AppDatabase.getDatabase(application).productDao()
@@ -27,15 +25,8 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         productDao.deleteProduct(product)
     }
 
-    fun getAllRawMaterials(): LiveData<List<Material>> {
-        val result = MutableLiveData<List<Material>>()
-        viewModelScope.launch(Dispatchers.IO) {
-            val rawMaterials = productDao.getAllRawMaterials()
-            withContext(Dispatchers.Main) {
-                result.value = rawMaterials
-            }
-        }
-        return result
+    fun getAllRawMaterialsByType(type: String): LiveData<List<Material>> {
+        return productDao.getMaterialsByType(type)
     }
 
     fun getProductDetails(productId: Int): LiveData<List<ProductDetail>> {
@@ -124,7 +115,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
                     )
                 )
             }
-
             productDao.insertProductDetails(productDetails)
         }
     }
@@ -132,7 +122,6 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
     suspend fun getProductDetailsSuspend(productId: Int): List<ProductDetail> {
         return productDao.getProductDetailsSuspend(productId)
     }
-
 
     private val _price = MutableLiveData<Double>()
     val price: LiveData<Double> = _price
@@ -157,7 +146,7 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
                 productDao.insertHistory(history)
             _price.postValue(calculatedPrice)
             _history.postValue(productDao.getHistoryForProduct(productId))
-            _lastInsertedId.postValue(id) // ذخیره آخرین ID
+            _lastInsertedId.postValue(id)
         }
     }
 
@@ -169,6 +158,13 @@ class ProductViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             _history.postValue(productDao.getHistoryForProduct(productId))
         }
+    }
+
+    fun deleteProductHistory(productHistory: ProductHistory) = viewModelScope.launch {
+        productDao.deleteProductHistory(productHistory)
+        productDao.deleteUsagesForProduct(productHistory.id.toInt())
+        loadHistory(productHistory.productId)
+
     }
 
     private val _productHistory = MutableLiveData<ProductHistory?>()

@@ -24,11 +24,12 @@
             android:padding="@dimen/padding_normal">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivArrow"
+                android:id="@+id/ivDelete"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
+                android:tint="@color/red_C20311"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_arrow" />
+                android:src="@drawable/ic_delete" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvTotalPrice"

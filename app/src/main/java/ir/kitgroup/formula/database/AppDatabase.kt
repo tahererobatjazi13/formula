@@ -7,21 +7,27 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import ir.kitgroup.formula.database.dao.MaterialDao
+import ir.kitgroup.formula.database.dao.PackagingDao
 import ir.kitgroup.formula.database.dao.ProductDao
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.MaterialChangeLog
+import ir.kitgroup.formula.database.entity.Packaging
+import ir.kitgroup.formula.database.entity.PackagingDetail
+import ir.kitgroup.formula.database.entity.PackagingUsage
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.database.entity.ProductHistory
 
+
 @Database(
-    entities = [Material::class, Product::class, ProductDetail::class, MaterialChangeLog::class, ProductHistory::class],
-    version = 4,
+    entities = [Material::class, Product::class, ProductDetail::class, MaterialChangeLog::class, ProductHistory::class, Packaging::class, PackagingDetail::class, PackagingUsage::class],
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun materialDao(): MaterialDao
     abstract fun productDao(): ProductDao
+    abstract fun packagingDao(): PackagingDao
 
     companion object {
         @Volatile
@@ -32,11 +38,14 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "app_database"
-                )
+                    "app_database")
                     .addMigrations(MIGRATION_1_2)
                     .addMigrations(MIGRATION_2_3)
                     .addMigrations(MIGRATION_3_4)
+                    .addMigrations(MIGRATION_4_5)
+                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_6_7)
+                    .addMigrations(MIGRATION_7_8)
                     .build()
                 INSTANCE = instance
                 instance
@@ -90,6 +99,67 @@ abstract class AppDatabase : RoomDatabase() {
             """.trimIndent()
                 )
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_product_history_productId ON product_history(productId)")
+            }
+        }
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // افزودن ستون جدید با مقدار پیش‌فرض "material"
+                db.execSQL("ALTER TABLE materials ADD COLUMN type TEXT NOT NULL DEFAULT 'material'")
+                db.execSQL("ALTER TABLE materials ADD COLUMN nature TEXT NOT NULL DEFAULT 'physical'")
+
+            }
+        }
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS packaging (
+                packagingId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                packagingName TEXT NOT NULL,
+                description TEXT NOT NULL DEFAULT '',
+                quantity REAL NOT NULL DEFAULT 0.0,
+                weight REAL NOT NULL DEFAULT 0.0,
+                price REAL NOT NULL DEFAULT 0.0,
+                createdDate INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000),
+                updatedDate INTEGER NOT NULL DEFAULT (strftime('%s','now') * 1000)
+            )
+            """.trimIndent()
+                )
+            }
+        }
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS packaging_details (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                packagingId INTEGER NOT NULL,
+                materialId INTEGER NOT NULL,
+                quantity REAL NOT NULL,
+                price REAL NOT NULL,
+                materialName TEXT NOT NULL,
+                materialPrice REAL NOT NULL,
+                FOREIGN KEY(packagingId) REFERENCES packaging(packagingId) ON DELETE CASCADE
+            )
+            """.trimIndent()
+                )
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    """
+            CREATE TABLE IF NOT EXISTS packaging_usage (
+                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                productId INTEGER NOT NULL,
+                packagingId INTEGER NOT NULL,
+                productUsageId INTEGER NOT NULL,
+                usedWeight REAL NOT NULL,
+                packagingWeight REAL NOT NULL
+            )
+            """.trimIndent()
+                )
             }
         }
 

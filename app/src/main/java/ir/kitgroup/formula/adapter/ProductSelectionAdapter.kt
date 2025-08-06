@@ -13,8 +13,9 @@ import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePrice
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.entity.Product
-import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.text.DecimalFormat
@@ -118,22 +119,6 @@ class ProductSelectionAdapter(
             binding.tvTotalPrice.text = formatter.format(totalPrice)
         }
     }
-}
-
-fun getTotalPriceForProduct(productDetails: List<ProductDetail>): Double {
-    var totalPrice = 0.0
-    productDetails.forEach { detail ->
-        totalPrice += calculatePrice(detail.materialPrice, detail.quantity)
-    }
-    return totalPrice
-}
-
-fun getTotalQuantityForProduct(productDetails: List<ProductDetail>): Double {
-    var totalQuantity = 0.0
-    productDetails.forEach { detail ->
-        totalQuantity += detail.quantity
-    }
-    return totalQuantity
 }
 
 class ProductSelectionDiffCallback : DiffUtil.ItemCallback<Product>() {

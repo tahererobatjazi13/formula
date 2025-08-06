@@ -18,9 +18,10 @@ import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatDateShamsi
 import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.adapter.ProductUsageAdapter
-import ir.kitgroup.formula.adapter.getTotalPriceForProduct
-import ir.kitgroup.formula.adapter.getTotalQuantityForProduct
+import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.text.DecimalFormat
 import kotlin.math.roundToInt
@@ -73,7 +74,7 @@ class ProductUsageFragment : Fragment() {
         productUsageAdapter = ProductUsageAdapter(onClick = { product, formattedQty, totalPrice ->
             val action =
                 ProductUsageFragmentDirections.actionProductUsageFragmentToProductUsageDetailsFragment(
-                   1,
+                    1,
                     product.id,
                     product.productId,
                     args.productName,
@@ -81,7 +82,13 @@ class ProductUsageFragment : Fragment() {
 
                 )
             findNavController().navigate(action)
-        })
+        },
+            onDelete = { productHistory ->
+                val dialog = ConfirmDeleteDialog {
+                    viewModel.deleteProductHistory(productHistory)
+                }
+                dialog.show(childFragmentManager, "ConfirmDeleteDialog")
+            })
         binding.rvHistory.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = productUsageAdapter
@@ -140,12 +147,11 @@ class ProductUsageFragment : Fragment() {
                 "مقدار به ${correctedQuantity.toInt()} اصلاح شد چون باید ضریبی از $formattedQty باشد.",
                 Toast.LENGTH_LONG
             ).show()
-
-            val formatter = DecimalFormat("0.####") // حداکثر 4 رقم اعشار، صفرهای اضافه نمایش داده نمی‌شوند
+            val formatter =
+                DecimalFormat("0.####") // حداکثر 4 رقم اعشار، صفرهای اضافه نمایش داده نمی‌شوند
             val value = correctedQuantity / 1000.0
             binding.etQuantity.setText(formatter.format(value))
         }
-
         viewModel.calculateAndSave(args.productId, correctedQuantity / 1000, pricePerKg)
     }
 

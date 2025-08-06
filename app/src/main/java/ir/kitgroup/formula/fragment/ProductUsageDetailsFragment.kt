@@ -70,7 +70,6 @@ class ProductUsageDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         hideUIElements()
-
         _binding = FragmentProductUsageDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -154,6 +153,16 @@ class ProductUsageDetailsFragment : Fragment() {
         binding.ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+        binding.btnPackage.setOnClickListener {
+            findNavController().navigate(
+                ProductUsageDetailsFragmentDirections.actionProductUsageDetailsFragmentToPackagingUsageDetailsFragment(
+                    args.productId,
+                    args.id,
+                    productName,
+                    productDate, multipliedQuantity.toString(), totalPriceKilograms.toString()
+                )
+            )
+        }
     }
 
     data class PdfRowData(
@@ -191,7 +200,6 @@ class ProductUsageDetailsFragment : Fragment() {
 
     @SuppressLint("DefaultLocale")
     private fun generatePdfWithData(context: Context, items: List<PdfRowData>) {
-
         try {
             // محل ذخیره PDF
             val pdfFile =

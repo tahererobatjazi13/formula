@@ -13,6 +13,7 @@
     <color name="white_E6FFFFFF">#E6FFFFFF</color>90%
     <color name="transparent">#00000000</color>
     <color name="color_light_green">#DDF6DF</color>
+    <color name="color_light_orange">#F3DDBE</color>
     <color name="color_light_pink">#F6B7CC</color>
     <color name="color_light_yellow">#F8E6B2</color>
     <color name="gray_light">#FFFFFFFF</color>
@@ -20,4 +21,7 @@
     <color name="gray_e5e7eb">#e5e7eb</color>
     <color name="green_21BF73">#21BF73</color>
     <color name="purple_A27DE2">#A27DE2</color>
+    <color name="orange_FF9800">#FF9800</color>
+    <color name="red_C20311">#C20311</color>
+
 </resources>

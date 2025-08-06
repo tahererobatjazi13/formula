@@ -10,6 +10,8 @@ import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatDateShamsi
 import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.databinding.ItemProductBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel

@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
@@ -21,7 +19,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.textview.MaterialTextView
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
@@ -36,17 +33,15 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.getTotalPriceForProduct
-import ir.kitgroup.formula.Util.getTotalQuantityForProduct
-import ir.kitgroup.formula.adapter.ProductAdapter
-import ir.kitgroup.formula.database.entity.Product
-import ir.kitgroup.formula.databinding.FragmentProductsBinding
-import ir.kitgroup.formula.dialog.AddEditProductDialog
+import ir.kitgroup.formula.Util.getTotalPriceForPackaging
+import ir.kitgroup.formula.adapter.PackagingAdapter
+import ir.kitgroup.formula.database.entity.Packaging
+import ir.kitgroup.formula.databinding.FragmentPackagingBinding
+import ir.kitgroup.formula.dialog.AddEditPackagingDialog
 import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
 import ir.kitgroup.formula.model.MaterialType
-import ir.kitgroup.formula.viewmodel.ProductViewModel
+import ir.kitgroup.formula.viewmodel.PackagingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,13 +53,15 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class ProductsFragment : Fragment() {
+class PackagingFragment : Fragment() {
 
-    private var _binding: FragmentProductsBinding? = null
-    private val productViewModel: ProductViewModel by viewModels()
-    private lateinit var productAdapter: ProductAdapter
+    private var _binding: FragmentPackagingBinding? = null
+    private val packagingViewModel: PackagingViewModel by viewModels()
+    private lateinit var packagingAdapter: PackagingAdapter
     private val formatter = DecimalFormat("#,###,###,###")
     private var displayDateTime: String = ""
+    private lateinit var allPackaging: List<Packaging>
+    private lateinit var filteredPackagingList: List<Packaging>
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -72,7 +69,7 @@ class ProductsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentProductsBinding.inflate(inflater, container, false)
+        _binding = FragmentPackagingBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -87,7 +84,6 @@ class ProductsFragment : Fragment() {
         initDateTime()
         setupRecyclerView()
         setupToolbarAndNav()
-        setupSpinner()
         setupSearchView()
     }
 
@@ -102,174 +98,115 @@ class ProductsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        productAdapter = ProductAdapter(
-            onUsage = { navigateToUsage(it) },
-            onChangeLog = { navigateToChangeLog(it) },
-            onDelete = { showConfirmDeleteDialog(it) },
+        allPackaging = listOf()
+        filteredPackagingList = allPackaging
+
+
+        packagingAdapter = PackagingAdapter(
+            onDelete = { packaging ->
+                val dialog = ConfirmDeleteDialog {
+                    packagingViewModel.deletePackaging(packaging)
+                }
+                dialog.show(childFragmentManager, "ConfirmDeleteDialog")
+            },
             onEdit = { showAddEditDialog(it) },
-            onClick = { navigateToDetails(it) },
-            viewModel = productViewModel
+            onClick = { navigateToDetails(it) }, packagingViewModel
         )
 
-        binding.rvProducts.apply {
-            adapter = productAdapter
+        binding.rvPackaging.apply {
+            adapter = packagingAdapter
             layoutManager = LinearLayoutManager(requireContext())
-        }
-
-    }
-
-    private fun setupSpinner() {
-        val spinnerItems = resources.getStringArray(R.array.product_filter_options)
-        val adapter = createSpinnerAdapter(spinnerItems)
-        binding.spinnerFilter.adapter = adapter
-    }
-
-    private fun createSpinnerAdapter(data: Array<String>): ArrayAdapter<String> {
-        return object :
-            ArrayAdapter<String>(
-                requireContext(),
-                R.layout.item_spinner,
-                R.id.tvName,
-                data
-            ) {
-            override fun getDropDownView(
-                position: Int,
-                convertView: View?,
-                parent: ViewGroup
-            ): View {
-                val view = LayoutInflater.from(context)
-                    .inflate(R.layout.item_spinner_dropdown, parent, false)
-                val textView = view.findViewById<MaterialTextView>(R.id.tvName)
-                textView.text = getItem(position)
-                return view
-            }
         }
     }
 
     private fun setupSearchView() {
-        binding.svProduct.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+        binding.svPackaging.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                binding.spinnerFilter.setSelection(0)
-                filterProducts(newText ?: "")
+
+                filteredPackagingList = allPackaging
+                    .filter { it.packagingName.contains(newText ?: "", ignoreCase = true) }
+
+                packagingAdapter.submitList(filteredPackagingList)
+                binding.tvNoItem.visibility =
+                    if (filteredPackagingList.isEmpty()) View.VISIBLE else View.GONE
+
                 return true
             }
         })
     }
 
     private fun setupListeners() {
-        binding.fabAddProduct.setOnClickListener {
-            productViewModel.getAllRawMaterialsByType(MaterialType.MATERIAL.value).observe(viewLifecycleOwner) { rawMaterials ->
-                if (rawMaterials.isEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        R.string.error_first_enter_material,
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    AddEditProductDialog(productViewModel).show(
-                        parentFragmentManager,
-                        "AddProductDialog"
-                    )
+        binding.fabAddPackaging.setOnClickListener {
+            packagingViewModel.getAllRawMaterialsByType(MaterialType.PACKAGING.value)
+                .observe(viewLifecycleOwner) { rawMaterials ->
+                    if (rawMaterials.isEmpty()) {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.error_first_enter_packaging,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        AddEditPackagingDialog(packagingViewModel).show(
+                            parentFragmentManager,
+                            "AddProductDialog"
+                        )
+                    }
                 }
-            }
         }
-
         binding.ivPdf.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                generateListPDF(requireContext(), productAdapter.currentList)
+                generateListPDF(requireContext(), packagingAdapter.currentList)
             }
-        }
-
-        binding.spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>, view: View?, position: Int, id: Long
-            ) {
-                filterProducts(binding.svProduct.query?.toString() ?: "")
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
     private fun observeProducts() {
-        productViewModel.allProducts.observe(viewLifecycleOwner) { products ->
-            updateUIWithProducts(products)
+        packagingViewModel.allPackagings.observe(viewLifecycleOwner) { packagings ->
+            allPackaging = packagings
+            updateUIWithProducts(packagings)
         }
     }
 
-    private fun updateUIWithProducts(products: List<Product>) {
-        productAdapter.submitList(products)
+    private fun updateUIWithProducts(packagings: List<Packaging>) {
+        packagingAdapter.submitList(packagings)
 
-        val isEmpty = products.isEmpty()
+        val isEmpty = packagings.isEmpty()
         binding.tvNoItem.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.ivPdf.visibility = if (isEmpty) View.GONE else View.VISIBLE
-        binding.spinnerFilter.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
     private fun filterProducts(query: String) {
-        productViewModel.allProducts.value?.let { allProducts ->
-            val filteredByType = when (binding.spinnerFilter.selectedItemPosition) {
-                1 -> allProducts.filter { it.isFinalProduct }
-                2 -> allProducts.filter { !it.isFinalProduct }
-                else -> allProducts
-            }
-
-            val filteredByName = filteredByType.filter {
-                it.productName.contains(query, ignoreCase = true)
-            }
-
-            productAdapter.submitList(filteredByName)
-            binding.tvNoItem.visibility = if (filteredByName.isEmpty()) View.VISIBLE else View.GONE
+        packagingViewModel.allPackagings.value?.let { allProducts ->
+            packagingAdapter.submitList(allProducts)
+            binding.tvNoItem.visibility = if (allProducts.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
-    private fun navigateToUsage(product: Product) {
+    private fun navigateToDetails(packaging: Packaging) {
         findNavController().navigate(
-            ProductsFragmentDirections.actionProductsFragmentToProductUsageFragment(
-                product.productId,
-                product.productName,
-                product.updatedDate,
-                product.description
+            PackagingFragmentDirections.actionPackagingFragmentToPackagingDetailsFragment(
+                packaging.packagingId,
+                packaging.packagingName,
+                packaging.updatedDate,
+                packaging.description,
+                packaging.weight.toString()
             )
         )
     }
 
-    private fun navigateToChangeLog(product: Product) {
-        findNavController().navigate(
-            ProductsFragmentDirections.actionProductsFragmentToChangeLogFragment(
-                product.productId, 3
-            )
-        )
-    }
-
-    private fun navigateToDetails(product: Product) {
-        findNavController().navigate(
-            ProductsFragmentDirections.actionProductsFragmentToProductDetailsFragment(
-                product.productId,
-                product.productName,
-                product.updatedDate,
-                product.description
-            )
-        )
-    }
-
-    private fun showConfirmDeleteDialog(product: Product) {
-        ConfirmDeleteDialog {
-            productViewModel.delete(product)
-        }.show(childFragmentManager, "ConfirmDeleteDialog")
-    }
-
-    private fun showAddEditDialog(product: Product) {
-        AddEditProductDialog(productViewModel, product).also { dialog ->
+    private fun showAddEditDialog(packaging: Packaging) {
+        AddEditPackagingDialog(packagingViewModel, packaging).also { dialog ->
             dialog.show(childFragmentManager, "EditProductDialog")
             childFragmentManager.registerFragmentLifecycleCallbacks(object :
                 FragmentManager.FragmentLifecycleCallbacks() {
                 override fun onFragmentViewDestroyed(fm: FragmentManager, fragment: Fragment) {
                     if (fragment === dialog) {
-                        binding.spinnerFilter.setSelection(0)
-                        filterProducts(binding.svProduct.query?.toString() ?: "")
+                        filterProducts(binding.svPackaging.query?.toString() ?: "")
                         fm.unregisterFragmentLifecycleCallbacks(this)
                     }
                 }
@@ -279,12 +216,12 @@ class ProductsFragment : Fragment() {
 
     private suspend fun generateListPDF(
         context: Context,
-        items: List<Product>,
+        items: List<Packaging>,
     ) {
         try {
-            val productsWithPrices = getProductsWithPrices(items)
+            val packagingsWithPrices = getPackagingsWithPrices(items)
 
-            val fileName = context.getString(R.string.label_product_list)
+            val fileName = context.getString(R.string.label_packaging_list)
             val pdfFile = File(context.getExternalFilesDir(null), "${fileName}.pdf")
             val fos = withContext(Dispatchers.IO) {
                 FileOutputStream(pdfFile)
@@ -302,7 +239,7 @@ class ProductsFragment : Fragment() {
             val farsiFontBold14 = Font(baseFont, 14f, Font.BOLD)
             val farsiFontBold18 = Font(baseFont, 20f, Font.BOLD, BaseColor.BLACK)
 
-            val headerText = context.getString(R.string.label_product_list)
+            val headerText = context.getString(R.string.label_packaging_list)
 
             val headerTable = PdfPTable(1)
             headerTable.widthPercentage = 100f
@@ -349,15 +286,15 @@ class ProductsFragment : Fragment() {
             val headerColorBase =
                 BaseColor(Color.red(headerColor), Color.green(headerColor), Color.blue(headerColor))
 
-            val table = PdfPTable(3)
+            val table = PdfPTable(4)
             table.widthPercentage = 100f
             table.runDirection = PdfWriter.RUN_DIRECTION_RTL
-            val columnWidths = floatArrayOf(2f, 2f, 2f)
+            val columnWidths = floatArrayOf(2f, 2f, 2f, 2f)
             table.setWidths(columnWidths)
 
             table.addCell(
                 createCell(
-                    context.getString(R.string.label_product_name_item),
+                    context.getString(R.string.label_packaging_services),
                     farsiFont,
                     headerColorBase
                 )
@@ -371,18 +308,24 @@ class ProductsFragment : Fragment() {
             )
             table.addCell(
                 createCell(
-                    context.getString(R.string.label_current_price),
+                    context.getString(R.string.label_price_kg),
                     farsiFont,
                     headerColorBase
                 )
             )
-
-            for ((index, pair) in productsWithPrices.withIndex()) {
-                val product = pair.first
+            table.addCell(
+                createCell(
+                    context.getString(R.string.label_quantity_weight_unit),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            for ((index, pair) in packagingsWithPrices.withIndex()) {
+                val packaging = pair.first
                 val price = pair.second
                 val rowColor: BaseColor = if (index % 2 == 0) darkGrayBase else lightGrayBase
 
-                val rowText = "${index + 1}. ${product.productName}"
+                val rowText = "${index + 1}. ${packaging.packagingName}"
                 val cellName = createCell(rowText, farsiFont, rowColor)
                 cellName.runDirection = PdfWriter.RUN_DIRECTION_RTL
                 cellName.horizontalAlignment = Element.ALIGN_LEFT
@@ -390,11 +333,12 @@ class ProductsFragment : Fragment() {
                 table.addCell(cellName)
                 table.addCell(
                     createCell(
-                        formatDateShamsi(product.updatedDate),
+                        formatDateShamsi(packaging.updatedDate),
                         farsiFont, rowColor
                     )
                 )
                 table.addCell(createCell(formatter.format(price), farsiFont, rowColor))
+                table.addCell(createCell(formatter.format(packaging.weight), farsiFont, rowColor))
             }
 
             document.add(table)
@@ -405,18 +349,17 @@ class ProductsFragment : Fragment() {
         }
     }
 
-    private suspend fun getProductsWithPrices(
-        products: List<Product>
-    ): List<Pair<Product, Double>> {
-        return products.map { product ->
-            val details = productViewModel.getProductDetailsSuspend(product.productId)
+    private suspend fun getPackagingsWithPrices(
+        packagings: List<Packaging>
+    ): List<Pair<Packaging, Double>> {
+        return packagings.map { packaging ->
+            val details = packagingViewModel.getPackageDetailsSuspend(packaging.packagingId)
             val price = if (details.isNotEmpty()) {
-                calculatePricePerKg(
-                    getTotalQuantityForProduct(details),
-                    getTotalPriceForProduct(details)
+                getTotalPriceForPackaging(
+                    details
                 )
             } else 0.0
-            product to price
+            packaging to price
         }
     }
 

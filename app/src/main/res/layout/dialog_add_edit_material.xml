@@ -5,33 +5,38 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
     android:focusable="false"
-    android:focusableInTouchMode="false">
+    android:focusableInTouchMode="false"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_large">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvTitleDialog"
+        style="@style/MediumBoldTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_small"
+        android:gravity="center"
+        android:text="@string/label_add_material"
+        android:textColor="@color/color_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="@dimen/padding_medium"
+        android:background="@color/color_primary" />
 
     <LinearLayout
+        android:id="@+id/layoutMaterial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/padding_large">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvTitleDialog"
-            style="@style/MediumBoldTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="@string/label_add_material"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="@dimen/padding_medium"
-            android:background="@color/color_primary" />
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clMaterialName"
+            android:id="@+id/clMaterial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -42,12 +47,12 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tvTitleName"
+                app:layout_constraintEnd_toStartOf="@+id/tvTitleMaterialName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvTitleName"
+                android:id="@+id/tvTitleMaterialName"
                 style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,12 +75,12 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tvTitlePrice"
+                app:layout_constraintEnd_toStartOf="@+id/tvTitleMaterialPrice"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvTitlePrice"
+                android:id="@+id/tvTitleMaterialPrice"
                 style="@style/MediumBoldTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,30 +91,57 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/rgNature"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_medium">
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/padding_medium"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnCancel"
-                style="@style/ButtonDefault"
+            <RadioButton
+                android:id="@+id/rbVirtual"
+                style="@style/MediumTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="@string/label_close" />
+                android:layout_marginEnd="@dimen/padding_medium"
+                android:text="@string/label_virtual" />
 
-            <Button
-                android:id="@+id/btnSave"
-                style="@style/ButtonDefault"
+            <RadioButton
+                android:id="@+id/rbPhysical"
+                style="@style/MediumTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/label_save" />
+                android:checked="true"
+                android:text="@string/label_physical" />
 
-        </LinearLayout>
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/padding_medium">
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/ButtonDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:text="@string/label_close" />
+
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/ButtonDefault"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/label_save" />
 
     </LinearLayout>
 

@@ -22,8 +22,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/cvSearchMaterial"
+            android:id="@+id/cvSearchPackaging"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_medium"
@@ -33,44 +34,31 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.SearchView
-                android:id="@+id/svMaterial"
+                android:id="@+id/svPackaging"
                 style="@style/MediumTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:iconifiedByDefault="false"
                 android:layoutDirection="rtl"
-                android:queryHint="@string/label_search"
-                android:textAppearance="?android:attr/textAppearanceSearchResultTitle" />
+                android:queryHint="@string/label_search" />
 
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="0dp"
-        android:paddingHorizontal="0dp"
-        android:layout_marginVertical="@dimen/padding_medium"
-        android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/rlMaterials"
-        app:layout_constraintTop_toBottomOf="@+id/clTop"
-        app:tabGravity="fill"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed"
-        app:tabRippleColor="@null" />
-
     <RelativeLayout
-        android:id="@+id/rlMaterials"
+        android:layout_marginTop="@dimen/padding_medium"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/padding_medium"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/clTop">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvMaterials"
+            android:id="@+id/rvPackaging"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -87,7 +75,7 @@
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_material"
+        android:id="@+id/fab_add_packaging"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_xLarge"

@@ -10,6 +10,8 @@ import ir.kitgroup.formula.R
 import ir.kitgroup.formula.Util.calculatePrice
 import ir.kitgroup.formula.Util.calculatePricePerKg
 import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
@@ -74,7 +76,6 @@ class ProductDetailAdapter(
 
             if (material.type == 1)
                 binding.root.setOnClickListener { onClick(material.materialId) }
-
         }
     }
 }

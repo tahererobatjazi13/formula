@@ -14,7 +14,8 @@ import ir.kitgroup.formula.databinding.ItemUsageBinding
 import java.text.DecimalFormat
 
 class ProductUsageAdapter(
-    private val onClick: (ProductHistory, String, String) -> Unit
+    private val onClick: (ProductHistory, String, String) -> Unit,
+    private val onDelete: (ProductHistory) -> Unit = {},
 ) :
     ListAdapter<ProductHistory, ProductUsageAdapter.ProductUsageViewHolder>(ProductUsageDiffCallback()) {
     private val formatter = DecimalFormat("#,###,###,###")
@@ -39,11 +40,16 @@ class ProductUsageAdapter(
             // پس‌زمینه براساس ID جدید یا سطر زوج/فرد
             val bgColorRes = when {
                 item.id == lastInsertedId -> R.color.color_light_green
-                position % 2 == 0 -> R.color.gray_light
+                adapterPosition % 2 == 0 -> R.color.gray_light
                 else -> R.color.gray_dark
             }
 
-            binding.root.setBackgroundColor(ContextCompat.getColor(binding.root.context, bgColorRes))
+            binding.root.setBackgroundColor(
+                ContextCompat.getColor(
+                    binding.root.context,
+                    bgColorRes
+                )
+            )
 
             val formattedQuantity = formatQuantity(item.quantity)
             binding.tvQuantity.text = formattedQuantity
@@ -51,9 +57,13 @@ class ProductUsageAdapter(
             binding.tvUnitPrice.text = formatter.format(item.unitPrice)
             binding.tvDate.text = formatDateShamsi(item.date)
 
-            binding.llMain.setOnClickListener { onClick(item, formattedQuantity,
-                item.totalPrice.toString()
-            ) }
+            binding.llMain.setOnClickListener {
+                onClick(
+                    item, formattedQuantity,
+                    item.totalPrice.toString()
+                )
+            }
+            binding.ivDelete.setOnClickListener { onDelete(item) }
         }
     }
 

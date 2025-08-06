@@ -2,9 +2,13 @@
     <item
         android:id="@+id/ProductsFragment"
         android:icon="@drawable/ic_product"
-        android:title="محصولات" />
+        android:title="@string/label_products" />
+    <item
+        android:id="@+id/PackagingFragment"
+        android:icon="@drawable/ic_packaging"
+        android:title="@string/label_packaging" />
     <item
         android:id="@+id/MaterialsFragment"
         android:icon="@drawable/ic_material"
-        android:title="مواد اولیه" />
+        android:title="@string/label_material" />
 </menu>

@@ -14,7 +14,16 @@
             android:id="@+id/action_MaterialsFragment_to_changeLogFragment"
             app:destination="@id/changeLogFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/PackagingFragment"
+        android:name="ir.kitgroup.formula.fragment.PackagingFragment"
+        android:label="@string/label_packaging"
+        tools:layout="@layout/fragment_packaging">
 
+        <action
+            android:id="@+id/action_PackagingFragment_to_packagingDetailsFragment"
+            app:destination="@id/packagingDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ProductsFragment"
         android:name="ir.kitgroup.formula.fragment.ProductsFragment"
@@ -101,7 +110,7 @@
         <argument
             android:name="productId"
             app:argType="integer" />
-        <argument
+           <argument
             android:name="productName"
             app:argType="string" />
         <argument
@@ -117,6 +126,52 @@
         <action
             android:id="@+id/actionProductUsageDetailsFragmentSelf"
             app:destination="@id/productUsageDetailsFragment" />
+        <action
+            android:id="@+id/action_productUsageDetailsFragment_to_packagingUsageDetailsFragment"
+            app:destination="@id/packagingUsageDetailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/packagingDetailsFragment"
+        android:name="ir.kitgroup.formula.fragment.PackagingDetailsFragment"
+        android:label="PackagingDetailsFragment">
 
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
+        <argument
+            android:name="packageName"
+            app:argType="string" />
+        <argument
+            android:name="packageDate"
+            app:argType="long" />
+        <argument
+            android:name="packageDescription"
+            app:argType="string" />
+        <argument
+            android:name="packageWeight"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/packagingUsageDetailsFragment"
+        android:name="ir.kitgroup.formula.fragment.PackagingUsageDetailsFragment"
+        android:label="PackagingUsageDetailsFragment">
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="packageName"
+            app:argType="string" />
+        <argument
+            android:name="packageDate"
+            app:argType="long" />
+        <argument
+            android:name="formattedQty"
+            app:argType="string" />
+        <argument
+            android:name="packagePrice"
+            app:argType="string" />
+    </fragment>
 </navigation>
