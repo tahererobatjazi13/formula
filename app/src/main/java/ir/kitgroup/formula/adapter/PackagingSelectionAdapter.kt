@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePackagingPrice
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.calculatePackagingPrice
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
-import ir.kitgroup.formula.model.MaterialNature
-import java.text.DecimalFormat
+import ir.kitgroup.formula.core.MaterialNature
+import ir.kitgroup.formula.core.Util
 
 class PackagingSelectionAdapter(
     private val onMaterialSelected: (Material, Boolean) -> Unit
@@ -22,7 +22,6 @@ class PackagingSelectionAdapter(
     PackagingSelectionDiffCallback()
 ) {
 
-    private val formatter = DecimalFormat("#,###,###,###")
     private var formatQuantity: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackagingViewHolder {
@@ -76,7 +75,7 @@ class PackagingSelectionAdapter(
                 }
             }
 
-            binding.tvPrice.text = formatter.format(material.price)
+            binding.tvPrice.text = Util.priceFormatter.format(material.price)
             updateTotalPrice(material.price, quantity)
 
             textWatcher = object : TextWatcher {
@@ -108,7 +107,7 @@ class PackagingSelectionAdapter(
 
         private fun updateTotalPrice(price: Double, quantity: Double) {
             val totalPrice = calculatePackagingPrice(quantity, price)
-            binding.tvTotalPrice.text = formatter.format(totalPrice)
+            binding.tvTotalPrice.text = Util.priceFormatter.format(totalPrice)
         }
     }
 

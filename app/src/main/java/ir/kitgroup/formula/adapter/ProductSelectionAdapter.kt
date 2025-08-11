@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePrice
-import ir.kitgroup.formula.Util.calculatePricePerKg
-import ir.kitgroup.formula.Util.formatQuantity
-import ir.kitgroup.formula.Util.getTotalPriceForProduct
-import ir.kitgroup.formula.Util.getTotalQuantityForProduct
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.calculatePrice
+import ir.kitgroup.formula.core.Util.calculatePricePerKg
+import ir.kitgroup.formula.core.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.core.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
-import java.text.DecimalFormat
 
 class ProductSelectionAdapter(
     private val onProductSelected: (Product, Double, Boolean) -> Unit,
@@ -26,7 +26,6 @@ class ProductSelectionAdapter(
     private val type: Int,
 ) :
     ListAdapter<Product, ProductSelectionAdapter.MaterialViewHolder>(ProductSelectionDiffCallback()) {
-    private val formatter = DecimalFormat("#,###,###,###")
     private var totalPrice: Double = 0.0
     private var totalPriceKg: Double = 0.0
     private var formatQuantity: String = ""
@@ -65,7 +64,7 @@ class ProductSelectionAdapter(
                 totalPriceKg = pricePerKg
                 totalPrice = getTotalPriceForProduct(productDetails)
 
-                binding.tvPrice.text = formatter.format(pricePerKg)
+                binding.tvPrice.text = Util.priceFormatter.format(pricePerKg)
 
                 // حالا با توجه به type، قیمت را محاسبه کن
                 if (type == 1) {
@@ -86,7 +85,7 @@ class ProductSelectionAdapter(
                             binding.tvPrice.text.toString().replace(",", "").toDoubleOrNull() ?: 0.0
 
                         product.quantity = newQuantity
-                        binding.tvTotalPrice.text = formatter.format(
+                        binding.tvTotalPrice.text = Util.priceFormatter.format(
                             calculatePrice(newQuantity, price)
                         )
                         onProductSelected(product, totalPriceKg, newQuantity > 0)
@@ -116,7 +115,7 @@ class ProductSelectionAdapter(
 
         private fun updateTotalPrice(price: Double, quantity: Double) {
             val totalPrice = price / 1000 * quantity
-            binding.tvTotalPrice.text = formatter.format(totalPrice)
+            binding.tvTotalPrice.text = Util.priceFormatter.format(totalPrice)
         }
     }
 }

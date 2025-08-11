@@ -7,15 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePricePerKg
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.formatQuantity
-import ir.kitgroup.formula.Util.getTotalPriceForProduct
-import ir.kitgroup.formula.Util.getTotalQuantityForProduct
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.calculatePricePerKg
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.core.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.databinding.ItemProductBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
-import java.text.DecimalFormat
 
 class ProductAdapter(
     private val onUsage: (Product) -> Unit = {},
@@ -26,7 +26,6 @@ class ProductAdapter(
     private val viewModel: ProductViewModel,
 
     ) : ListAdapter<Product, ProductAdapter.ProductViewHolder>(ProductDiffCallback()) {
-    private val formatter = DecimalFormat("#,###,###,###")
     private var totalPrice: Double = 0.0
     private var totalPriceKg: Double = 0.0
     private var pricePerKg: Double = 0.0
@@ -83,8 +82,8 @@ class ProductAdapter(
                 formatTotalQuantity = formatQuantity(totalQuantity)
                 binding.tvProductAmount.text = "$formatTotalQuantity گرم"
 
-                binding.tvProductPrice.text = formatter.format(totalPrice) + " ریال "
-                binding.tvProductPriceKg.text = formatter.format(pricePerKg) + " ریال "
+                binding.tvProductPrice.text = Util.priceFormatter.format(totalPrice) + " ریال "
+                binding.tvProductPriceKg.text = Util.priceFormatter.format(pricePerKg) + " ریال "
             }
         }
     }

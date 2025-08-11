@@ -34,15 +34,15 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.adapter.PackageDetailAdapter
+import ir.kitgroup.formula.core.Util
 import ir.kitgroup.formula.database.entity.PackagingDetail
 import ir.kitgroup.formula.databinding.FragmentPackagingDetailsBinding
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
 import java.io.File
 import java.io.FileOutputStream
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -57,8 +57,6 @@ class PackagingDetailsFragment : Fragment() {
     private lateinit var packageDetailAdapter: PackageDetailAdapter
     private var packagingDetail: List<PackagingDetail>? = null
     private val args: PackagingDetailsFragmentArgs by navArgs()
-    private val formatter = DecimalFormat("#,###,###,###")
-    private val formatterQuantity = DecimalFormat("###,##0.###")
     private var productNamePdf: String = ""
     private var displayDateTime: String = ""
     private var productDescription: String = ""
@@ -75,12 +73,7 @@ class PackagingDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)).apply {
-            visibility = View.GONE
-        }
-        (requireActivity().findViewById<Toolbar>(R.id.toolbar)).apply {
-            visibility = View.GONE
-        }
+        hideUIElements()
         _binding = FragmentPackagingDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -113,7 +106,7 @@ class PackagingDetailsFragment : Fragment() {
         binding.tvProductDate.text = formatDateShamsi(productDate)
 
         packageWeight = args.packageWeight.toDoubleOrNull() ?: 0.0
-        binding.tvPackagingWeight.text = "${formatterQuantity.format(packageWeight)} گرم"
+        binding.tvPackagingWeight.text = "${formatQuantity(packageWeight)} گرم"
 
         if (productDescription.isEmpty()) {
             binding.tvProductDescription.visibility = View.GONE
@@ -151,8 +144,8 @@ class PackagingDetailsFragment : Fragment() {
                 price = details.sumOf { it.materialPrice }
                 formatTotalQuantity = formatQuantity(totalQuantity)
                 binding.tvTotalQuantity.text = formatTotalQuantity
-                binding.tvTotalPrice.text = formatter.format(totalPrice)
-                binding.tvPrice.text = formatter.format(price)
+                binding.tvTotalPrice.text =  Util.priceFormatter.format(totalPrice)
+                binding.tvPrice.text = Util.priceFormatter.format(price)
             }
     }
 
@@ -256,7 +249,7 @@ class PackagingDetailsFragment : Fragment() {
             val createWightTable = PdfPTable(1)
             createWightTable.widthPercentage = 100f
             createWightTable.horizontalAlignment = Element.ALIGN_RIGHT
-            val formattedQuantity ="${formatterQuantity.format(packageWeight)} گرم"
+            val formattedQuantity = "${formatQuantity(packageWeight)} گرم"
 
             val createWight =
                 PdfPCell(Phrase("وزن بسته بندی: $formattedQuantity", farsiFontBold14))
@@ -345,10 +338,10 @@ class PackagingDetailsFragment : Fragment() {
                 table.addCell(cellQuantity)
 
                 val cellPriceKg = createCell(
-                    formatter.format(item.materialPrice), farsiFont, materialColorBase
+                    Util.priceFormatter.format(item.materialPrice), farsiFont, materialColorBase
                 )
                 val cellPrice = createCell(
-                    formatter.format(
+                    Util.priceFormatter.format(
                         item.quantity * item.materialPrice
                     ), farsiFont, materialColorBase
                 )
@@ -367,14 +360,14 @@ class PackagingDetailsFragment : Fragment() {
             )
             table.addCell(
                 createCell(
-                    formatter.format(
+                    Util.priceFormatter.format(
                         price
                     ), farsiFontBold14, footerColorBase
                 )
             )
             table.addCell(
                 createCell(
-                    formatter.format(
+                    Util.priceFormatter.format(
                         totalPrice
                     ), farsiFontBold14, footerColorBase
                 )
@@ -407,6 +400,12 @@ class PackagingDetailsFragment : Fragment() {
         intent.setDataAndType(uri, "application/pdf")
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         context.startActivity(intent)
+    }
+
+    private fun hideUIElements() {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility =
+            View.GONE
+        requireActivity().findViewById<Toolbar>(R.id.toolbar)?.visibility = View.GONE
     }
 
     override fun onDestroyView() {

@@ -1,4 +1,4 @@
-package ir.kitgroup.formula
+package ir.kitgroup.formula.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -23,6 +22,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.room.Room
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ir.huri.jcal.JalaliCalendar
+import ir.kitgroup.formula.R
 import ir.kitgroup.formula.database.AppDatabase
 import ir.kitgroup.formula.databinding.ActivityMainBinding
 import java.io.BufferedInputStream
@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

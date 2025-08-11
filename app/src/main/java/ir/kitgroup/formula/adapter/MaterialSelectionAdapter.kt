@@ -9,17 +9,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePrice
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.calculatePrice
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
-import java.text.DecimalFormat
 
 class MaterialSelectionAdapter(
     private val onMaterialSelected: (Material, Boolean) -> Unit
 ) : ListAdapter<Material, MaterialSelectionAdapter.MaterialViewHolder>(MaterialSelectionDiffCallback()) {
 
-    private val formatter = DecimalFormat("#,###,###,###")
     private var formatQuantity: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
@@ -66,7 +65,7 @@ class MaterialSelectionAdapter(
                 }
             }
 
-            binding.tvPrice.text = formatter.format(material.price)
+            binding.tvPrice.text = Util.priceFormatter.format(material.price)
             updateTotalPrice(material.price, quantity)
 
             textWatcher = object : TextWatcher {
@@ -98,7 +97,7 @@ class MaterialSelectionAdapter(
 
         private fun updateTotalPrice(price: Double, quantity: Double) {
             val totalPrice = calculatePrice(quantity, price)
-            binding.tvTotalPrice.text = formatter.format(totalPrice)
+            binding.tvTotalPrice.text = Util.priceFormatter.format(totalPrice)
         }
     }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -32,15 +33,17 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.adapter.ProductUsageDetailAdapter
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.database.entity.Packaging
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.FragmentProductUsageDetailsBinding
+import ir.kitgroup.formula.viewmodel.PackagingViewModel
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.io.File
 import java.io.FileOutputStream
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,21 +52,23 @@ import java.util.Locale
 class ProductUsageDetailsFragment : Fragment() {
 
     private var _binding: FragmentProductUsageDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private val productViewModel: ProductViewModel by viewModels()
+    private val packagingViewModel: PackagingViewModel by viewModels()
     private lateinit var productUsageDetailAdapter: ProductUsageDetailAdapter
+
     private var productDetail: List<ProductDetail>? = null
+    private lateinit var allPackaging: List<Packaging>
     private val args: ProductUsageDetailsFragmentArgs by navArgs()
-    private val formatter = DecimalFormat("#,###,###,###")
-    private val formatterQuantity = DecimalFormat("###,##0.###")
+
+    // Data vars
+    private var productName: String = ""
     private var productNamePdf: String = ""
     private var displayDateTime: String = ""
-    private var productName: String = ""
-    private var formattedQty: String = ""
     private var productDate: Long = 0
     private var totalPriceKilograms: Double = 0.0
-    private var qty: Double = 0.0
     private var multipliedQuantity: Double = 0.0
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +82,8 @@ class ProductUsageDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        initAdapter()
+        setupObservers()
         rxBinding()
     }
 
@@ -86,7 +93,6 @@ class ProductUsageDetailsFragment : Fragment() {
         val productId = args.productId
         productName = args.productName
         productDate = args.productDate
-        formattedQty = args.formattedQty
 
         val jalaliDate = JalaliCalendar()
         val dateFormatted =
@@ -97,23 +103,31 @@ class ProductUsageDetailsFragment : Fragment() {
         displayDateTime = "$dateFormatted ، $time"
         productNamePdf = "${productName}_$displayDateTime"
 
-        binding.tvProductName.text = productName
-        binding.tvProductDate.text = formatDateShamsi(productDate)
-
         totalPriceKilograms = args.totalPrice.toDoubleOrNull() ?: 0.0
-        qty = args.formattedQty.toDoubleOrNull() ?: 0.0
-        multipliedQuantity = if (args.type == 1) {
-            qty * 1000
-        } else {
-            qty
-        }
-        binding.tvAmount.text = "${formatterQuantity.format(multipliedQuantity)} گرم"
 
-        binding.tvTotalQuantity.text = formatterQuantity.format(multipliedQuantity) + ""
-        binding.tvPriceKilograms.text = formatter.format(totalPriceKilograms)
+        val qty = args.formattedQty.toDoubleOrNull() ?: 0.0
+        multipliedQuantity = if (args.type == 1) qty * 1000 else qty
+
+
+
+        binding.apply {
+            tvProductName.text = productName
+            tvProductDate.text = formatDateShamsi(productDate)
+            tvProductAmount.text = "${formatQuantity(multipliedQuantity)} گرم"
+            tvTotalQuantity.text = formatQuantity(multipliedQuantity)
+            tvTotalPrice.text = Util.priceFormatter.format(totalPriceKilograms)
+        }
 
         productViewModel.loadProductHistoryById(id)
 
+        productViewModel.loadProcessedDetails(
+            args.type,
+            productId,
+            qty
+        )
+    }
+
+    private fun initAdapter() {
         productUsageDetailAdapter = ProductUsageDetailAdapter { type, id, name, qty, price ->
             val action = ProductUsageDetailsFragmentDirections
                 .actionProductUsageDetailsFragmentSelf(
@@ -128,40 +142,55 @@ class ProductUsageDetailsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        binding.rvMaterials.adapter = productUsageDetailAdapter
-        binding.rvMaterials.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvMaterials.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = productUsageDetailAdapter
+        }
+    }
 
+    private fun setupObservers() {
         productViewModel.processedDetails.observe(viewLifecycleOwner) {
             productDetail = it
             productUsageDetailAdapter.submitList(it)
         }
-
-        productViewModel.loadProcessedDetails(
-            type = args.type,
-            productId = productId,
-            formattedQty = args.formattedQty.toDoubleOrNull() ?: 0.0
-        )
+        packagingViewModel.allPackagings.observe(viewLifecycleOwner) {
+            allPackaging = it
+        }
     }
 
     private fun rxBinding() {
-        binding.ivPdf.setOnClickListener {
-            preparePdfData(productDetail!!) { rowList ->
-                generatePdfWithData(requireContext(), rowList)
+        binding.apply {
+            ivPdf.setOnClickListener {
+                preparePdfData(productDetail!!) { rowList ->
+                    generatePdfWithData(requireContext(), rowList)
+                }
+            }
+            ivBack.setOnClickListener {
+                parentFragmentManager.popBackStack()
             }
 
-        }
-        binding.ivBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-        binding.btnPackage.setOnClickListener {
-            findNavController().navigate(
-                ProductUsageDetailsFragmentDirections.actionProductUsageDetailsFragmentToPackagingUsageDetailsFragment(
-                    args.productId,
-                    args.id,
-                    productName,
-                    productDate, multipliedQuantity.toString(), totalPriceKilograms.toString()
-                )
-            )
+            btnPackage.setOnClickListener {
+                if (allPackaging.isEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.error_no_packaging_registered,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                } else {
+                    findNavController().navigate(
+                        ProductUsageDetailsFragmentDirections
+                            .actionProductUsageDetailsFragmentToPackagingUsageDetailsFragment(
+                                args.productId,
+                                args.id,
+                                productName,
+                                productDate,
+                                multipliedQuantity.toString(),
+                                totalPriceKilograms.toString()
+                            )
+                    )
+                }
+            }
         }
     }
 
@@ -278,7 +307,7 @@ class ProductUsageDetailsFragment : Fragment() {
             createQuantityTable.horizontalAlignment = Element.ALIGN_RIGHT
 
             val roundedCell = multipliedQuantity
-            val formattedCell = formatterQuantity.format(roundedCell)
+            val formattedCell = formatQuantity(roundedCell)
 
             val createQuantityCell =
                 PdfPCell(
@@ -318,9 +347,17 @@ class ProductUsageDetailsFragment : Fragment() {
                 Color.blue(productColor)
             )
             val headerColorBase =
-                BaseColor(Color.red(headerColor), Color.green(headerColor), Color.blue(headerColor))
+                BaseColor(
+                    Color.red(headerColor),
+                    Color.green(headerColor),
+                    Color.blue(headerColor)
+                )
             val footerColorBase =
-                BaseColor(Color.red(footerColor), Color.green(footerColor), Color.blue(footerColor))
+                BaseColor(
+                    Color.red(footerColor),
+                    Color.green(footerColor),
+                    Color.blue(footerColor)
+                )
 
             // اضافه کردن جدول داده‌ها
             val table = PdfPTable(3)
@@ -371,7 +408,7 @@ class ProductUsageDetailsFragment : Fragment() {
                 table.addCell(cellQuantity)
 
                 val cellPriceKg = createCell(
-                    formatter.format(item.price), farsiFont, rowColor
+                    Util.priceFormatter.format(item.price), farsiFont, rowColor
                 )
                 table.addCell(cellPriceKg)
             }
@@ -382,7 +419,7 @@ class ProductUsageDetailsFragment : Fragment() {
             table.addCell(createCell(totalText, farsiFontBold14, footerColorBase))
 
             val rounded = multipliedQuantity
-            val formatted = formatterQuantity.format(rounded)
+            val formatted = formatQuantity(rounded)
 
             table.addCell(
                 createCell(formatted, farsiFontBold14, footerColorBase)
@@ -390,7 +427,7 @@ class ProductUsageDetailsFragment : Fragment() {
 
             table.addCell(
                 createCell(
-                    formatter.format(
+                    Util.priceFormatter.format(
                         totalPriceKilograms
                     ), farsiFontBold14, footerColorBase
                 )
@@ -415,7 +452,6 @@ class ProductUsageDetailsFragment : Fragment() {
         cell.setPadding(14f)
         return cell
     }
-
 
     private fun openPDF(context: Context, file: File) {
         val uri = FileProvider.getUriForFile(context, "ir.kitgroup.formula.provider", file)

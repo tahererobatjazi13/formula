@@ -12,16 +12,15 @@ import androidx.fragment.app.DialogFragment
 import ir.kitgroup.formula.R
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.DialogAddEditMaterialBinding
-import ir.kitgroup.formula.model.MaterialNature
-import ir.kitgroup.formula.model.MaterialType
-import java.text.DecimalFormat
+import ir.kitgroup.formula.core.MaterialNature
+import ir.kitgroup.formula.core.MaterialType
+import ir.kitgroup.formula.core.Util
 
 class AddEditMaterialDialog(
     private val material: Material? = null,
     private val defaultType: String = MaterialType.MATERIAL.value,
     private val onSave: (Material) -> Unit
 ) : DialogFragment() {
-    private val formatter = DecimalFormat("#,###,###,###")
 
     private lateinit var binding: DialogAddEditMaterialBinding
 
@@ -89,7 +88,7 @@ class AddEditMaterialDialog(
 
         material?.let {
             binding.etMaterialName.setText(it.materialName)
-            binding.etMaterialPrice.setText(formatter.format(it.price) + "")
+            binding.etMaterialPrice.setText(Util.priceFormatter.format(it.price) + "")
         }
 
         binding.etMaterialPrice.addTextChangedListener(object : TextWatcher {

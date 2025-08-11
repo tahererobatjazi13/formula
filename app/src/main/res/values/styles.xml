@@ -69,4 +69,23 @@
     <style name="InputTextTheme">
         <item name="colorControlActivated">?attr/colorOnSurface</item>
     </style>
+
+
+    <!-- edit text-->
+
+    <style name="Input">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="fontFamily">@font/yekan</item>
+        <item name="android:textColor">?attr/colorOnPrimarySurface</item>
+        <item name="android:textColorHint">?attr/colorText</item>
+    </style>
+
+    <style name="ErrorTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/red_FF5C5C</item>
+        <item name="android:textSize">12sp</item>
+        <item name="fontFamily">@font/yekan</item>
+        <item name="android:gravity">end</item>
+        <item name="android:textAlignment">viewEnd</item>
+    </style>
+
 </resources>

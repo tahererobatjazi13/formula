@@ -7,22 +7,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePrice
-import ir.kitgroup.formula.Util.calculatePricePerKg
-import ir.kitgroup.formula.Util.formatQuantity
-import ir.kitgroup.formula.Util.getTotalPriceForProduct
-import ir.kitgroup.formula.Util.getTotalQuantityForProduct
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.calculatePrice
+import ir.kitgroup.formula.core.Util.calculatePricePerKg
+import ir.kitgroup.formula.core.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.core.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
-import java.text.DecimalFormat
 
 class ProductDetailAdapter(
     private val onClick: (Int) -> Unit = {}, private val productViewModel: ProductViewModel,
 ) : ListAdapter<ProductDetail, ProductDetailAdapter.ProductDetailViewHolder>(
     ProductDetailDiffCallback()
 ) {
-    private val formatter = DecimalFormat("#,###,###,###")
     private var totalPrice: Double = 0.0
     private var totalPriceKg: Double = 0.0
 
@@ -52,8 +51,8 @@ class ProductDetailAdapter(
                             getTotalQuantityForProduct(productDetails),
                             getTotalPriceForProduct(productDetails)
                         )
-                        binding.tvPrice.text = formatter.format(totalPriceKg)
-                        binding.tvTotalPrice.text = formatter.format(
+                        binding.tvPrice.text = Util.priceFormatter.format(totalPriceKg)
+                        binding.tvTotalPrice.text = Util.priceFormatter.format(
                             calculatePrice(material.quantity, totalPriceKg)
                         )
                     }
@@ -61,8 +60,8 @@ class ProductDetailAdapter(
                 binding.root.setBackgroundColor(
                     ContextCompat.getColor(itemView.context, R.color.color_light_green)
                 )
-                binding.tvPrice.text = formatter.format(material.materialPrice)
-                binding.tvTotalPrice.text = formatter.format(
+                binding.tvPrice.text = Util.priceFormatter.format(material.materialPrice)
+                binding.tvTotalPrice.text = Util.priceFormatter.format(
                     calculatePrice(material.quantity, material.materialPrice)
                 )
             }

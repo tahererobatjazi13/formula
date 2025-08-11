@@ -35,19 +35,19 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePrice
-import ir.kitgroup.formula.Util.calculatePricePerKg
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.formatQuantity
-import ir.kitgroup.formula.Util.getTotalPriceForProduct
-import ir.kitgroup.formula.Util.getTotalQuantityForProduct
+import ir.kitgroup.formula.core.Util.calculatePrice
+import ir.kitgroup.formula.core.Util.calculatePricePerKg
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.core.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.adapter.ProductDetailAdapter
+import ir.kitgroup.formula.core.Util
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.FragmentProductDetailsBinding
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.io.File
 import java.io.FileOutputStream
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -62,7 +62,6 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var productDetailAdapter: ProductDetailAdapter
     private var productDetail: List<ProductDetail>? = null
     private val args: ProductDetailsFragmentArgs by navArgs()
-    private val formatter = DecimalFormat("#,###,###,###")
     private var productNamePdf: String = ""
     private var displayDateTime: String = ""
     private var productDescription: String = ""
@@ -249,21 +248,13 @@ class ProductDetailsFragment : Fragment() {
         totalPrice = totalPriceMaterial + totalPriceProduct
         totalQuantity = totalQuantityMaterial + totalQuantityProduct
 
-        /*  formattedTotal = if (totalQuantity % 1 == 0.0) {
-              totalQuantity.toInt().toString()
-          } else {
-              val decimalPart = totalQuantity.toString().split(".").getOrNull(1) ?: ""
-              val decimalPlaces = decimalPart.length.coerceAtMost(4)
-              String.format("%.${decimalPlaces}f", totalQuantity)
-          }*/
-
         formatTotalQuantity = formatQuantity(totalQuantity)
         binding.tvTotalQuantity.text = formatTotalQuantity
 
-        binding.tvTotalPrice.text = formatter.format(totalPrice)
+        binding.tvTotalPrice.text = Util.priceFormatter.format(totalPrice)
 
         priceKilograms = calculatePricePerKg(totalQuantity, totalPrice)
-        binding.tvPriceKilograms.text = formatter.format(priceKilograms)
+        binding.tvPriceKilograms.text = Util.priceFormatter.format(priceKilograms)
     }
 
 
@@ -432,14 +423,14 @@ class ProductDetailsFragment : Fragment() {
 
                     table.addCell(
                         createCell(
-                            formatter.format(unitPriceProduct),
+                            Util.priceFormatter.format(unitPriceProduct),
                             farsiFont,
                             rowColor
                         )
                     )
                     table.addCell(
                         createCell(
-                            formatter.format(calculatePrice(item.quantity, unitPriceProduct)),
+                            Util.priceFormatter.format(calculatePrice(item.quantity, unitPriceProduct)),
                             farsiFont,
                             rowColor
                         )
@@ -447,10 +438,10 @@ class ProductDetailsFragment : Fragment() {
                 } else {
 
                     val cellPriceKg = createCell(
-                        formatter.format(item.materialPrice), farsiFont, rowColor
+                        Util.priceFormatter.format(item.materialPrice), farsiFont, rowColor
                     )
                     val cellPrice = createCell(
-                        formatter.format(
+                        Util.priceFormatter.format(
                             calculatePrice(item.quantity, item.materialPrice)
                         ), farsiFont, rowColor
                     )
@@ -470,14 +461,14 @@ class ProductDetailsFragment : Fragment() {
             )
             table.addCell(
                 createCell(
-                    formatter.format(
+                    Util.priceFormatter.format(
                         priceKilograms
                     ), farsiFontBold14, footerColorBase
                 )
             )
             table.addCell(
                 createCell(
-                    formatter.format(
+                    Util.priceFormatter.format(
                         totalPrice
                     ), farsiFontBold14, footerColorBase
                 )

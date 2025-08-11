@@ -15,12 +15,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePricePerKg
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.formatQuantity
-import ir.kitgroup.formula.Util.getTotalPriceForProduct
-import ir.kitgroup.formula.Util.getTotalQuantityForProduct
+import ir.kitgroup.formula.core.Util.calculatePricePerKg
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.getTotalPriceForProduct
+import ir.kitgroup.formula.core.Util.getTotalQuantityForProduct
 import ir.kitgroup.formula.adapter.ProductUsageAdapter
+import ir.kitgroup.formula.core.Util
 import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 import java.text.DecimalFormat
@@ -32,7 +33,6 @@ class ProductUsageFragment : Fragment() {
     private val viewModel: ProductViewModel by viewModels()
     private lateinit var productUsageAdapter: ProductUsageAdapter
     private val args: ProductUsageFragmentArgs by navArgs()
-    private val formatter = DecimalFormat("#,###,###,###")
     private var pricePerKg: Double = 0.0
     private var totalPrice: Double = 0.0
     private var totalQuantity: Double = 0.0
@@ -63,7 +63,7 @@ class ProductUsageFragment : Fragment() {
 
             formatTotalQuantity = formatQuantity(totalQuantity)
             binding.tvProductAmount.text = "$formatTotalQuantity گرم"
-            binding.tvProductPrice.text = formatter.format(totalPrice) + " ریال "
+            binding.tvProductPrice.text = Util.priceFormatter.format(totalPrice) + " ریال "
             pricePerKg = calculatePricePerKg(totalQuantity, totalPrice)
         }
 
@@ -98,7 +98,7 @@ class ProductUsageFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         viewModel.price.observe(viewLifecycleOwner) { price ->
-            binding.tvPrice.text = "${formatter.format(price)} ریال"
+            binding.tvPrice.text = "${Util.priceFormatter.format(price)} ریال"
         }
         viewModel.history.observe(viewLifecycleOwner) { list ->
             productUsageAdapter.submitList(list)

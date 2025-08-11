@@ -14,7 +14,7 @@ import ir.kitgroup.formula.adapter.ProductSelectionAdapter
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.Product
 import ir.kitgroup.formula.databinding.DialogAddEditProductBinding
-import ir.kitgroup.formula.model.MaterialType
+import ir.kitgroup.formula.core.MaterialType
 import ir.kitgroup.formula.viewmodel.ProductViewModel
 
 class AddEditProductDialog(

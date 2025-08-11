@@ -7,14 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.formatDateShamsi
 import ir.kitgroup.formula.database.entity.MaterialChangeLog
 import ir.kitgroup.formula.databinding.ItemChangeLogBinding
-import java.text.DecimalFormat
 
 class ChangeLogAdapter :
     ListAdapter<MaterialChangeLog, ChangeLogAdapter.MaterialViewHolder>(ChangeLogDiffCallback()) {
-    private val formatter = DecimalFormat("#,###,###,###")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
         val binding =
@@ -42,8 +41,8 @@ class ChangeLogAdapter :
             }
             binding.tvChangeDate.text = formatDateShamsi(material.changeDate)
             binding.tvName.text = material.materialName
-            binding.tvOldPrice.text = formatter.format(material.oldValue)
-            binding.tvNewPrice.text = formatter.format(material.newValue)
+            binding.tvOldPrice.text = Util.priceFormatter.format(material.oldValue)
+            binding.tvNewPrice.text = Util.priceFormatter.format(material.newValue)
         }
     }
 }

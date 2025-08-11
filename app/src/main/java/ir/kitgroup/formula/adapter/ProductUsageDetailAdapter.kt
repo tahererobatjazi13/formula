@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.ProductDetail
 import ir.kitgroup.formula.databinding.ItemUsageDetailBinding
 import java.text.DecimalFormat

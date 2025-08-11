@@ -9,19 +9,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatDateShamsi
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.ItemMaterialBinding
-import ir.kitgroup.formula.model.MaterialNature
-import ir.kitgroup.formula.model.MaterialType
-import java.text.DecimalFormat
+import ir.kitgroup.formula.core.MaterialNature
+import ir.kitgroup.formula.core.MaterialType
+import ir.kitgroup.formula.core.Util
 
 class MaterialAdapter(
     private val onChangeLog: (Material) -> Unit = {},
     private val onDelete: (Material) -> Unit = {},
     private val onEdit: (Material) -> Unit = {}
 ) : ListAdapter<Material, MaterialAdapter.MaterialViewHolder>(MaterialDiffCallback()) {
-    private val formatter = DecimalFormat("#,###,###,###")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MaterialViewHolder {
         val binding =
@@ -82,7 +81,7 @@ class MaterialAdapter(
             binding.tvTitleMaterialDate.text = label
             binding.tvMaterialDate.text = formatDateShamsi(date)
             binding.tvMaterialName.text = material.materialName
-            binding.tvMaterialPrice.text = formatter.format(material.price) + " ریال "
+            binding.tvMaterialPrice.text = Util.priceFormatter.format(material.price) + " ریال "
             binding.ivDeleteMaterial.setOnClickListener { onDelete(material) }
             binding.ivEditMaterial.setOnClickListener { onEdit(material) }
             binding.ivChangeLog.setOnClickListener { onChangeLog(material) }

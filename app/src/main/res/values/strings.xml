@@ -93,9 +93,14 @@
     <string name="label_report_product">گزارش جزییات محصول</string>
     <string name="label_product_detail">جزییات محصول</string>
     <string name="label_packaging_detail">جزییات بسته بندی</string>
+    <string name="label_packaging_production_detail">جزییات تولید بسته بندی</string>
     <string name="label_report_packaging_detail">گزارش جزییات بسته بندی</string>
     <string name="label_production_schedule_product">برنامه تولید محصول</string>
     <string name="label_schedule_product_detail">جزییات تولید محصول</string>
+    <string name="label_register">ثبت نام</string>
+    <string name="label_mobile">شماره همراه</string>
+    <string name="label_name_family">نام و نام خانوادگی</string>
+    <string name="label_star">*</string>
 
     <string name="msg_packaging_consumption_saved">مصرف بسته‌بندی‌ها ذخیره شد</string>
     <string name="msg_packaging_consumption_edit">مصرف بسته‌بندی‌ها ویرایش شد</string>
@@ -111,6 +116,8 @@
     <string name="error_first_enter_material">ابتدا مواد اولیه را اضافه کنید</string>
     <string name="error_first_enter_packaging">ابتدا بسته بندی را اضافه کنید</string>
     <string name="error_enter_valid_number">عدد معتبر وارد کنید</string>
+    <string name="error_all_fields_required">همه فیلدها الزامی هستند</string>
+    <string name="error_no_packaging_registered">هیچ بسته‌بندی‌ای ثبت نشده است!</string>
     <string name="error_entered_quantity_greater_total_weight">مقدار وارد شده از وزن کل بیشتر است</string>
 
     <string-array name="product_filter_options">

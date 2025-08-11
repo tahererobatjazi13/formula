@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurfaceThree"
+    android:layoutDirection="rtl"
+    android:textDirection="rtl">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:padding="@dimen/padding_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLogo">
+
+        <!-- عنوان نام و نام خانوادگی -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvRequiredNameFamily"
+            style="@style/SmallTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_bit"
+            android:text="@string/label_star"
+            android:textColor="@color/orange_FF9800"
+            app:layout_constraintStart_toEndOf="@id/tvTitleNameFamily"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvTitleNameFamily"
+            style="@style/MediumBoldTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_name_family"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNameFamily"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_bit"
+            app:boxBackgroundColor="?attr/colorSurfaceVariant"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
+            app:errorTextAppearance="@style/ErrorTextAppearance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleNameFamily">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieNameFamily"
+                style="@style/Input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:maxLength="20" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- عنوان شمار همراه -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvRequiredMobile"
+            style="@style/SmallTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_bit"
+            android:text="@string/label_star"
+            android:textColor="@color/orange_FF9800"
+            app:layout_constraintStart_toEndOf="@id/tvTitleMobile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilNameFamily" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvTitleMobile"
+            style="@style/MediumBoldTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_mobile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvRequiredMobile" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMobile"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_bit"
+            app:boxBackgroundColor="?attr/colorSurfaceVariant"
+            app:errorEnabled="true"
+            app:errorIconDrawable="@null"
+            app:errorTextAppearance="@style/ErrorTextAppearance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleMobile">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tieMobile"
+                style="@style/Input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:inputType="number"
+                android:layoutDirection="rtl"
+                android:maxLength="11"
+                android:textDirection="rtl" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnRegister"
+        style="@style/LargeBoldTextStyle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_large"
+        android:backgroundTint="@color/color_primary"
+        android:paddingHorizontal="@dimen/padding_large"
+        android:text="@string/label_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clContent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

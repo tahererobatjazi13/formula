@@ -23,5 +23,10 @@
     <color name="purple_A27DE2">#A27DE2</color>
     <color name="orange_FF9800">#FF9800</color>
     <color name="red_C20311">#C20311</color>
+    <color name="red_FF5C5C">#FF5C5C</color>
+    <color name="black_33000000">#33000000</color>
+    <color name="black_0D111A">#0D111A</color>
+    <color name="white_12FFFFFF">#12FFFFFF</color>
+    <color name="white_33FFFFFF">#33FFFFFF</color>
 
 </resources>

@@ -7,18 +7,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.ProductHistory
 import ir.kitgroup.formula.databinding.ItemUsageBinding
-import java.text.DecimalFormat
 
 class ProductUsageAdapter(
     private val onClick: (ProductHistory, String, String) -> Unit,
     private val onDelete: (ProductHistory) -> Unit = {},
 ) :
     ListAdapter<ProductHistory, ProductUsageAdapter.ProductUsageViewHolder>(ProductUsageDiffCallback()) {
-    private val formatter = DecimalFormat("#,###,###,###")
     private var lastInsertedId: Long? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductUsageViewHolder {
@@ -53,8 +52,8 @@ class ProductUsageAdapter(
 
             val formattedQuantity = formatQuantity(item.quantity)
             binding.tvQuantity.text = formattedQuantity
-            binding.tvTotalPrice.text = formatter.format(item.totalPrice)
-            binding.tvUnitPrice.text = formatter.format(item.unitPrice)
+            binding.tvTotalPrice.text = Util.priceFormatter.format(item.totalPrice)
+            binding.tvUnitPrice.text = Util.priceFormatter.format(item.unitPrice)
             binding.tvDate.text = formatDateShamsi(item.date)
 
             binding.llMain.setOnClickListener {

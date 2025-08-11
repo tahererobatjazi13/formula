@@ -33,14 +33,16 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.getTotalPriceForPackaging
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.getTotalPriceForPackaging
 import ir.kitgroup.formula.adapter.PackagingAdapter
 import ir.kitgroup.formula.database.entity.Packaging
 import ir.kitgroup.formula.databinding.FragmentPackagingBinding
 import ir.kitgroup.formula.dialog.AddEditPackagingDialog
 import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
-import ir.kitgroup.formula.model.MaterialType
+import ir.kitgroup.formula.core.MaterialType
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +50,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -58,7 +59,6 @@ class PackagingFragment : Fragment() {
     private var _binding: FragmentPackagingBinding? = null
     private val packagingViewModel: PackagingViewModel by viewModels()
     private lateinit var packagingAdapter: PackagingAdapter
-    private val formatter = DecimalFormat("#,###,###,###")
     private var displayDateTime: String = ""
     private lateinit var allPackaging: List<Packaging>
     private lateinit var filteredPackagingList: List<Packaging>
@@ -337,8 +337,8 @@ class PackagingFragment : Fragment() {
                         farsiFont, rowColor
                     )
                 )
-                table.addCell(createCell(formatter.format(price), farsiFont, rowColor))
-                table.addCell(createCell(formatter.format(packaging.weight), farsiFont, rowColor))
+                table.addCell(createCell(Util.priceFormatter.format(price), farsiFont, rowColor))
+                table.addCell(createCell(formatQuantity(packaging.weight), farsiFont, rowColor))
             }
 
             document.add(table)

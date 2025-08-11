@@ -7,19 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePackagingPrice
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.calculatePackagingPrice
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.PackagingDetail
 import ir.kitgroup.formula.databinding.ItemSelectionBinding
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
-import java.text.DecimalFormat
 
 class PackageDetailAdapter(
     private val packagingViewModel: PackagingViewModel,
 ) : ListAdapter<PackagingDetail, PackageDetailAdapter.PackageDetailViewHolder>(
     PackagingDetailDiffCallback()
 ) {
-    private val formatter = DecimalFormat("#,###,###,###")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackageDetailViewHolder {
         val binding =
             ItemSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,8 +40,8 @@ class PackageDetailAdapter(
             packagingViewModel.getPackageDetails(packagingDetail.packagingId)
                 .observeForever { productDetails ->
 
-                    binding.tvPrice.text = formatter.format(packagingDetail.materialPrice)
-                    binding.tvTotalPrice.text = formatter.format(
+                    binding.tvPrice.text = Util.priceFormatter.format(packagingDetail.materialPrice)
+                    binding.tvTotalPrice.text = Util.priceFormatter.format(
                         calculatePackagingPrice(
                             packagingDetail.quantity,
                             packagingDetail.materialPrice

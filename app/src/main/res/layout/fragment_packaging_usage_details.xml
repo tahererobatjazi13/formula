@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/padding_small"
                 android:gravity="end"
-                android:text="@string/label_packaging_detail"
+                android:text="@string/label_packaging_production_detail"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ivBack"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -142,7 +142,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/clProductDate">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleMaterialAmount"
+                        android:id="@+id/tvTitleProductAmount"
                         style="@style/MediumTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                         android:textDirection="rtl" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvAmount"
+                        android:id="@+id/tvProductAmount"
                         style="@style/MediumBoldTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                         android:textDirection="rtl" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleMaterialAmount2"
+                        android:id="@+id/tvTitleProductAmount2"
                         style="@style/MediumTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/flexAmount">
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvPrice"
+                        android:id="@+id/tvProductPrice"
                         style="@style/MediumBoldTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                         android:textDirection="rtl" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitlePrice2"
+                        android:id="@+id/tvTitleProductPrice"
                         style="@style/MediumTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -306,7 +306,7 @@
                         android:background="@color/gray_ccc" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvMaterials"
+                        android:id="@+id/rvPackagingList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="1dp"
@@ -416,7 +416,7 @@
                 </com.google.android.flexbox.FlexboxLayout>
 
                 <Button
-                    android:id="@+id/btnSave"
+                    android:id="@+id/btnEditSave"
                     style="@style/ButtonDefault"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

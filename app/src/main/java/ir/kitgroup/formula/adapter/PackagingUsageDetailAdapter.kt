@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.calculatePackagingPrice
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.calculatePackagingPrice
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Packaging
 import ir.kitgroup.formula.databinding.ItemPackagingUsageDetailBinding
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
-import java.text.DecimalFormat
 
 class PackagingUsageDetailAdapter(
     private val packagingViewModel: PackagingViewModel,
@@ -24,7 +24,6 @@ class PackagingUsageDetailAdapter(
 ) : ListAdapter<Packaging, PackagingUsageDetailAdapter.PackagingUsageDetailViewHolder>(
     PackagingUsageDetailDiffCallback()
 ) {
-    private val formatter = DecimalFormat("#,###,###,###")
     private var textWatcher: TextWatcher? = null
 
     override fun onCreateViewHolder(
@@ -66,7 +65,7 @@ class PackagingUsageDetailAdapter(
             }
             binding.etQuantity.tag = displayQuantity
 
-            binding.tvPrice.text = formatter.format(packaging.price)
+            binding.tvPrice.text = Util.priceFormatter.format(packaging.price)
             updateTotalPrice(packaging.price, displayQuantity)
 
             textWatcher = object : TextWatcher {
@@ -135,7 +134,7 @@ class PackagingUsageDetailAdapter(
 
         private fun updateTotalPrice(price: Double, quantity: Double) {
             val totalPrice = calculatePackagingPrice(quantity, price)
-            binding.tvTotalPrice.text = formatter.format(totalPrice)
+            binding.tvTotalPrice.text = Util.priceFormatter.format(totalPrice)
         }
     }
 }

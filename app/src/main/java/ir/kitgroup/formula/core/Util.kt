@@ -1,4 +1,4 @@
-package ir.kitgroup.formula
+package ir.kitgroup.formula.core
 
 import android.annotation.SuppressLint
 import ir.kitgroup.formula.database.entity.PackagingDetail
@@ -9,6 +9,9 @@ import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 object Util {
+
+    val priceFormatter: DecimalFormat = DecimalFormat("#,###,###,###")
+
     fun calculatePrice(weightInGram: Double, pricePerKg: Double): Double {
         return (weightInGram / 1000) * pricePerKg
     }

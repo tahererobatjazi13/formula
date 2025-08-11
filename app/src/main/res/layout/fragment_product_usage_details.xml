@@ -57,274 +57,264 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/padding_medium">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/padding_medium"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/clProductName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivPdf"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clProductName"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTitleProductName"
+                    style="@style/MediumTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_product_name"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvProductName"
+                    style="@style/MediumBoldTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivPdf"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleProductName"
-                        style="@style/MediumTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_product_name"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvProductName"
-                        style="@style/MediumBoldTextStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_bit"
-                        android:textDirection="rtl"
-                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductName"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivPdf"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginEnd="@dimen/padding_small"
-                    android:src="@drawable/ic_pdf"
+                    android:layout_marginEnd="@dimen/padding_bit"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTitleProductName"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clProductDate"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivPdf"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:src="@drawable/ic_pdf"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clProductDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivPdf"
+                app:layout_constraintTop_toBottomOf="@+id/clProductName">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTitleProductDate"
+                    style="@style/MediumTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_date_item"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvProductDate"
+                    style="@style/MediumBoldTextStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_medium"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivPdf"
-                    app:layout_constraintTop_toBottomOf="@+id/clProductName">
+                    android:layout_marginEnd="@dimen/padding_bit"
+                    android:textDirection="rtl"
+                    app:layout_constraintEnd_toStartOf="@+id/tvTitleProductDate"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleProductDate"
-                        style="@style/MediumTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_date_item"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvProductDate"
-                        style="@style/MediumBoldTextStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/padding_bit"
-                        android:textDirection="rtl"
-                        app:layout_constraintEnd_toStartOf="@+id/tvTitleProductDate"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexMaterialAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_medium"
+                app:alignItems="center"
+                app:flexDirection="row"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_end"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivPdf"
+                app:layout_constraintTop_toBottomOf="@+id/clProductDate">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <com.google.android.flexbox.FlexboxLayout
-                    android:id="@+id/flexMaterialAmount"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTitleProductAmount"
+                    style="@style/MediumTextStyle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_medium"
-                    app:alignItems="center"
-                    app:flexDirection="row"
-                    app:flexWrap="wrap"
-                    app:justifyContent="flex_end"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivPdf"
-                    app:layout_constraintTop_toBottomOf="@+id/clProductDate">
+                    android:layout_marginStart="4dp"
+                    android:text="@string/label_from_product"
+                    android:textDirection="rtl" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleMaterialAmount"
-                        style="@style/MediumTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/label_from_product"
-                        android:textDirection="rtl" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvProductAmount"
+                    style="@style/MediumBoldTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp"
+                    android:textColor="@color/color_primary"
+                    android:textDirection="rtl" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvAmount"
-                        style="@style/MediumBoldTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:textColor="@color/color_primary"
-                        android:textDirection="rtl" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTitleProductAmount2"
+                    style="@style/MediumTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="@string/label_amounts_materials_production"
+                    android:textDirection="rtl" />
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitleMaterialAmount2"
-                        style="@style/MediumTextStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:text="@string/label_amounts_materials_production"
-                        android:textDirection="rtl" />
+            </com.google.android.flexbox.FlexboxLayout>
 
-                </com.google.android.flexbox.FlexboxLayout>
+            <LinearLayout
+                android:id="@+id/llList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:background="@drawable/dialog_table"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/flexMaterialAmount">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_ccc" />
 
                 <LinearLayout
-                    android:id="@+id/llList"
+                    android:id="@+id/llHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_medium"
-                    android:background="@drawable/dialog_table"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/flexMaterialAmount">
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/colorAccent"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/SmallBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="@dimen/padding_small"
+                        android:text="@string/label_price_kg" />
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
                         android:background="@color/gray_ccc" />
 
-                    <LinearLayout
-                        android:id="@+id/llHeader"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/SmallBoldTextStyle"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="1dp"
-                        android:background="@color/colorAccent"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/SmallBoldTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/padding_small"
-                            android:text="@string/label_price_kg" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/gray_ccc" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/SmallBoldTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/padding_small"
-                            android:text="@string/label_quantity_unit" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/gray_ccc" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/SmallBoldTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/padding_small"
-                            android:text="@string/label_name" />
-
-                    </LinearLayout>
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="@dimen/padding_small"
+                        android:text="@string/label_quantity_unit" />
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
                         android:background="@color/gray_ccc" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvMaterials"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="1dp"
-                        android:background="@color/white"
-                        android:nestedScrollingEnabled="false" />
-
-                    <LinearLayout
-                        android:id="@+id/llBottom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="3">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvPriceKilograms"
-                            style="@style/MediumBoldTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/gray_ccc" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvTotalQuantity"
-                            style="@style/MediumBoldTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:padding="@dimen/padding_medium" />
-
-                        <View
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/gray_ccc" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            style="@style/SmallBoldTextStyle"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:padding="@dimen/padding_medium"
-                            android:text="@string/label_sum_total" />
-
-                    </LinearLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/SmallBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_small"
+                        android:text="@string/label_name" />
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnPackage"
-                    style="@style/ButtonDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_medium"
-                    android:paddingHorizontal="@dimen/padding_xLarge"
-                    android:text="@string/label_packaging"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/llList" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_ccc" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMaterials"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/white"
+                    android:nestedScrollingEnabled="false" />
+
+                <LinearLayout
+                    android:id="@+id/llBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvTotalPrice"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray_ccc" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvTotalQuantity"
+                        style="@style/MediumBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="@dimen/padding_medium" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray_ccc" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/SmallBoldTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/padding_medium"
+                        android:text="@string/label_sum_total" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnPackage"
+                style="@style/ButtonDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:paddingHorizontal="@dimen/padding_xLarge"
+                android:text="@string/label_packaging"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/llList" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,4 +1,4 @@
-package ir.kitgroup.formula.model
+package ir.kitgroup.formula.core
 
 
 enum class MaterialType(val value: String) {

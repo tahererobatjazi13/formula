@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Custom attr color -->
+    <attr name="colorRipple" format="color" />
+    <attr name="colorIcon" format="color" />
+    <attr name="colorIconTwo" format="color|reference" />
+    <attr name="colorError" format="color" />
+    <attr name="colorSuccess" format="color" />
+    <attr name="colorWarning" format="color" />
+    <attr name="colorHeaderFooter" format="color" />
+    <attr name="colorLines" format="color" />
+    <attr name="colorPassive" format="color" />
+    <attr name="colorBorder" format="color" />
+    <attr name="colorShadow" format="color" />
+    <attr name="colorSurfaceTwo" format="color" />
+    <attr name="colorSurfaceVariant" format="color" />
+    <attr name="colorBox" format="color" />
+    <attr name="colorText" format="color" />
+    <attr name="colorSurfaceThree" format="color" />
+
+
+</resources>

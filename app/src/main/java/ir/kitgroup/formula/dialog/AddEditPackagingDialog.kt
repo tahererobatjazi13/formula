@@ -9,13 +9,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.adapter.MaterialSelectionAdapter
 import ir.kitgroup.formula.adapter.PackagingSelectionAdapter
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.database.entity.Packaging
 import ir.kitgroup.formula.databinding.DialogAddEditPackagingBinding
-import ir.kitgroup.formula.model.MaterialType
+import ir.kitgroup.formula.core.MaterialType
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
 
 class AddEditPackagingDialog(
@@ -154,7 +154,7 @@ class AddEditPackagingDialog(
                 return@setOnClickListener
             }
             if (packagingWeightText.isEmpty()) {
-                Toast.makeText(context, R.string.error_enter_packaging_name, Toast.LENGTH_SHORT)
+                Toast.makeText(context, R.string.error_enter_packaging_weight, Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }

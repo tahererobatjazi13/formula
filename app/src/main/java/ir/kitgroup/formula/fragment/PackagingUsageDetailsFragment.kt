@@ -17,13 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatDateShamsi
 import ir.kitgroup.formula.adapter.PackagingUsageDetailAdapter
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.formatQuantity
 import ir.kitgroup.formula.database.entity.Packaging
 import ir.kitgroup.formula.databinding.FragmentPackagingUsageDetailsBinding
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -31,71 +32,70 @@ import java.util.Locale
 class PackagingUsageDetailsFragment : Fragment() {
 
     private var _binding: FragmentPackagingUsageDetailsBinding? = null
+    private val binding get() = _binding!!
+
     private val packagingViewModel: PackagingViewModel by viewModels()
     private lateinit var packagingUsageDetailAdapter: PackagingUsageDetailAdapter
     private val args: PackagingUsageDetailsFragmentArgs by navArgs()
-    private var productNamePdf: String = ""
-    private var displayDateTime: String = ""
-    private var productDate: Long = 0
+    private val selectedPackagings = mutableListOf<Packaging>()
+
+    // Data vars
     private var productId: Int = 0
     private var productUsageId: Long = 0
     private var productName: String = ""
+    private var productDate: Long = 0
     private var qty: Double = 0.0
-    private var isEditMode: Boolean = true
     private var packagePrice: Double = 0.0
-    private val binding get() = _binding!!
-    private val formatterQuantity = DecimalFormat("###,##0.###")
-    private val selectedPackagings = mutableListOf<Packaging>()
+    private var productNamePdf: String = ""
+    private var displayDateTime: String = ""
+    private var isEditMode: Boolean = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)).apply {
-            visibility = View.GONE
-        }
-        (requireActivity().findViewById<Toolbar>(R.id.toolbar)).apply {
-            visibility = View.GONE
-        }
+        hideUIElements()
         _binding = FragmentPackagingUsageDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        initArgs()
+        initUI()
         initAdapter()
         rxBinding()
-        loadExistingData()
         setupObservers()
+        loadExistingData()
+
+
     }
 
-    @SuppressLint("DefaultLocale", "SetTextI18n")
-    private fun init() {
+    private fun initArgs() {
         productId = args.packageId
         productUsageId = args.id
         productName = args.packageName
         productDate = args.packageDate
-
-        val jalaliDate = JalaliCalendar()
-        val dateFormatted =
-            String.format("%02d-%02d-%04d", jalaliDate.day, jalaliDate.month, jalaliDate.year)
-
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val time = timeFormat.format(Date())
-        displayDateTime = "$dateFormatted ، $time"
-        productNamePdf = "${productName}_$displayDateTime"
-
-        binding.tvProductName.text = productName
-        binding.tvProductDate.text = formatDateShamsi(productDate)
-
         qty = args.formattedQty.toDoubleOrNull() ?: 0.0
         packagePrice = args.packagePrice.toDoubleOrNull() ?: 0.0
 
-        binding.tvAmount.text = "${formatterQuantity.format(qty)} گرم"
-        binding.tvPrice.text = "${formatterQuantity.format(packagePrice)} ریال"
+        val jalaliDate = JalaliCalendar()
+        val dateFormatted = "%02d-%02d-%04d".format(
+            jalaliDate.day, jalaliDate.month, jalaliDate.year
+        )
+        val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+        displayDateTime = "$dateFormatted ، $time"
+        productNamePdf = "${productName}_$displayDateTime"
+    }
 
-        binding.tvRemaining.text = "${formatterQuantity.format(qty)} گرم"
+    @SuppressLint("DefaultLocale", "SetTextI18n")
+    private fun initUI() = binding.apply {
+        tvProductName.text = productName
+        tvProductDate.text = formatDateShamsi(productDate)
+        tvProductAmount.text = "${formatQuantity(qty)} گرم"
+        tvProductPrice.text = "${Util.priceFormatter.format(packagePrice)} ریال"
+        tvRemaining.text = "${formatQuantity(qty)} گرم"
         packagingViewModel.setTotalProductWeight(qty)
     }
 
@@ -113,21 +113,21 @@ class PackagingUsageDetailsFragment : Fragment() {
                 updateTotalPriceUI()
             }
 
-        packagingUsageDetailAdapter.onQuantityChanged = {
-            updateTotalPriceUI()
-        }
+        packagingUsageDetailAdapter.onQuantityChanged = { updateTotalPriceUI() }
 
-        binding.rvMaterials.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvMaterials.adapter = packagingUsageDetailAdapter
+        binding.rvPackagingList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = packagingUsageDetailAdapter
+        }
     }
 
-    private fun rxBinding() {
+    private fun rxBinding() = binding.apply {
 
-        binding.ivBack.setOnClickListener {
+        ivBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        binding.btnSave.setOnClickListener {
+        btnEditSave.setOnClickListener {
             if (selectedPackagings.isEmpty()) {
                 Toast.makeText(context, R.string.error_no_packaging_selected, Toast.LENGTH_SHORT)
                     .show()
@@ -160,19 +160,16 @@ class PackagingUsageDetailsFragment : Fragment() {
         }
     }
 
-    private fun loadExistingData() {
-        packagingViewModel.loadUsagesForProduct(productUsageId)
-        updateTotalPriceUI()
-    }
 
     @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         packagingViewModel.totalUsedWeight.observe(viewLifecycleOwner) { usedWeight ->
             val remaining = qty - usedWeight
-            binding.tvRemaining.text = "${formatterQuantity.format(remaining)} گرم"
+            binding.tvRemaining.text = "${formatQuantity(remaining)} گرم"
         }
         packagingViewModel.allPackagings.observe(viewLifecycleOwner) { packagings ->
             updateUIWithProducts(packagings)
+
             packagingViewModel._packagingUsages.value.let { usages ->
                 selectedPackagings.clear()
                 usages.forEach { usage ->
@@ -192,29 +189,40 @@ class PackagingUsageDetailsFragment : Fragment() {
         //  وضعیت ویرایش
         packagingViewModel.isEditMode.observe(viewLifecycleOwner) { isEdit ->
             isEditMode = isEdit
-            binding.btnSave.text =
+            binding.btnEditSave.text =
                 getString(if (isEdit) R.string.label_edit else R.string.label_save)
         }
     }
 
-    private fun updateTotalPriceUI() {
-        val totalPrice = selectedPackagings.sumOf { it.quantity * it.price }
-        binding.tvTotalPrice.text = formatterQuantity.format(totalPrice)
-
-        // به‌روزرسانی قیمت کل محصول + بسته‌بندی
-        updateTotalProductWithPackagingPrice()
+    private fun loadExistingData() {
+        packagingViewModel.loadUsagesForProduct(productUsageId)
+        updateTotalPriceUI()
     }
 
     private fun updateUIWithProducts(packagings: List<Packaging>) {
         packagingUsageDetailAdapter.submitList(packagings)
     }
 
+    private fun updateTotalPriceUI() {
+        val totalPrice = selectedPackagings.sumOf { it.quantity * it.price }
+        binding.tvTotalPrice.text = Util.priceFormatter.format(totalPrice)
+
+        // به‌روزرسانی قیمت کل محصول + بسته‌بندی
+        updateTotalProductWithPackagingPrice()
+    }
+
+
     @SuppressLint("SetTextI18n")
     private fun updateTotalProductWithPackagingPrice() {
         val packagingTotalPrice = selectedPackagings.sumOf { it.quantity * it.price }
         val total = packagingTotalPrice + packagePrice
-        val formattedTotal = formatterQuantity.format(total)
-        binding.tvTotalPriceProductPackaging.text = "$formattedTotal ریال"
+        binding.tvTotalPriceProductPackaging.text = "${Util.priceFormatter.format(total)} ریال"
+    }
+
+    private fun hideUIElements() {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation)?.visibility =
+            View.GONE
+        requireActivity().findViewById<Toolbar>(R.id.toolbar)?.visibility = View.GONE
     }
 
     override fun onDestroyView() {

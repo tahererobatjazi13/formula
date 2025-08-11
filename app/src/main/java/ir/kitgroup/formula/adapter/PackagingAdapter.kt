@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
-import ir.kitgroup.formula.Util.getTotalPriceForPackaging
+import ir.kitgroup.formula.core.Util
+import ir.kitgroup.formula.core.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatQuantity
+import ir.kitgroup.formula.core.Util.getTotalPriceForPackaging
 import ir.kitgroup.formula.database.entity.Packaging
 import ir.kitgroup.formula.databinding.ItemPackagingBinding
 import ir.kitgroup.formula.viewmodel.PackagingViewModel
-import java.text.DecimalFormat
 
 class PackagingAdapter(
     private val onDelete: (Packaging) -> Unit = {},
@@ -22,9 +23,7 @@ class PackagingAdapter(
 
     ) : ListAdapter<Packaging, PackagingAdapter.PackagingViewHolder>
     (PackagingDiffCallback()) {
-    private val formatter = DecimalFormat("#,###,###,###")
     private var pricePerKg: Double = 0.0
-    private val formatterQuantity = DecimalFormat("###,##0.###")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PackagingViewHolder {
         val binding =
@@ -57,11 +56,13 @@ class PackagingAdapter(
                     pricePerKg = getTotalPriceForPackaging(
                         productDetails
                     )
-                    binding.tvPackagingPrice.text = formatter.format(pricePerKg) + " ریال "
+                    binding.tvPackagingPrice.text =
+                        Util.priceFormatter.format(pricePerKg) + " ریال "
                 }
             binding.tvTitlePackagingDate.text = label
             binding.tvPackagingDate.text = formatDateShamsi(date)
-            binding.tvPackagingWeight.text = "${formatterQuantity.format(packaging.weight)} گرم"
+            binding.tvPackagingWeight.text =
+                "${formatQuantity(packaging.weight)} گرم"
 
             binding.tvPackagingName.text = packaging.packagingName
             binding.ivDeletePackaging.setOnClickListener { onDelete(packaging) }

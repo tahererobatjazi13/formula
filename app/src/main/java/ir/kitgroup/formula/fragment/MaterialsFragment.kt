@@ -31,17 +31,17 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formula.R
-import ir.kitgroup.formula.Util.formatDateShamsi
+import ir.kitgroup.formula.core.Util.formatDateShamsi
 import ir.kitgroup.formula.adapter.MaterialAdapter
 import ir.kitgroup.formula.database.entity.Material
 import ir.kitgroup.formula.databinding.FragmentMaterialsBinding
 import ir.kitgroup.formula.dialog.AddEditMaterialDialog
 import ir.kitgroup.formula.dialog.ConfirmDeleteDialog
-import ir.kitgroup.formula.model.MaterialType.*
+import ir.kitgroup.formula.core.MaterialType.*
+import ir.kitgroup.formula.core.Util
 import ir.kitgroup.formula.viewmodel.MaterialViewModel
 import java.io.File
 import java.io.FileOutputStream
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,7 +53,6 @@ class MaterialsFragment : Fragment() {
     private lateinit var materialAdapter: MaterialAdapter
     private lateinit var allMaterials: List<Material>
     private lateinit var filteredMaterialsList: List<Material>
-    private val formatter = DecimalFormat("#,###,###,###")
     private var displayDateTime: String = ""
     private val binding get() = _binding!!
 
@@ -63,7 +62,6 @@ class MaterialsFragment : Fragment() {
     ): View {
         _binding = FragmentMaterialsBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -363,7 +361,7 @@ class MaterialsFragment : Fragment() {
                 )
                 table.addCell(
                     createCell(
-                        formatter.format(price),
+                        Util.priceFormatter.format(price),
                         farsiFont,
                         rowColor
                     )
