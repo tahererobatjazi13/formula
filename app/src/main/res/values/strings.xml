@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">فرمول</string>
+    <string name="app_name">فرمول جدید</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
 
@@ -20,18 +20,23 @@
     <string name="label_product_price">قیمت محصول :</string>
     <string name="label_price_unit">قیمت محصول (یک کیلوگرم)\n(ریال)</string>
     <string name="label_price_packaging_unit">قیمت کالا\n(ریال)</string>
+    <string name="label_price_packaging_product_unit">قیمت بسته و محصول\n(ریال)</string>
     <string name="label_price_unit_item">قیمت محصول (یک کیلوگرم) :</string>
     <string name="label_price_kg">قیمت (ریال)</string>
     <string name="label_price_total_unit">قیمت کل\n(ریال)</string>
     <string name="label_price_star">قیمت به کیلوگرم * :</string>
     <string name="label_quantity_kg">مقدار (کیلوگرم)</string>
+    <string name="label_quantity_g">مقدار (گرم)</string>
     <string name="label_price_item">قیمت  :</string>
+    <string name="label_price_item_star">قیمت * :</string>
     <string name="label_amount_item">مقدار تولید :</string>
     <string name="label_kg">کیلوگرم</string>
+    <string name="label_g">گرم</string>
     <string name="label_current_price">قیمت فعلی\n(ریال)</string>
     <string name="label_day_price_item">قیمت روز</string>
     <string name="label_day_price">قیمت روز\n(یک کیلوگرم)</string>
     <string name="label_desc">توضیح</string>
+    <string name="label_description">توضیحات</string>
     <string name="label_old_price">قیمت قبلی\n(ریال)</string>
     <string name="label_new_price">قیمت جدید\n(ریال)</string>
     <string name="label_date">تاریخ</string>
@@ -54,11 +59,13 @@
     <string name="label_packaging_services_star">نام کالا یا خدمات * :</string>
     <string name="label_material_name_star">نام مواد اولیه * :</string>
     <string name="label_name">نام</string>
+    <string name="label_choose">انتخاب</string>
     <string name="label_material_name">نام مواد اولیه</string>
     <string name="label_material_name_item">نام مواد اولیه:</string>
     <string name="label_packaging_name_item">نام کالا یا خدمات:</string>
     <string name="label_packaging_services">نام کالا یا خدمات</string>
     <string name="label_quantity_unit">مقدار\n(گرم)</string>
+    <string name="label_percentage">درصد(%)</string>
     <string name="label_quantity_number_unit">مقدار\n(عدد)</string>
     <string name="label_quantity_weight_unit">وزن\n(گرم)</string>
     <string name="label_sum_total">جمع</string>
@@ -73,6 +80,7 @@
     <string name="label_close">بستن</string>
     <string name="label_delete">حذف</string>
     <string name="label_save">ذخیره</string>
+    <string name="label_ok">باشه</string>
     <string name="label_create_date">تاریخ ایجاد:</string>
     <string name="label_last_update_date">آخرین تاریخ آپدیت قیمت</string>
     <string name="label_update_date">تاریخ آپدیت:</string>
@@ -89,6 +97,7 @@
     <string name="label_packaging_list">لیست بسته بندی</string>
     <string name="label_calculate_price_reserve">محاسبه قیمت و ذخیره</string>
     <string name="label_production_schedule">برنامه تولید</string>
+    <string name="label_starred_items_products">* آیتم های ستاره دار محصول هستند</string>
 
     <string name="label_report_product">گزارش جزییات محصول</string>
     <string name="label_product_detail">جزییات محصول</string>
@@ -119,6 +128,8 @@
     <string name="error_all_fields_required">همه فیلدها الزامی هستند</string>
     <string name="error_no_packaging_registered">هیچ بسته‌بندی‌ای ثبت نشده است!</string>
     <string name="error_entered_quantity_greater_total_weight">مقدار وارد شده از وزن کل بیشتر است</string>
+    <string name="error_packaging_used_cannot_removed">این مواد در بسته‌بندی‌های دیگر استفاده شده و قابل حذف نیست.</string>
+    <string name="error_material_used_cannot_removed">این ماده در محصولات استفاده شده و قابل حذف نیست.</string>
 
     <string-array name="product_filter_options">
         <item>همه محصولات</item>

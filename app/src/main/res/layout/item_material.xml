@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvMain"
+    style="@style/RoundedCardViewStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/padding_medium"
-    android:layout_marginBottom="@dimen/padding_medium"
-    android:background="@color/white"
-    app:cardCornerRadius="@dimen/padding_medium">
+    android:layout_marginHorizontal="@dimen/padding_small"
+    android:layout_marginBottom="@dimen/padding_small">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,6 +15,7 @@
         android:padding="@dimen/padding_medium">
 
         <LinearLayout
+            android:layout_marginStart="@dimen/padding_bit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -133,12 +133,12 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvNature"
-                android:layout_gravity="end"
-                android:gravity="end"
                 style="@style/MediumBoldTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginEnd="@dimen/padding_bit"
+                android:gravity="end"
                 android:textColor="@color/green_21BF73"
                 android:textDirection="rtl" />
 
@@ -151,25 +151,28 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivDeleteMaterial"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/_20dp"
+                    android:layout_height="@dimen/_20dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_delete" />
+                    app:srcCompat="@drawable/ic_delete"
+                    app:tint="@color/red_C20311" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivChangeLog"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginHorizontal="@dimen/padding_medium"
+                    android:layout_width="@dimen/_18dp"
+                    android:layout_height="@dimen/_18dp"
+                    android:layout_marginHorizontal="@dimen/padding_small"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_history" />
+                    app:srcCompat="@drawable/ic_history"
+                    app:tint="@color/color_primary" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivEditMaterial"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="@dimen/_18dp"
+                    android:layout_height="@dimen/_18dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_edit" />
+                    app:srcCompat="@drawable/ic_edit"
+                    app:tint="@color/green_0DA25A" />
 
             </LinearLayout>
 
@@ -177,4 +180,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

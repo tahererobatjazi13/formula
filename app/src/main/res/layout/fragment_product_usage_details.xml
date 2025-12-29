@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rootLayout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_ddd"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPassive"
         android:elevation="@dimen/padding_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,12 +35,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBack"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_back"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -51,6 +50,7 @@
         android:id="@+id/svMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorBackSurface"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -93,12 +93,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivPdf"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="@dimen/_35dp"
+                android:layout_height="@dimen/_35dp"
                 android:layout_marginEnd="@dimen/padding_small"
-                android:src="@drawable/ic_pdf"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_pdf" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clProductDate"
@@ -188,14 +188,14 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/gray_ccc" />
+                    android:background="?attr/colorLine" />
 
                 <LinearLayout
                     android:id="@+id/llHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="1dp"
-                    android:background="@color/colorAccent"
+                    android:background="?attr/colorBackBlue"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
@@ -212,7 +212,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         style="@style/SmallBoldTextStyle"
@@ -227,7 +227,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         style="@style/SmallBoldTextStyle"
@@ -244,7 +244,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/gray_ccc" />
+                    android:background="?attr/colorLine" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMaterials"
@@ -252,7 +252,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="1dp"
                     android:background="@color/white"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    tools:itemCount="5"
+                    tools:listitem="@layout/item_usage_detail" />
 
                 <LinearLayout
                     android:id="@+id/llBottom"
@@ -273,7 +275,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvTotalQuantity"
@@ -288,7 +290,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         style="@style/SmallBoldTextStyle"

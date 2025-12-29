@@ -1,78 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray_ddd">
+    android:background="?attr/colorBackSurface">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivPdf"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="@dimen/padding_medium"
-            android:src="@drawable/ic_pdf"
+            android:layout_width="@dimen/_35dp"
+            android:layout_height="@dimen/_35dp"
+            app:layout_constraintBottom_toBottomOf="@+id/cvSearchMaterial"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/cvSearchMaterial"
+            app:srcCompat="@drawable/ic_pdf" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvSearchMaterial"
+            style="@style/RoundedCardViewStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_medium"
-            app:cardCornerRadius="@dimen/padding_medium"
+            android:layout_marginStart="@dimen/padding_bit"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivPdf"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/svMaterial"
-                style="@style/MediumTextStyle"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:iconifiedByDefault="false"
-                android:layoutDirection="rtl"
-                android:queryHint="@string/label_search"
-                android:textAppearance="?android:attr/textAppearanceSearchResultTitle" />
+                android:padding="@dimen/padding_small">
 
-        </androidx.cardview.widget.CardView>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSearch"
+                    style="@style/InputText"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/padding_bit"
+                    android:background="@null"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="@string/label_search"
+                    android:imeOptions="actionSearch"
+                    android:isScrollContainer="true"
+                    android:maxLength="32"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:theme="@style/InputTextTheme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ivSearch"
+                    app:layout_constraintStart_toEndOf="@+id/ivClearSearch"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSearch"
+                    android:layout_width="@dimen/_18dp"
+                    android:layout_height="@dimen/_18dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_search"
+                    app:tint="?attr/colorIcon" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivClearSearch"
+                    android:layout_width="@dimen/_18dp"
+                    android:layout_height="@dimen/_18dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:tint="?attr/colorIcon"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_clear" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <LinearLayout
+        android:id="@+id/llTabButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="0dp"
-        android:paddingHorizontal="0dp"
-        android:layout_marginVertical="@dimen/padding_medium"
+        android:layout_marginHorizontal="@dimen/padding_small"
+        android:layout_marginTop="@dimen/padding_small"
         android:background="@null"
-        app:layout_constraintBottom_toTopOf="@+id/rlMaterials"
-        app:layout_constraintTop_toBottomOf="@+id/clTop"
-        app:tabGravity="fill"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="fixed"
-        app:tabRippleColor="@null" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/clTop">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btnPackaging"
+            style="@style/MediumBoldTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_unselected_tab"
+            android:gravity="center"
+            android:padding="@dimen/padding_medium"
+            android:text="@string/label_packaging"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/btnMaterial"
+            style="@style/MediumBoldTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_bit"
+            android:layout_weight="1"
+            android:background="@drawable/bg_selected_tab"
+            android:gravity="center"
+            android:padding="@dimen/padding_medium"
+            android:text="@string/label_material"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rlMaterials"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/padding_small"
+        android:layout_marginTop="@dimen/padding_small"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/llTabButtons">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMaterials"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_material" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvNoItem"
@@ -84,6 +157,7 @@
             android:gravity="center"
             android:text="@string/error_no_item"
             android:visibility="gone" />
+
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

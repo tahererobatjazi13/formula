@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/MaterialsFragment"
-        android:name="ir.kitgroup.formula.fragment.MaterialsFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.MaterialsFragment"
         android:label="@string/label_material"
         tools:layout="@layout/fragment_materials">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/PackagingFragment"
-        android:name="ir.kitgroup.formula.fragment.PackagingFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.PackagingFragment"
         android:label="@string/label_packaging"
         tools:layout="@layout/fragment_packaging">
 
@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/ProductsFragment"
-        android:name="ir.kitgroup.formula.fragment.ProductsFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.ProductsFragment"
         android:label="@string/label_product"
         tools:layout="@layout/fragment_products">
 
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/productDetailsFragment"
-        android:name="ir.kitgroup.formula.fragment.ProductDetailsFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.ProductDetailsFragment"
         android:label="@layout/fragment_product_details">
 
         <argument
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/changeLogFragment"
-        android:name="ir.kitgroup.formula.fragment.ChangeLogFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.ChangeLogFragment"
         android:label="ChangeLogFragment">
         <argument
             android:name="materialId"
@@ -77,7 +77,7 @@
     </fragment>
     <fragment
         android:id="@+id/productUsageFragment"
-        android:name="ir.kitgroup.formula.fragment.ProductUsageFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.ProductUsageFragment"
         android:label="ProductUsageFragment">
 
         <argument
@@ -99,7 +99,7 @@
     </fragment>
     <fragment
         android:id="@+id/productUsageDetailsFragment"
-        android:name="ir.kitgroup.formula.fragment.ProductUsageDetailsFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.ProductUsageDetailsFragment"
         android:label="ProductUsageDetailsFragment">
         <argument
             android:name="type"
@@ -132,7 +132,7 @@
     </fragment>
     <fragment
         android:id="@+id/packagingDetailsFragment"
-        android:name="ir.kitgroup.formula.fragment.PackagingDetailsFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.PackagingDetailsFragment"
         android:label="PackagingDetailsFragment">
 
         <argument
@@ -153,7 +153,7 @@
     </fragment>
     <fragment
         android:id="@+id/packagingUsageDetailsFragment"
-        android:name="ir.kitgroup.formula.fragment.PackagingUsageDetailsFragment"
+        android:name="ir.kitgroup.formulaNew.fragment.PackagingUsageDetailsFragment"
         android:label="PackagingUsageDetailsFragment">
         <argument
             android:name="packageId"

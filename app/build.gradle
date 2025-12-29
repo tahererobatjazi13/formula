@@ -13,18 +13,17 @@ android {
          keyAlias 'key0'
      }*/
 
-    namespace 'ir.kitgroup.formula'
+    namespace 'ir.kitgroup.formulaNew'
     compileSdk 35
 
     defaultConfig {
-        applicationId "ir.kitgroup.formula"
-        minSdk 24
+        applicationId "ir.kitgroup.formulaNew"
+        minSdk 22
         targetSdk 35
-
-
         versionCode 1
-        versionName "2.0"
-
+        versionName "2.5"
+        // old 2.2
+        // new 2.3 , 2.4
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -77,5 +76,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11'
+
+    // Size dp/sp
+    implementation 'com.github.mehedibangladeshi:AVDP-Android:0.2.0'
+    
+        implementation 'com.intuit.sdp:sdp-android:1.1.0'
+        implementation 'com.intuit.ssp:ssp-android:1.1.0'
+
 
 }

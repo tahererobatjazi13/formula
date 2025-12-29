@@ -31,6 +31,7 @@
 
         <activity
             android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -40,7 +41,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="ir.kitgroup.formula.provider"
+            android:authorities="ir.kitgroup.formulaNew.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

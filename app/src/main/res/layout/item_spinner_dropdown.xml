@@ -2,9 +2,10 @@
 <com.google.android.material.textview.MaterialTextView
  xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tvName"
+    android:background="?attr/colorPassive"
     style="@style/MediumBoldTextStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="@dimen/padding_medium"
+    android:paddingHorizontal="@dimen/padding_small"
     android:paddingVertical="@dimen/padding_medium"
     android:text="@string/app_name" />

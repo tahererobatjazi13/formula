@@ -1,42 +1,47 @@
-<resources >
+<resources>
     <!-- text style (font-size-color) -->
     <style name="LargeBoldTextStyle">
-        <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
+        <item name="fontFamily">@font/iran_sans</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_large</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
     </style>
 
     <style name="MediumBoldTextStyle">
-        <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
+        <item name="fontFamily">@font/iran_sans</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
     </style>
 
     <style name="SmallBoldTextStyle">
-        <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
+        <item name="fontFamily">@font/iran_sans</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
     </style>
+
     <style name="LargeTextStyle">
-        <item name="fontFamily">@font/iran_yekan_bakh_regular</item>
+        <item name="fontFamily">@font/iran_sans</item>
         <item name="android:textSize">@dimen/font_large</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
     </style>
 
     <style name="MediumTextStyle">
-        <item name="fontFamily">@font/iran_yekan_bakh_regular</item>
+        <item name="fontFamily">@font/iran_sans</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
     </style>
 
     <style name="SmallTextStyle">
-        <item name="fontFamily">@font/iran_yekan_bakh_regular</item>
+        <item name="fontFamily">@font/iran_sans</item>
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
     </style>
 
-    <style name="ButtonDefault" >
-        <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
+    <style name="ButtonDefault">
+        <item name="fontFamily">@font/iran_sans</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:minHeight">35dp</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
@@ -47,9 +52,11 @@
 
 
     <style name="BottomNavTextStyle" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/iran_yekan_bakh_bold</item>
+        <item name="fontFamily">@font/iran_sans</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/font_small</item>
     </style>
+
     <style name="NoPaddingBottomNavStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemHorizontalTranslationEnabled">false</item>
         <item name="itemIconSize">24dp</item>
@@ -59,33 +66,45 @@
     </style>
 
     <style name="InputText">
-        <item name="fontFamily">@font/iran_yekan_bakh_bold</item>
+        <item name="fontFamily">@font/iran_sans</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
-        <item name="android:textColorHint">?attr/colorSecondaryVariant</item>
+        <item name="android:textColorHint">?attr/colorOnPrimarySurface</item>
         <item name="android:textSize">@dimen/font_medium</item>
         <item name="android:inputType">text</item>
         <item name="colorControlActivated">?attr/colorOnSurface</item>
     </style>
+
     <style name="InputTextTheme">
         <item name="colorControlActivated">?attr/colorOnSurface</item>
     </style>
 
+    <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
 
     <!-- edit text-->
 
     <style name="Input">
         <item name="android:textSize">@dimen/font_medium</item>
-        <item name="fontFamily">@font/yekan</item>
+        <item name="fontFamily">@font/iran_sans</item>
         <item name="android:textColor">?attr/colorOnPrimarySurface</item>
         <item name="android:textColorHint">?attr/colorText</item>
     </style>
 
     <style name="ErrorTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textColor">@color/red_FF5C5C</item>
-        <item name="android:textSize">12sp</item>
-        <item name="fontFamily">@font/yekan</item>
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="fontFamily">@font/iran_sans</item>
         <item name="android:gravity">end</item>
         <item name="android:textAlignment">viewEnd</item>
     </style>
 
+    <style name="RoundedCardViewStyle">
+        <item name="cardCornerRadius">@dimen/padding_medium</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cardBackgroundColor">?attr/colorPassive</item>
+
+    </style>
 </resources>

@@ -2,17 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gray_ddd"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPassive"
         android:elevation="@dimen/padding_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,12 +34,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBack"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_back"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -52,6 +49,7 @@
         android:id="@+id/svMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="?attr/colorBackSurface"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -227,7 +225,6 @@
                     android:id="@+id/clAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/padding_medium"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -242,23 +239,22 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cvQuantity"
-                        android:layout_width="0dp"
+                        style="@style/RoundedCardViewStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/padding_medium"
-                        android:backgroundTint="@color/gray_ddd"
-                        app:cardCornerRadius="@dimen/padding_medium"
+                        android:layout_marginHorizontal="@dimen/padding_small"
+                        android:backgroundTint="?attr/colorBackSurface"
                         app:layout_constraintEnd_toStartOf="@+id/tvTitleQuantity"
-                        app:layout_constraintStart_toEndOf="@+id/tvTitlekg"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/etQuantity"
-                            style="@style/MediumTextStyle"
-                            android:layout_width="match_parent"
+                            style="@style/InputText"
+                            android:layout_width="@dimen/_60dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/padding_medium"
+                            android:layout_marginHorizontal="@dimen/padding_small"
                             android:layout_marginVertical="@dimen/padding_bit"
                             android:inputType="numberDecimal"
                             android:padding="@dimen/padding_medium"
@@ -266,17 +262,31 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTitlekg"
+                        android:id="@+id/tvTitleG"
                         style="@style/MediumTextStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/label_kg"
+                        android:layout_marginHorizontal="@dimen/padding_small"
+                        android:text="@string/label_g"
                         app:layout_constraintBottom_toBottomOf="@+id/cvQuantity"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/cvQuantity"
                         app:layout_constraintTop_toTopOf="@+id/cvQuantity" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/tvKiloEquivalent"
+                        style="@style/SmallTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/padding_small"
+                        android:text=""
+                        android:textColor="@color/color_primary"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tvTitleG"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -296,11 +306,11 @@
                     android:id="@+id/clPrice"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/padding_medium"
-                    app:layout_constraintBottom_toBottomOf="@+id/btnCalculate"
+                    android:layout_marginTop="@dimen/padding_medium"
+                    android:paddingHorizontal="@dimen/padding_small"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/btnCalculate"
-                    app:layout_constraintTop_toTopOf="@+id/btnCalculate">
+                    app:layout_constraintTop_toBottomOf="@+id/clAmount">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvTitlePrice"
@@ -343,14 +353,14 @@
                     android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/gray_ccc" />
+                    android:background="?attr/colorLine" />
 
                 <LinearLayout
                     android:id="@+id/llHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="1dp"
-                    android:background="@color/colorAccent"
+                    android:background="?attr/colorBackBlue"
                     android:orientation="horizontal"
                     android:weightSum="4">
 
@@ -367,7 +377,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         style="@style/SmallBoldTextStyle"
@@ -377,12 +387,12 @@
                         android:layout_weight="0.7"
                         android:gravity="center"
                         android:padding="@dimen/padding_small"
-                        android:text="@string/label_quantity_kg" />
+                        android:text="@string/label_quantity_g" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         style="@style/SmallBoldTextStyle"
@@ -397,7 +407,7 @@
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/gray_ccc" />
+                        android:background="?attr/colorLine" />
 
                     <com.google.android.material.textview.MaterialTextView
                         style="@style/SmallBoldTextStyle"
@@ -413,7 +423,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/gray_ccc" />
+                    android:background="?attr/colorLine" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -426,6 +436,7 @@
                         android:layout_marginHorizontal="1dp"
                         android:background="@color/white"
                         android:nestedScrollingEnabled="false"
+                        tools:itemCount="5"
                         tools:listitem="@layout/item_usage" />
 
                     <com.google.android.material.textview.MaterialTextView

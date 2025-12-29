@@ -3,79 +3,76 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="?attr/colorPassive"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
         android:elevation="@dimen/padding_small">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/padding_medium">
+            android:layout_marginHorizontal="@dimen/padding_medium"
+            android:layout_marginVertical="@dimen/padding_small">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBackup"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/add_database"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_database_backup"
+                app:tint="?attr/colorIcon" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBackupRestore"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="@dimen/padding_medium"
-                android:src="@drawable/databasee"
+                android:layout_width="@dimen/_24dp"
+                android:layout_height="@dimen/_24dp"
+                android:layout_marginStart="@dimen/padding_small"
+                android:tint="?attr/colorIcon"
                 app:layout_constraintStart_toEndOf="@+id/ivBackup"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_database_backup_restore" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivShare"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="@dimen/padding_medium"
-                android:src="@drawable/ic_share"
+                android:layout_width="@dimen/_22dp"
+                android:layout_height="@dimen/_22dp"
+                android:layout_marginStart="@dimen/padding_small"
                 app:layout_constraintStart_toEndOf="@+id/ivBackupRestore"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_share" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvDate"
                 style="@style/LargeBoldTextStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_calendar"
-                android:drawablePadding="@dimen/padding_bit"
                 android:gravity="end"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivCalendar"
                 app:layout_constraintStart_toEndOf="@+id/ivShare"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCalendar"
+                android:layout_width="@dimen/_18dp"
+                android:layout_height="@dimen/_18dp"
+                android:layout_marginStart="@dimen/padding_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvDate"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_calendar"
+                app:tint="?attr/colorIcon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_margin="@dimen/padding_small"
-        android:background="?attr/colorOnPrimary"
-        android:clipToPadding="false"
-        android:elevation="0dp"
-        android:padding="0dp"
-        app:elevation="0dp"
-        app:itemBackground="@drawable/bottom_nav_item"
-        app:itemTextAppearanceActive="@style/BottomNavTextStyle"
-        app:itemTextAppearanceInactive="@style/BottomNavTextStyle"
-        app:menu="@menu/navigation_menu" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -86,5 +83,28 @@
         android:layout_below="@+id/toolbar"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        style="@style/MediumBoldTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_margin="@dimen/padding_small"
+        android:background="?attr/colorPassive"
+        android:clipToPadding="false"
+        android:elevation="0dp"
+        android:padding="0dp"
+        app:elevation="0dp"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemBackground="@drawable/bottom_nav_item"
+        app:itemIconTint="?attr/colorIcon"
+        app:itemRippleColor="@color/transparent"
+        app:itemTextAppearanceActive="@style/BottomNavTextStyle"
+        app:itemTextAppearanceInactive="@style/BottomNavTextStyle"
+        app:itemTextColor="?attr/colorOnPrimarySurface"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/navigation_menu" />
 
 </RelativeLayout>

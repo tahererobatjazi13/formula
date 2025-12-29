@@ -1,15 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Formula" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.Formula" parent="Theme.Material3.Light.NoActionBar">
 
-    <!-- Customize your dark theme here. -->
+        <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorAccent">@color/color_primary</item>
+
+        <item name="colorSurfaceVariant">@color/white_12FFFFFF</item>
         <item name="colorOnPrimarySurface">@color/white_E6FFFFFF</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorAccent">@color/color_primary</item>
-        <item name="colorSurfaceThree">@color/black_0D111A</item>
-        <item name="colorSurfaceVariant">@color/white_12FFFFFF</item>
+        <item name="colorPrimarySurface">@color/black_0D111A</item>
+        <item name="colorPassive">@color/black_272729</item>
+        <item name="colorBackSurface">@color/black_18181a</item>
+        <item name="colorLine">@color/gray_ccc</item>
+        <item name="colorIcon">@color/white</item>
         <item name="colorText">@color/white_33FFFFFF</item>
 
+        <item name="colorBackGreen">@color/green_21BF73</item>
+        <item name="colorBackPink">@color/color_dark_pink</item>
+        <item name="colorBackOrange">@color/orange_FF9800</item>
+        <item name="colorBackYellow">@color/color_dark_yellow</item>
+        <item name="colorBackBlue">@color/color_dark_blue</item>
+        <item name="colorBackGrayLight">@color/black_0D111A</item>
+        <item name="colorBackGrayDark">@color/black_272729</item>
+        <item name="colorSurface">@color/gray_4e4d52</item>
+
     </style>
+
 </resources>

@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/colorPassive"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -17,14 +17,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:gravity="center"
             android:padding="@dimen/padding_small" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray_ccc" />
+            android:background="?attr/colorLine" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvPrice"
@@ -32,22 +32,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.9"
+            android:layout_weight="1"
             android:gravity="center"
             android:padding="@dimen/padding_small" />
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray_ccc" />
+            android:background="?attr/colorLine" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etQuantity"
             style="@style/MediumTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.9"
+            android:layout_weight="0.7"
             android:gravity="center"
             android:inputType="numberDecimal"
             android:padding="@dimen/padding_small" />
@@ -55,7 +55,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray_ccc" />
+            android:background="?attr/colorLine" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvName"
@@ -74,7 +74,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_ccc" />
+        android:background="?attr/colorLine" />
 
 </LinearLayout>
 

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPassive"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvTotalPrice"
+            style="@style/MediumTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:padding="@dimen/padding_small" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorLine" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvPrice"
+            style="@style/MediumTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.9"
+            android:gravity="center"
+            android:padding="@dimen/padding_small" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorLine" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvPercent"
+            style="@style/MediumTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.6"
+            android:gravity="center"
+            android:padding="@dimen/padding_small" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorLine" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etQuantity"
+            style="@style/MediumTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:padding="@dimen/padding_small" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?attr/colorLine" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvName"
+            style="@style/MediumTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.12"
+            android:gravity="center_vertical"
+            android:padding="@dimen/padding_small"
+            android:text="@string/label_material_name"
+            android:textDirection="rtl" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorLine" />
+
+</LinearLayout>
+
+

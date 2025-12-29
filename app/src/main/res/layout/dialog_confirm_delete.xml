@@ -4,14 +4,14 @@
     android:layout_height="wrap_content"
     android:background="@drawable/dialog_background"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/padding_large">
 
     <com.google.android.material.textview.MaterialTextView
         style="@style/MediumTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@dimen/padding_large"
         android:text="@string/label_dialog_delete"
         android:textSize="16sp" />
 
@@ -38,7 +38,7 @@
             android:backgroundTint="@android:color/holo_red_light"
             android:paddingHorizontal="@dimen/padding_bit"
             android:text="@string/label_delete"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

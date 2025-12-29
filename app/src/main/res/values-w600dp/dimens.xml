@@ -1,3 +1,18 @@
 <resources>
-    <dimen name="fab_margin">48dp</dimen>
+    <!-- paddings (کمی بیشتر از گوشی) -->
+    <dimen name="padding_x_bit">3dp</dimen>
+    <dimen name="padding_bit">6dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_normal">10dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_xLarge">22dp</dimen>
+
+    <!-- fonts (تقریباً همون گوشی، فقط خیلی جزئی بزرگ‌تر) -->
+    <dimen name="font_xx_small">11sp</dimen>
+    <dimen name="font_x_small">13sp</dimen>
+    <dimen name="font_small">15sp</dimen>
+    <dimen name="font_medium">17sp</dimen>
+    <dimen name="font_large">19sp</dimen>
+    <dimen name="font_xLarge">21sp</dimen>
 </resources>

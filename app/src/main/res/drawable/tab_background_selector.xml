@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/tab_selected_bg" android:state_selected="true" />
-    <item android:drawable="@drawable/tab_unselected_bg" />
+    <item android:drawable="@drawable/bg_selected_tab" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_unselected_tab" />
 </selector>

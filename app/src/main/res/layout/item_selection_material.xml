@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/colorPassive"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/llHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -25,9 +25,9 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray_ccc" />
+            android:background="?attr/colorLine" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etPrice"
             style="@style/MediumTextStyle"
             android:layout_width="0dp"
@@ -41,9 +41,9 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray_ccc" />
+            android:background="?attr/colorLine" />
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etMaterialQuantity"
             style="@style/MediumTextStyle"
             android:layout_width="0dp"
@@ -57,7 +57,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/gray_ccc" />
+            android:background="?attr/colorLine" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvMaterialName"
@@ -76,7 +76,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_ccc" />
+        android:background="?attr/colorLine" />
 
 </LinearLayout>
 

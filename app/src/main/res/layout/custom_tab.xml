@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tabText"
-    style="@style/MediumBoldTextStyle"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/tab_background_selector"
     android:gravity="center"
-    android:padding="@dimen/padding_medium"
-    android:textColor="@color/tab_text_selector" />
+    android:orientation="vertical"
+    android:padding="@dimen/padding_medium">
+
+    <TextView
+        android:id="@+id/tabText"
+        style="@style/MediumBoldTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tab_background_selector"
+        android:gravity="center"
+        android:textColor="@color/tab_text_selector" />
+
+</LinearLayout>
