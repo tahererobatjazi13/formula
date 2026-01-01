@@ -61,15 +61,18 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    implementation "androidx.room:room-runtime:2.6.1"
+ //   implementation "androidx.room:room-runtime:2.6.1"
     //noinspection KaptUsageInsteadOfKsp
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    kapt "androidx.room:room-compiler:2.6.1"
-    implementation("androidx.room:room-ktx:2.6.1")
+  //  kapt "androidx.room:room-compiler:2.6.1"
+   // implementation("androidx.room:room-ktx:2.6.1")
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.github.samanzamani:PersianDate:1.7.1'
     implementation 'ir.huri:JalaliCalendar:1.3.1'
 
+    implementation "androidx.room:room-runtime:2.6.0"
+    kapt "androidx.room:room-compiler:2.6.0"
+    implementation "androidx.room:room-ktx:2.6.0"
 
     // Retrofit
     implementation 'com.google.code.gson:gson:2.10.1'
@@ -79,7 +82,7 @@ dependencies {
 
     // Size dp/sp
     implementation 'com.github.mehedibangladeshi:AVDP-Android:0.2.0'
-    
+
         implementation 'com.intuit.sdp:sdp-android:1.1.0'
         implementation 'com.intuit.ssp:ssp-android:1.1.0'
 

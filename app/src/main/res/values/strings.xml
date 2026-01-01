@@ -45,6 +45,7 @@
     <string name="label_intermediate_product">محصول میانی</string>
     <string name="label_history">تاریخچه قیمت</string>
     <string name="label_historys">تاریخچه قیمت ها</string>
+    <string name="label_packing_visit">برنامه‌ی بسته‌بندی</string>
 
     <string name="label_product_production_packaging_cost">مبلغ تولید محصول و بسته بندی :</string>
     <string name="label_packaging_remaining">باقی مانده مقدار بسته بندی :</string>
@@ -59,6 +60,10 @@
     <string name="label_packaging_services_star">نام کالا یا خدمات * :</string>
     <string name="label_material_name_star">نام مواد اولیه * :</string>
     <string name="label_name">نام</string>
+    <string name="label_delivery_quantity">مقدار تحویلی</string>
+    <string name="label_production_quantity">مقدار تولیدی</string>
+    <string name="label_request_quantity">مقدار درخواستی</string>
+    <string name="label_dosage_quantity">مقدار مصرفی</string>
     <string name="label_choose">انتخاب</string>
     <string name="label_material_name">نام مواد اولیه</string>
     <string name="label_material_name_item">نام مواد اولیه:</string>
@@ -67,13 +72,17 @@
     <string name="label_quantity_unit">مقدار\n(گرم)</string>
     <string name="label_percentage">درصد(%)</string>
     <string name="label_quantity_number_unit">مقدار\n(عدد)</string>
+    <string name="label_quantity_number_unit_item">مقدار(عدد)</string>
     <string name="label_quantity_weight_unit">وزن\n(گرم)</string>
+    <string name="label_quantity_weight_unit_item">وزن(گرم)</string>
     <string name="label_sum_total">جمع</string>
     <string name="label_product_name">نام محصول :</string>
     <string name="label_product_amount">مقدار محصول (گرم) :</string>
     <string name="label_product_amount_item">مقدار محصول :</string>
     <string name="label_product_name_item">نام محصول</string>
     <string name="label_product_name_star">نام محصول * :</string>
+    <string name="label_number_unit">تعداد</string>
+    <string name="label_remainder">مانده</string>
 
     <string name="label_select_material">انتخاب مواد اولیه:</string>
     <string name="label_search">جستجو کنید...</string>
@@ -103,6 +112,8 @@
     <string name="label_product_detail">جزییات محصول</string>
     <string name="label_packaging_detail">جزییات بسته بندی</string>
     <string name="label_packaging_production_detail">جزییات تولید بسته بندی</string>
+    <string name="label_company_name">شرکت پخش اندیشه درستکاران پارس</string>
+    <string name="label_packaging_request_form">فرم درخواست بسته بندی</string>
     <string name="label_report_packaging_detail">گزارش جزییات بسته بندی</string>
     <string name="label_production_schedule_product">برنامه تولید محصول</string>
     <string name="label_schedule_product_detail">جزییات تولید محصول</string>
@@ -138,3 +149,4 @@
     </string-array>
 
 </resources>
+

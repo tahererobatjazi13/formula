@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +22,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.itextpdf.text.BaseColor
+import com.itextpdf.text.Chunk
 import com.itextpdf.text.Document
 import com.itextpdf.text.Element
 import com.itextpdf.text.Font
+import com.itextpdf.text.Image
 import com.itextpdf.text.PageSize
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.Phrase
@@ -34,12 +37,14 @@ import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
 import ir.huri.jcal.JalaliCalendar
 import ir.kitgroup.formulaNew.R
+import ir.kitgroup.formulaNew.adapter.PackagingSummaryAdapter
 import ir.kitgroup.formulaNew.core.Util.formatDateShamsi
 import ir.kitgroup.formulaNew.adapter.PackagingUsageDetailAdapter
 import ir.kitgroup.formulaNew.core.Util
 import ir.kitgroup.formulaNew.core.Util.formatQuantity
 import ir.kitgroup.formulaNew.database.entity.Packaging
 import ir.kitgroup.formulaNew.databinding.FragmentPackagingUsageDetailsBinding
+import ir.kitgroup.formulaNew.model.RawPackagingSummary
 import ir.kitgroup.formulaNew.viewmodel.PackagingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,12 +66,18 @@ class PackagingUsageDetailsFragment : Fragment() {
     private val args: PackagingUsageDetailsFragmentArgs by navArgs()
     private val selectedPackagings = mutableListOf<Packaging>()
 
+    private val rawPackagingSummaryMap =
+        mutableMapOf<String, Double>() // materialName -> totalQuantity
+    private lateinit var packagingSummaryAdapter: PackagingSummaryAdapter
+    private var rawPackagingSummaryListForPdf: List<RawPackagingSummary> = emptyList()
+
     // Data vars
     private var productId: Int = 0
     private var productUsageId: Long = 0
     private var productName: String = ""
     private var productDate: Long = 0
     private var qty: Double = 0.0
+    private var remaining: Double = 0.0
     private var packagePrice: Double = 0.0
     private var productNamePdf: String = ""
     private var displayDateTime: String = ""
@@ -131,13 +142,28 @@ class PackagingUsageDetailsFragment : Fragment() {
                 }
 
                 updateTotalPriceUI()
+                lifecycleScope.launch {
+                    updateRawMaterialSummary()
+                }
             }
 
-        packagingUsageDetailAdapter.onQuantityChanged = { updateTotalPriceUI() }
+        packagingUsageDetailAdapter.onQuantityChanged = {
+            updateTotalPriceUI()
+            lifecycleScope.launch {
+                updateRawMaterialSummary()
+            }
+        }
 
         binding.rvPackagingList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = packagingUsageDetailAdapter
+        }
+
+
+        packagingSummaryAdapter = PackagingSummaryAdapter()
+        binding.rvPackagingSummary.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = packagingSummaryAdapter
         }
     }
 
@@ -145,7 +171,9 @@ class PackagingUsageDetailsFragment : Fragment() {
 
         binding.ivPdf.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                generateListPDF(requireContext(), selectedPackagings)
+                generateListPDF(
+                    requireContext(), rawPackagingSummaryListForPdf
+                )
             }
         }
         ivBack.setOnClickListener {
@@ -189,7 +217,7 @@ class PackagingUsageDetailsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         packagingViewModel.totalUsedWeight.observe(viewLifecycleOwner) { usedWeight ->
-            val remaining = qty - usedWeight
+            remaining = qty - usedWeight
             binding.tvRemaining.text = "${formatQuantity(remaining)} گرم"
         }
 
@@ -209,6 +237,10 @@ class PackagingUsageDetailsFragment : Fragment() {
                 }
 
                 updateTotalPriceUI()
+                // به‌روزرسانی خلاصه پس از بارگذاری اولیه
+                lifecycleScope.launch {
+                    updateRawMaterialSummary()
+                }
             }
         }
 
@@ -222,6 +254,35 @@ class PackagingUsageDetailsFragment : Fragment() {
             } else {
                 binding.ivPdf.visibility = View.GONE
             }
+        }
+    }
+
+    private suspend fun updateRawMaterialSummary() {
+        rawPackagingSummaryMap.clear()
+
+        for (packaging in selectedPackagings) {
+            if (packaging.quantity <= 0) continue
+
+            val details = packagingViewModel.getPackageDetailsSuspend(packaging.packagingId)
+            for (detail in details) {
+                val totalNeeded = detail.quantity * packaging.quantity
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    rawPackagingSummaryMap[detail.materialName] =
+                        rawPackagingSummaryMap.getOrDefault(detail.materialName, 0.0) + totalNeeded
+                }
+            }
+        }
+
+        val summaryList = rawPackagingSummaryMap.map { (name, qty) ->
+            RawPackagingSummary(name, qty)
+        }.sortedBy { it.name }
+
+        withContext(Dispatchers.Main) {
+            packagingSummaryAdapter.updateList(summaryList)
+            rawPackagingSummaryListForPdf = summaryList
+
+            binding.clPackagingSummary.visibility =
+                if (summaryList.isEmpty()) View.GONE else View.VISIBLE
         }
     }
 
@@ -261,17 +322,17 @@ class PackagingUsageDetailsFragment : Fragment() {
 
     private suspend fun generateListPDF(
         context: Context,
-        items: List<Packaging>,
+        rawPackagingSummaryList: List<RawPackagingSummary>
+
     ) {
         try {
-            // val productsWithPrices = getProductsWithPrices(items)
 
-            val fileName = context.getString(R.string.label_product_list)
+            val fileName = context.getString(R.string.label_packaging)
             val pdfFile = File(context.getExternalFilesDir(null), "${fileName}.pdf")
             val fos = withContext(Dispatchers.IO) {
                 FileOutputStream(pdfFile)
             }
-            val document = Document(PageSize.A4, 15f, 15f, 15f, 15f)
+            val document = Document(PageSize.A4, 10f, 10f, 10f, 10f)
             PdfWriter.getInstance(document, fos)
             document.open()
 
@@ -280,11 +341,11 @@ class PackagingUsageDetailsFragment : Fragment() {
                 BaseFont.IDENTITY_H,
                 BaseFont.EMBEDDED
             )
-            val farsiFont = Font(baseFont, 12f, Font.NORMAL)
-            val farsiFontBold14 = Font(baseFont, 14f, Font.BOLD)
-            val farsiFontBold18 = Font(baseFont, 20f, Font.BOLD, BaseColor.BLACK)
+            val farsiFont = Font(baseFont, 9f, Font.NORMAL)
+            val farsiFontBold14 = Font(baseFont, 11f, Font.BOLD)
+            val farsiFontBold18 = Font(baseFont, 14f, Font.BOLD, BaseColor.BLACK)
 
-            val headerText = context.getString(R.string.label_packaging_production_detail)
+            val headerText = context.getString(R.string.label_company_name)
 
             val headerTable = PdfPTable(1)
             headerTable.widthPercentage = 100f
@@ -292,50 +353,117 @@ class PackagingUsageDetailsFragment : Fragment() {
             headerCell.horizontalAlignment = Element.ALIGN_CENTER
             headerCell.runDirection = PdfWriter.RUN_DIRECTION_LTR
             headerCell.border = Rectangle.NO_BORDER
-            headerCell.setPadding(10f)
+            headerCell.setPadding(8f)
             headerTable.addCell(headerCell)
 
             val dateTable = PdfPTable(2)
             dateTable.widthPercentage = 100f
             dateTable.setWidths(floatArrayOf(1f, 3f))
-
-            val emptyCell = PdfPCell(Phrase("", farsiFont))
-            emptyCell.border = Rectangle.NO_BORDER
-            val dateCell =
-                PdfPCell(Phrase("تاریخ و ساعت گزارش : $displayDateTime", farsiFontBold14))
-            dateCell.horizontalAlignment = Element.ALIGN_RIGHT
-            dateCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
-            dateCell.border = Rectangle.NO_BORDER
-            dateCell.setPadding(15f)
-            dateTable.addCell(emptyCell)
-            dateTable.addCell(dateCell)
-
-            val createQuantityTable = PdfPTable(1)
-            createQuantityTable.widthPercentage = 100f
-            createQuantityTable.horizontalAlignment = Element.ALIGN_RIGHT
-
-            val createQuantityCell =
-                PdfPCell(
-                    Phrase(
-                        "مقادیر مواد برای تولید ${formatQuantity(qty)} گرم از محصول ",
-                        farsiFontBold14
-                    )
-                )
-            createQuantityCell.horizontalAlignment = Element.ALIGN_LEFT
-            createQuantityCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
-            createQuantityCell.border = Rectangle.NO_BORDER
-            createQuantityCell.setPadding(10f)
-            createQuantityTable.addCell(createQuantityCell)
-
             document.add(headerTable)
-            document.add(dateTable)
-            document.add(createQuantityTable)
 
+
+            val logo = Image.getInstance(context.assets.open("cocopartylatin.png").readBytes())
+            logo.alignment = Image.ALIGN_CENTER
+            logo.scaleToFit(100f, 100f)
+            logo.spacingAfter = 8f
+
+            document.add(logo)
             document.add(Paragraph("\n"))
+
+            val infoTable = PdfPTable(2)
+            infoTable.widthPercentage = 100f
+            infoTable.setWidths(floatArrayOf(2f, 2f))
+
+            val formCell = PdfPCell(
+                Phrase(
+                    context.getString(R.string.label_packaging_request_form),
+                    farsiFontBold14
+                )
+            )
+            formCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            formCell.horizontalAlignment = Element.ALIGN_LEFT
+            formCell.border = Rectangle.NO_BORDER
+            formCell.setPadding(5f)
+
+            val dateCell = PdfPCell(
+                Phrase("تاریخ و زمان : $displayDateTime", farsiFontBold14)
+            )
+            dateCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            dateCell.horizontalAlignment = Element.ALIGN_RIGHT
+            dateCell.border = Rectangle.NO_BORDER
+            dateCell.setPadding(5f)
+
+            infoTable.addCell(dateCell)
+            infoTable.addCell(formCell)
+
+            document.add(infoTable)
+
+            val lineSeparator = com.itextpdf.text.pdf.draw.LineSeparator()
+            lineSeparator.lineWidth = 1f
+            lineSeparator.offset = 0f // یا مقدار منفی کوچک مثل -1f
+
+            val separatorParagraph = Paragraph().apply {
+                add(Chunk(lineSeparator))
+                spacingBefore = 2f  // فاصله قبل از خط
+                spacingAfter =2f   // فاصله بعد از خط
+            }
+
+            document.add(separatorParagraph)
+
+
+            val kilo = qty / 1000.0
+            val kiloFormatted = String.format(Locale.US, "%.3f", kilo)
+
+            /* val createQuantityTable = PdfPTable(1)
+             createQuantityTable.widthPercentage = 100f
+
+              val phrase = Phrase().apply {
+                 // خط اول
+                 add(Chunk("مقادیر مواد برای تولید ", farsiFont))
+                 // گرم + کیلو داخل گیومه
+                 add(
+                     Chunk(
+                         "«${formatQuantity(qty)} گرم معادل($kiloFormatted کیلوگرم)» ",
+                         farsiFontBold14
+                     )
+                 )
+                 add(Chunk("از محصول ", farsiFont))
+                 add(
+                     Chunk(
+                         "«$productName»",
+                         farsiFontBold14
+                     )
+                 )
+                 add(Chunk.NEWLINE)
+                 add(Chunk.NEWLINE)
+
+                 // خط دوم: باقی مانده
+                 add(
+                     Chunk(
+                         "مقدار باقی مانده مواد محصول: ",
+                         farsiFont
+                     )
+                 )
+                 add(
+                     Chunk(
+                         "«${formatQuantity(remaining)} گرم»",
+                         farsiFontBold14
+                     )
+                 )
+             }
+
+             val createQuantityCell = PdfPCell(phrase).apply {
+                 runDirection = PdfWriter.RUN_DIRECTION_RTL
+                 horizontalAlignment = Element.ALIGN_LEFT
+                 border = Rectangle.BOX
+                 setPadding(10f)
+             }
+
+             createQuantityTable.addCell(createQuantityCell)
+             document.add(createQuantityTable)*/
 
             val darkGrayColor = ContextCompat.getColor(context, R.color.gray_dark)
             val lightGrayColor = ContextCompat.getColor(context, R.color.gray_light)
-            val headerColor = ContextCompat.getColor(context, R.color.colorAccent)
 
             val darkGrayBase = BaseColor(
                 Color.red(darkGrayColor),
@@ -348,16 +476,210 @@ class PackagingUsageDetailsFragment : Fragment() {
                 Color.blue(lightGrayColor)
             )
             val headerColorBase =
-                BaseColor(Color.red(headerColor), Color.green(headerColor), Color.blue(headerColor))
+                BaseColor(
+                    Color.red(lightGrayColor),
+                    Color.green(lightGrayColor),
+                    Color.blue(lightGrayColor)
+                )
 
-            val table = PdfPTable(4)
+            val materialTitle = PdfPTable(1)
+            materialTitle.widthPercentage = 100f
+
+            val materialCell = PdfPCell(Phrase(" مواداولیه ", farsiFontBold14))
+            materialCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            materialCell.horizontalAlignment = Element.ALIGN_LEFT
+            materialCell.border = Rectangle.NO_BORDER
+            materialCell.setPadding(10f)
+
+            materialTitle.addCell(materialCell)
+            document.add(materialTitle)
+
+            val materialTable = PdfPTable(5)
+            materialTable.widthPercentage = 100f
+            materialTable.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            materialTable.setWidths(floatArrayOf(2f, 1f, 1f, 1f, 2f))
+
+            materialTable.addCell(
+                createHeaderCell(
+                    context.getString(R.string.label_name),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            materialTable.addCell(
+                createHeaderCell(
+                    context.getString(R.string.label_delivery_quantity),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            materialTable.addCell(
+                createCell(
+                    context.getString(R.string.label_dosage_quantity),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            materialTable.addCell(
+                createCell(
+                    context.getString(R.string.label_remainder),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            materialTable.addCell(
+                createCell(
+                    context.getString(R.string.label_description), farsiFont, headerColorBase
+                )
+            )
+
+            val nameCell = createCell(productName, farsiFont, lightGrayBase)
+            nameCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            nameCell.horizontalAlignment = Element.ALIGN_LEFT
+
+            materialTable.addCell(nameCell)
+            val qtyText = "${formatQuantity(qty)} گرم\n $kiloFormatted کیلوگرم"
+
+            materialTable.addCell(
+                createCell(qtyText, farsiFont, lightGrayBase)
+            )
+            materialTable.addCell(
+                createCell(
+                    "",
+                    farsiFont,
+                    lightGrayBase
+                )
+            )
+            materialTable.addCell(
+                createCell(
+                    "${formatQuantity(remaining)} گرم",
+                    farsiFont,
+                    lightGrayBase
+                )
+            )
+            materialTable.addCell(
+                createCell(
+                    "",
+                    farsiFont,
+                    lightGrayBase
+                )
+            )
+
+            document.add(materialTable)
+
+            val summaryTitle = PdfPTable(1)
+            summaryTitle.widthPercentage = 100f
+
+            val titleCell = PdfPCell(Phrase(" ملزومات بسته‌بندی ", farsiFontBold14))
+            titleCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            titleCell.horizontalAlignment = Element.ALIGN_LEFT
+            titleCell.border = Rectangle.NO_BORDER
+            titleCell.setPadding(10f)
+
+            summaryTitle.addCell(titleCell)
+            document.add(summaryTitle)
+
+
+            val summaryTable = PdfPTable(5)
+            summaryTable.widthPercentage = 100f
+            summaryTable.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            summaryTable.setWidths(floatArrayOf(2f, 1f, 1f, 1f, 2f))
+
+            summaryTable.addCell(
+                createHeaderCell(
+                    context.getString(R.string.label_name),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            summaryTable.addCell(
+                createHeaderCell(
+                    context.getString(R.string.label_delivery_quantity),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            summaryTable.addCell(
+                createCell(
+                    context.getString(R.string.label_dosage_quantity),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            summaryTable.addCell(
+                createCell(
+                    context.getString(R.string.label_remainder),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            summaryTable.addCell(
+                createCell(
+                    context.getString(R.string.label_description), farsiFont, headerColorBase
+                )
+            )
+            rawPackagingSummaryList.forEachIndexed { index, item ->
+                val rowColor = if (index % 2 == 0) darkGrayBase else lightGrayBase
+
+                val rowText = "${index + 1}. ${item.name}"
+                val nameCell = createCell(rowText, farsiFont, rowColor)
+                nameCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+                nameCell.horizontalAlignment = Element.ALIGN_LEFT
+
+                summaryTable.addCell(nameCell)
+
+                summaryTable.addCell(
+                    createCell(
+                        formatQuantity(item.quantity),
+                        farsiFont,
+                        rowColor
+                    )
+                )
+                summaryTable.addCell(
+                    createCell(
+                        "",
+                        farsiFont,
+                        rowColor
+                    )
+                )
+                summaryTable.addCell(
+                    createCell(
+                        "",
+                        farsiFont,
+                        rowColor
+                    )
+                )
+                summaryTable.addCell(
+                    createCell(
+                        "",
+                        farsiFont,
+                        rowColor
+                    )
+                )
+            }
+            document.add(summaryTable)
+
+
+            val packingTitle = PdfPTable(1)
+            packingTitle.widthPercentage = 100f
+
+            val packingCell = PdfPCell(Phrase(" محصول نهایی ", farsiFontBold14))
+            packingCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            packingCell.horizontalAlignment = Element.ALIGN_LEFT
+            packingCell.border = Rectangle.NO_BORDER
+            packingCell.setPadding(10f)
+
+            packingTitle.addCell(packingCell)
+            document.add(packingTitle)
+
+            val table = PdfPTable(6)
             table.widthPercentage = 100f
             table.runDirection = PdfWriter.RUN_DIRECTION_RTL
-            val columnWidths = floatArrayOf(2f, 2f, 2f, 2f)
+            val columnWidths = floatArrayOf(2f, 1f, 1f, 1f, 1f, 2f)
             table.setWidths(columnWidths)
 
             table.addCell(
-                createCell(
+                createHeaderCell(
                     context.getString(R.string.label_name),
                     farsiFont,
                     headerColorBase
@@ -365,14 +687,28 @@ class PackagingUsageDetailsFragment : Fragment() {
             )
             table.addCell(
                 createCell(
-                    context.getString(R.string.label_quantity_weight_unit),
+                    context.getString(R.string.label_quantity_weight_unit_item),
                     farsiFont,
                     headerColorBase
                 )
             )
             table.addCell(
                 createCell(
-                    context.getString(R.string.label_quantity_number_unit),
+                    context.getString(R.string.label_delivery_quantity),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            table.addCell(
+                createCell(
+                    context.getString(R.string.label_production_quantity),
+                    farsiFont,
+                    headerColorBase
+                )
+            )
+            table.addCell(
+                createCell(
+                    context.getString(R.string.label_remainder),
                     farsiFont,
                     headerColorBase
                 )
@@ -391,6 +727,7 @@ class PackagingUsageDetailsFragment : Fragment() {
                 cellName.horizontalAlignment = Element.ALIGN_LEFT
 
                 table.addCell(cellName)
+
                 table.addCell(
                     createCell(
                         formatQuantity(packaging.weight),
@@ -405,10 +742,57 @@ class PackagingUsageDetailsFragment : Fragment() {
                     )
                 )
                 table.addCell(createCell("", farsiFont, rowColor))
-
+                table.addCell(createCell("", farsiFont, rowColor))
+                table.addCell(createCell("", farsiFont, rowColor))
             }
 
             document.add(table)
+            document.add(Paragraph("\n"))
+
+            val descriptionTable = PdfPTable(1)
+            descriptionTable.widthPercentage = 100f
+
+            val descriptionCell = PdfPCell(
+                Phrase(
+                    "توضیحات:",
+                    farsiFont
+                )
+            )
+            descriptionCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            descriptionCell.horizontalAlignment = Element.ALIGN_LEFT
+            descriptionCell.minimumHeight = 60f
+            descriptionCell.border = Rectangle.BOX
+            descriptionCell.setPadding(8f)
+
+            descriptionTable.addCell(descriptionCell)
+            document.add(descriptionTable)
+            document.add(Paragraph("\n"))
+
+            val signTable = PdfPTable(2)
+            signTable.widthPercentage = 100f
+            signTable.setWidths(floatArrayOf(1f, 1f))
+
+            val receiverCell = PdfPCell(
+                Phrase("نام و امضای تحویل‌گیرنده\n\n\n", farsiFont)
+            )
+            receiverCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            receiverCell.horizontalAlignment = Element.ALIGN_CENTER
+            receiverCell.minimumHeight = 50f
+            receiverCell.border = Rectangle.BOX
+
+            val producerCell = PdfPCell(
+                Phrase("نام و امضای مسئول تولید\n\n\n", farsiFont)
+            )
+            producerCell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+            producerCell.horizontalAlignment = Element.ALIGN_CENTER
+            producerCell.minimumHeight = 50f
+            producerCell.border = Rectangle.BOX
+
+            signTable.addCell(receiverCell)
+            signTable.addCell(producerCell)
+
+            document.add(signTable)
+
             document.close()
             openPDF(context, pdfFile)
         } catch (e: Exception) {
@@ -421,7 +805,16 @@ class PackagingUsageDetailsFragment : Fragment() {
         cell.horizontalAlignment = Element.ALIGN_CENTER
         cell.runDirection = PdfWriter.RUN_DIRECTION_RTL
         cell.backgroundColor = backgroundColor
-        cell.setPadding(14f)
+        cell.setPadding(8f)
+        return cell
+    }
+
+    private fun createHeaderCell(text: String, font: Font, backgroundColor: BaseColor): PdfPCell {
+        val cell = PdfPCell(Phrase(text, font))
+        cell.horizontalAlignment = Element.ALIGN_LEFT
+        cell.runDirection = PdfWriter.RUN_DIRECTION_RTL
+        cell.backgroundColor = backgroundColor
+        cell.setPadding(8f)
         return cell
     }
 

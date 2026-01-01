@@ -98,10 +98,10 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivPdf"
-                    android:visibility="gone"
                     android:layout_width="@dimen/_35dp"
                     android:layout_height="@dimen/_35dp"
                     android:layout_marginEnd="@dimen/padding_small"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_pdf" />
@@ -396,10 +396,10 @@
 
                 <com.google.android.flexbox.FlexboxLayout
                     android:id="@+id/flexTotalPrice"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_medium"
+                    android:visibility="gone"
                     app:alignItems="center"
                     app:flexDirection="row"
                     app:flexWrap="wrap"
@@ -439,6 +439,96 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/flexTotalPrice" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clPackagingSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btnEditSave">
+
+                    <TextView
+                        android:id="@+id/tvRawTitle"
+                        style="@style/SmallTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_large"
+                        android:text="@string/label_packing_visit"
+                        android:textColor="@color/color_primary"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/llPackagingSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/padding_medium"
+                        android:background="@drawable/dialog_table"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvRawTitle">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorLine" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="1dp"
+                            android:background="?attr/colorBackBlue"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/SmallBoldTextStyle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:padding="@dimen/padding_small"
+                                android:text="@string/label_number_unit" />
+
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:background="?attr/colorLine" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                style="@style/SmallBoldTextStyle"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/padding_small"
+                                android:text="@string/label_name" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?attr/colorLine" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPackagingSummary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="1dp"
+                            android:background="@color/white"
+                            android:nestedScrollingEnabled="false"
+                            tools:itemCount="5"
+                            tools:listitem="@layout/item_packaging_summary" />
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
